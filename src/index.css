@@ -4,8 +4,12 @@
   --color-navy-900: #0B192C;
   --color-navy-800: #142A4A;
   --color-navy-700: #1D3B68;
-  --color-teal-500: #00A896;
-  --color-teal-600: #008C7D;
+  --color-teal-500: #00C2A0;
+  --color-teal-600: #00A88A;
+  --color-teal-700: #008C73;
+  --color-teal-400: #33CFB2;
+  --color-mint-50: #e8f5f3;
+  --color-mint-100: #d0ede8;
   --font-sans: 'Inter', sans-serif;
   --font-display: 'Playfair Display', serif;
 }
@@ -18,10 +22,7 @@ body {
   margin: 0;
   font-family: 'Inter', sans-serif;
   color: #1f2937;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Playfair Display', serif;
+  background-color: #e8f5f3;
 }
 
 #root {
