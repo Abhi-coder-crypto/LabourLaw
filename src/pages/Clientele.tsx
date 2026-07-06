@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Star } from 'lucide-react';
@@ -83,7 +83,7 @@ const Clientele = () => {
             <p className="text-gray-500 max-w-xl mx-auto text-sm leading-relaxed">From nimble startups to Fortune 500 conglomerates — our expertise spans every scale and sector of Indian industry.</p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {clients.map(({ name, Logo }, i) => (
+            {clients.map(({ Logo }, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 16 }}

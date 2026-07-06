@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, CheckCircle, ChevronRight, Star, Quote, TrendingUp, Shield, Users, ChevronDown } from 'lucide-react';
+import { ArrowRight, ChevronRight, Star, Quote, TrendingUp, Shield, Users, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { ALL_CLIENTS } from '../components/ClientLogos';
 
@@ -306,7 +306,7 @@ const Home = () => {
                     Read Article <ChevronRight size={14} />
                   </Link>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -317,12 +317,26 @@ const Home = () => {
         <div className="absolute inset-0 opacity-10"
           style={{ backgroundImage: 'radial-gradient(circle at 80% 50%, #ffffff 0%, transparent 60%)' }} />
         <div className="max-w-3xl mx-auto px-6 md:px-10 relative z-10">
-          <h2 className="text-3xl md:text-5xl font-display font-bold text-white mb-5 leading-tight">Ready to secure your compliance?</h2>
-          <p className="text-white/80 text-base mb-10 leading-relaxed">Schedule a detailed consultation with our legal experts to audit your current HR practices and identify risks.</p>
-          <Link to="/contact"
-            className="inline-flex items-center gap-2 bg-navy-900 text-white px-10 py-4 rounded-full font-bold hover:bg-navy-800 transition-colors shadow-xl text-sm">
-            Schedule Consultation Now <ArrowRight size={16} />
-          </Link>
+          <motion.h2
+            initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }} transition={{ duration: 0.5 }}
+            className="text-3xl md:text-5xl font-display font-bold text-white mb-5 leading-tight">
+            Ready to secure your compliance?
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.1 }}
+            className="text-white/80 text-base mb-10 leading-relaxed">
+            Schedule a detailed consultation with our legal experts to audit your current HR practices and identify risks.
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }} transition={{ duration: 0.4, delay: 0.2 }}>
+            <Link to="/contact"
+              className="inline-flex items-center gap-2 bg-navy-900 text-white px-10 py-4 rounded-full font-bold hover:bg-navy-800 transition-colors shadow-xl text-sm">
+              Schedule Consultation Now <ArrowRight size={16} />
+            </Link>
+          </motion.div>
         </div>
       </section>
     </div>

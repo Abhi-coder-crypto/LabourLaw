@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Link } from 'react-router-dom';
 import { ArrowRight, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -88,13 +88,26 @@ const Services = () => {
       {/* ── CTA ───────────────────────────────────────────── */}
       <section className="py-20 bg-navy-900 text-white text-center">
         <div className="max-w-2xl mx-auto px-6">
-          <p className="text-teal-400 font-bold text-[11px] uppercase tracking-[0.18em] mb-4">Get Started</p>
-          <h2 className="text-3xl font-display font-bold mb-5">Need a custom compliance structure?</h2>
-          <p className="text-white/55 mb-10 text-[15px] leading-relaxed">We understand every business has unique operational needs. Contact us for a bespoke audit and advisory package tailored to your industry.</p>
-          <Link to="/contact"
-            className="inline-flex items-center gap-2 bg-teal-500 text-white px-10 py-4 rounded-full font-bold hover:bg-teal-600 transition-colors shadow-xl text-sm">
-            Request Custom Consultation <ArrowRight size={16} />
-          </Link>
+          <motion.p
+            initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }} transition={{ duration: 0.4 }}
+            className="text-teal-400 font-bold text-[11px] uppercase tracking-[0.18em] mb-4">Get Started</motion.p>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }} transition={{ duration: 0.45, delay: 0.07 }}
+            className="text-3xl font-display font-bold mb-5">Need a custom compliance structure?</motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }} transition={{ duration: 0.45, delay: 0.14 }}
+            className="text-white/55 mb-10 text-[15px] leading-relaxed">We understand every business has unique operational needs. Contact us for a bespoke audit and advisory package tailored to your industry.</motion.p>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }} transition={{ duration: 0.4, delay: 0.2 }}>
+            <Link to="/contact"
+              className="inline-flex items-center gap-2 bg-teal-500 text-white px-10 py-4 rounded-full font-bold hover:bg-teal-600 transition-colors shadow-xl text-sm">
+              Request Custom Consultation <ArrowRight size={16} />
+            </Link>
+          </motion.div>
         </div>
       </section>
     </div>

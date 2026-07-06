@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Download, ChevronRight, Calendar, Tag, BookOpen, FileText } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
@@ -67,10 +67,14 @@ const Resources = () => {
               { icon: Tag, value: '8+', label: 'Compliance Topics' },
               { icon: Calendar, value: 'Monthly', label: 'Content Updates' },
             ].map((s, i) => (
-              <div key={i} className="px-4">
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: i * 0.08 }}
+                className="px-4">
                 <div className="text-2xl font-display font-bold text-teal-500 mb-1">{s.value}</div>
                 <div className="text-gray-400 text-xs uppercase tracking-wider font-semibold">{s.label}</div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -161,10 +165,22 @@ const Resources = () => {
       {/* ── Newsletter CTA ────────────────────────────────── */}
       <section className="py-16 bg-navy-900 text-white text-center">
         <div className="max-w-2xl mx-auto px-6">
-          <p className="text-teal-400 font-bold text-[11px] uppercase tracking-[0.18em] mb-4">Stay Updated</p>
-          <h2 className="text-3xl font-display font-bold mb-5">Never miss a compliance update</h2>
-          <p className="text-white/55 mb-8 text-sm leading-relaxed">Subscribe to our newsletter for critical regulatory alerts, new circulars, and expert analysis delivered directly to your inbox.</p>
-          <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto" onSubmit={(e) => e.preventDefault()}>
+          <motion.p
+            initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }} transition={{ duration: 0.4 }}
+            className="text-teal-400 font-bold text-[11px] uppercase tracking-[0.18em] mb-4">Stay Updated</motion.p>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }} transition={{ duration: 0.45, delay: 0.07 }}
+            className="text-3xl font-display font-bold mb-5">Never miss a compliance update</motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }} transition={{ duration: 0.45, delay: 0.14 }}
+            className="text-white/55 mb-8 text-sm leading-relaxed">Subscribe to our newsletter for critical regulatory alerts, new circulars, and expert analysis delivered directly to your inbox.</motion.p>
+          <motion.form
+            initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }} transition={{ duration: 0.45, delay: 0.2 }}
+            className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto" onSubmit={(e) => e.preventDefault()}>
             <input
               type="email"
               placeholder="Your business email"
@@ -174,7 +190,7 @@ const Resources = () => {
               className="bg-teal-500 text-white px-7 py-3 rounded-full text-sm font-bold hover:bg-teal-600 transition-colors whitespace-nowrap">
               Subscribe
             </button>
-          </form>
+          </motion.form>
         </div>
       </section>
     </div>

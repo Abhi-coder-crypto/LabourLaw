@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { motion } from 'framer-motion';
 import { Target, Eye, Shield, Users, Award, ChevronRight, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -173,13 +173,26 @@ const About = () => {
       {/* ── Careers CTA ───────────────────────────────────── */}
       <section className="py-20 bg-[#f8fafb] text-center">
         <div className="max-w-2xl mx-auto px-6">
-          <p className="text-teal-500 font-bold text-[11px] uppercase tracking-[0.18em] mb-4">Join Our Team</p>
-          <h2 className="text-3xl font-display font-bold text-navy-900 mb-5">Join Our Roster of Experts</h2>
-          <p className="text-gray-500 mb-8 text-[15px] leading-relaxed">We are always looking for sharp legal minds and HR professionals who share our dedication to compliance excellence and client success.</p>
-          <Link to="/careers"
-            className="inline-flex items-center gap-2 bg-navy-900 text-white px-8 py-3.5 rounded-full font-semibold hover:bg-teal-600 transition-colors shadow-md">
-            View Career Opportunities <ChevronRight size={17} />
-          </Link>
+          <motion.p
+            initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }} transition={{ duration: 0.4 }}
+            className="text-teal-500 font-bold text-[11px] uppercase tracking-[0.18em] mb-4">Join Our Team</motion.p>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }} transition={{ duration: 0.45, delay: 0.07 }}
+            className="text-3xl font-display font-bold text-navy-900 mb-5">Join Our Roster of Experts</motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }} transition={{ duration: 0.45, delay: 0.14 }}
+            className="text-gray-500 mb-8 text-[15px] leading-relaxed">We are always looking for sharp legal minds and HR professionals who share our dedication to compliance excellence and client success.</motion.p>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }} transition={{ duration: 0.4, delay: 0.2 }}>
+            <Link to="/careers"
+              className="inline-flex items-center gap-2 bg-navy-900 text-white px-8 py-3.5 rounded-full font-semibold hover:bg-teal-600 transition-colors shadow-md">
+              View Career Opportunities <ChevronRight size={17} />
+            </Link>
+          </motion.div>
         </div>
       </section>
     </div>

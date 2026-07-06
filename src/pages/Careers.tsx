@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { MapPin, Briefcase, Clock, ChevronRight, ArrowRight, Users, TrendingUp, Award } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
@@ -106,7 +106,10 @@ const Careers = () => {
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
 
           {/* Tabs */}
-          <div className="flex gap-3 mb-12 border-b border-gray-200">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+            className="flex gap-3 mb-12 border-b border-gray-200">
             <button
               onClick={() => setActiveTab('internal')}
               className={`pb-4 px-2 font-bold text-sm border-b-2 transition-all -mb-px ${
@@ -125,7 +128,7 @@ const Careers = () => {
               }`}>
               Client Job Postings ({clientJobs.length})
             </button>
-          </div>
+          </motion.div>
 
           {activeTab === 'internal' && (
             <div>
@@ -161,7 +164,10 @@ const Careers = () => {
             </div>
           )}
 
-          <div className="mt-12 bg-navy-900 text-white rounded-2xl p-8 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }} transition={{ duration: 0.5 }}
+            className="mt-12 bg-navy-900 text-white rounded-2xl p-8 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6">
             <div>
               <h3 className="text-xl font-display font-bold mb-2">Don't see a role that fits?</h3>
               <p className="text-white/55 text-sm">Send us your resume. We're always open to exceptional talent in labour law and HR compliance.</p>
@@ -170,7 +176,7 @@ const Careers = () => {
               className="shrink-0 inline-flex items-center gap-2 bg-teal-500 text-white px-8 py-3.5 rounded-full font-bold text-sm hover:bg-teal-600 transition-colors shadow-lg whitespace-nowrap">
               Send Your Resume <ArrowRight size={16} />
             </Link>
-          </div>
+          </motion.div>
         </div>
       </section>
     </div>

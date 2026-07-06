@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { Phone, Mail, MapPin, Menu, X, ChevronDown, ArrowUp } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -49,7 +49,7 @@ const IconTwitter = () => (
 const Layout = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [servicesOpen, setServicesOpen] = useState(false);
+  const [, setServicesOpen] = useState(false);
   const location = useLocation();
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { MapPin, Phone, Mail, Clock, ArrowRight, CheckCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
@@ -47,8 +47,14 @@ const Contact = () => {
       {/* ── How Can We Help ───────────────────────────────── */}
       <section className="bg-white py-10 border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <h2 className="text-2xl font-display font-bold text-navy-900 mb-2">How can we help?</h2>
-          <p className="text-gray-500 text-[15px]">We're here to help our clients, employees and communities accomplish their goals. Tell us what you're looking for.</p>
+          <motion.h2
+            initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45 }}
+            className="text-2xl font-display font-bold text-navy-900 mb-2">How can we help?</motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, delay: 0.08 }}
+            className="text-gray-500 text-[15px]">We're here to help our clients, employees and communities accomplish their goals. Tell us what you're looking for.</motion.p>
         </div>
       </section>
 
@@ -192,7 +198,10 @@ const Contact = () => {
               </motion.div>
 
               {/* Map Placeholder */}
-              <div className="bg-gray-100 h-56 rounded-2xl overflow-hidden relative border border-gray-200">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="bg-gray-100 h-56 rounded-2xl overflow-hidden relative border border-gray-200">
                 <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&q=80&w=800"
                   alt="Mumbai Nariman Point" className="w-full h-full object-cover opacity-70" />
                 <div className="absolute inset-0 flex items-center justify-center">
@@ -201,7 +210,7 @@ const Contact = () => {
                     <span className="text-sm font-semibold text-navy-900">Nariman Point, Mumbai</span>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </div>
         </div>
@@ -216,7 +225,10 @@ const Contact = () => {
               { icon: Mail, label: 'Email Our Team', value: 'contact@labourcodes.in', href: 'mailto:contact@labourcodes.in', cta: 'Send Email' },
               { icon: MapPin, label: 'Visit Our Office', value: 'Nariman Point, Mumbai', href: '#', cta: 'Get Directions' },
             ].map((item, i) => (
-              <a key={i} href={item.href}
+              <motion.a
+                key={i} href={item.href}
+                initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }} transition={{ duration: 0.4, delay: i * 0.1 }}
                 className="flex items-center gap-5 p-6 rounded-2xl border border-gray-100 bg-[#f8fafb] hover:border-teal-200 hover:shadow-sm transition-all group">
                 <div className="w-12 h-12 rounded-xl bg-teal-50 text-teal-500 flex items-center justify-center shrink-0 group-hover:bg-teal-500 group-hover:text-white transition-colors shadow-sm">
                   <item.icon size={20} />
@@ -225,7 +237,7 @@ const Contact = () => {
                   <p className="text-xs text-gray-400 font-semibold mb-0.5">{item.label}</p>
                   <p className="font-bold text-navy-900 text-sm">{item.value}</p>
                 </div>
-              </a>
+              </motion.a>
             ))}
           </div>
         </div>

@@ -1,4 +1,4 @@
-import React from 'react';
+
 
 export const HdfcLogo = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 44" height="38" aria-label="HDFC Bank">

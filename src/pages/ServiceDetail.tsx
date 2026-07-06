@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, CheckCircle, FileText, Phone, ChevronRight, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -192,20 +192,30 @@ const ServiceDetail = () => {
         <div className="max-w-7xl mx-auto px-6 lg:px-10 flex flex-col lg:flex-row gap-10">
 
           {/* Body */}
-          <div className="lg:w-2/3">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="lg:w-2/3">
             <div className="bg-white rounded-2xl p-8 md:p-10 shadow-sm border border-gray-100 mb-7">
 
               {/* Image + Text */}
               <div className="flex flex-col md:flex-row gap-8 mb-10">
                 <div className="md:w-2/5 shrink-0">
-                  <div className="rounded-2xl overflow-hidden shadow-md aspect-[4/3]">
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5, delay: 0.1 }}
+                    className="rounded-2xl overflow-hidden shadow-md aspect-[4/3]">
                     <img src={detail?.img || '/assets/service-labour.png'} alt={title}
                       className="w-full h-full object-cover" />
-                  </div>
+                  </motion.div>
                 </div>
                 <div className="md:w-3/5">
                   {detail?.body?.split('\n\n').map((para, i) => (
-                    <p key={i} className="text-gray-600 leading-relaxed mb-4 text-[15px]">{para}</p>
+                    <motion.p
+                      key={i}
+                      initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, delay: 0.15 + i * 0.08 }}
+                      className="text-gray-600 leading-relaxed mb-4 text-[15px]">{para}</motion.p>
                   ))}
                 </div>
               </div>
@@ -214,10 +224,14 @@ const ServiceDetail = () => {
               <h3 className="text-xl font-display font-bold text-navy-900 mb-5">Key Deliverables</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-8">
                 {(detail?.deliverables || ['Comprehensive Compliance Audits', 'Statutory Register Maintenance', 'Risk Assessment', 'Government Liaison', 'Regulatory Updates', 'Documentation']).map((item, i) => (
-                  <div key={i} className="flex items-start gap-3 bg-[#f8fafb] p-4 rounded-xl border border-gray-100">
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, x: -10 }} whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }} transition={{ duration: 0.35, delay: i * 0.06 }}
+                    className="flex items-start gap-3 bg-[#f8fafb] p-4 rounded-xl border border-gray-100">
                     <CheckCircle className="text-teal-500 shrink-0 mt-0.5" size={17} />
                     <span className="font-semibold text-navy-900 text-sm">{item}</span>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
 
@@ -227,22 +241,30 @@ const ServiceDetail = () => {
                   <h3 className="text-base font-bold text-navy-900 mb-4 mt-2">Related Services</h3>
                   <div className="flex flex-wrap gap-3">
                     {detail.related.map((r, i) => (
-                      <Link key={i} to={`/services/${r.slug}`}
-                        className="inline-flex items-center gap-2 text-sm font-semibold text-teal-600 bg-teal-50 hover:bg-teal-100 px-4 py-2 rounded-full transition-colors border border-teal-100">
-                        <ChevronRight size={13} /> {r.name}
-                      </Link>
+                      <motion.div
+                        key={i}
+                        initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }} transition={{ duration: 0.3, delay: i * 0.07 }}>
+                        <Link to={`/services/${r.slug}`}
+                          className="inline-flex items-center gap-2 text-sm font-semibold text-teal-600 bg-teal-50 hover:bg-teal-100 px-4 py-2 rounded-full transition-colors border border-teal-100">
+                          <ChevronRight size={13} /> {r.name}
+                        </Link>
+                      </motion.div>
                     ))}
                   </div>
                 </>
               )}
             </div>
-          </div>
+          </motion.div>
 
           {/* Sidebar */}
           <div className="lg:w-1/3">
             <div className="sticky top-28 space-y-6">
               {/* CTA Card */}
-              <div className="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm">
+              <motion.div
+                initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: 0.15 }}
+                className="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm">
                 <h3 className="text-lg font-display font-bold text-navy-900 mb-3">Ready to secure your compliance?</h3>
                 <p className="text-gray-500 text-sm mb-6 leading-relaxed">Speak directly with our legal experts to discuss how this service applies to your specific industry and workforce size.</p>
                 <div className="space-y-3">
@@ -255,10 +277,13 @@ const ServiceDetail = () => {
                     <Phone size={15} /> Call Now
                   </a>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Other Services */}
-              <div className="bg-white p-7 rounded-2xl border border-gray-100 shadow-sm">
+              <motion.div
+                initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: 0.25 }}
+                className="bg-white p-7 rounded-2xl border border-gray-100 shadow-sm">
                 <h4 className="font-bold text-navy-900 mb-5 text-xs uppercase tracking-wider">Other Services</h4>
                 <ul className="space-y-1">
                   {otherServices.filter(s => s.slug !== slug).map((s, i) => (
@@ -271,17 +296,20 @@ const ServiceDetail = () => {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </motion.div>
 
               {/* Quick Info */}
-              <div className="bg-navy-900 text-white p-7 rounded-2xl">
+              <motion.div
+                initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: 0.35 }}
+                className="bg-navy-900 text-white p-7 rounded-2xl">
                 <p className="text-teal-400 font-bold text-[10px] uppercase tracking-wider mb-3">Working Hours</p>
                 <p className="text-white/70 text-sm mb-5">Mon – Fri: 9:30 AM – 6:30 PM<br />Sat & Sun: Closed</p>
                 <a href="mailto:contact@labourcodes.in"
                   className="text-teal-400 text-sm font-semibold hover:text-white transition-colors flex items-center gap-2">
                   <ArrowRight size={13} /> contact@labourcodes.in
                 </a>
-              </div>
+              </motion.div>
             </div>
           </div>
         </div>
