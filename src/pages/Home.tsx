@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, CheckCircle, ChevronRight, Star, Quote, TrendingUp, Shield, Users, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { ALL_CLIENTS } from '../components/ClientLogos';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 28 },
@@ -251,31 +252,15 @@ const Home = () => {
 
       {/* ── Scrolling Client Logos ────────────────────────── */}
       <section className="py-10 bg-white border-y border-gray-100 overflow-hidden">
-        <p className="text-center text-[10px] font-bold text-gray-300 uppercase tracking-[0.22em] mb-7">Serving 500+ Corporations Across India</p>
+        <p className="text-center text-[10px] font-bold text-gray-300 uppercase tracking-[0.22em] mb-8">Serving 500+ Corporations Across India</p>
         <div className="overflow-hidden relative">
+          <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+          <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
           <div className="animate-marquee">
-            {[
-              { name: 'HDFC Bank', init: 'HB' },
-              { name: 'Tata', init: 'T' },
-              { name: 'Reliance', init: 'R' },
-              { name: 'Wipro', init: 'W' },
-              { name: 'Infosys', init: 'I' },
-              { name: 'L&T', init: 'L' },
-              { name: 'Mahindra', init: 'M' },
-              { name: 'ITC', init: 'ITC' },
-              { name: 'HDFC Bank', init: 'HB' },
-              { name: 'Tata', init: 'T' },
-              { name: 'Reliance', init: 'R' },
-              { name: 'Wipro', init: 'W' },
-              { name: 'Infosys', init: 'I' },
-              { name: 'L&T', init: 'L' },
-              { name: 'Mahindra', init: 'M' },
-              { name: 'ITC', init: 'ITC' },
-            ].map((c, i) => (
-              <div key={i} className="flex flex-col items-center gap-2 mx-10 shrink-0">
-                <div className="w-14 h-14 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center shadow-sm">
-                  <span className="font-display font-black text-base text-navy-900/30 tracking-tight">{c.init}</span>
-                </div>
+            {[...ALL_CLIENTS, ...ALL_CLIENTS].map(({ name, Logo }, i) => (
+              <div key={i} title={name}
+                className="flex items-center justify-center mx-10 shrink-0 h-14 grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-300 cursor-default">
+                <Logo />
               </div>
             ))}
           </div>

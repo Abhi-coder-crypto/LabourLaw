@@ -2,18 +2,10 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Star } from 'lucide-react';
+import { ALL_CLIENTS } from '../components/ClientLogos';
 
 const Clientele = () => {
-  const clients = [
-    { name: 'HDFC Bank',  init: 'HB' },
-    { name: 'Tata',       init: 'T'  },
-    { name: 'Reliance',   init: 'R'  },
-    { name: 'Infosys',    init: 'I'  },
-    { name: 'Wipro',      init: 'W'  },
-    { name: 'Mahindra',   init: 'M'  },
-    { name: 'L&T',        init: 'L'  },
-    { name: 'ITC',        init: 'ITC'},
-  ];
+  const clients = ALL_CLIENTS.slice(0, 8);
 
   const industries = [
     { name: 'Banking & Finance',    count: '85+'  },
@@ -110,22 +102,16 @@ const Clientele = () => {
             <p className="text-gray-500 max-w-xl mx-auto text-sm leading-relaxed">From nimble startups to Fortune 500 conglomerates — our expertise spans every scale and sector of Indian industry.</p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {clients.map((client, i) => (
+            {clients.map(({ name, Logo }, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.3, delay: i * 0.06 }}
-                className="bg-white border border-gray-100 aspect-[3/2] rounded-2xl flex items-center justify-center shadow-sm hover:shadow-lg hover:border-teal-100 transition-all group cursor-default"
+                transition={{ duration: 0.35, delay: i * 0.07 }}
+                className="bg-white border border-gray-100 aspect-[3/2] rounded-2xl flex items-center justify-center px-8 shadow-sm hover:shadow-xl hover:border-teal-100 transition-all group cursor-default grayscale opacity-60 hover:grayscale-0 hover:opacity-100"
               >
-                <div className="flex flex-col items-center gap-3">
-                  <div className="w-16 h-16 rounded-2xl bg-gray-50 border border-gray-100 group-hover:border-teal-200 group-hover:bg-teal-50 transition-all flex items-center justify-center">
-                    <span className="font-display font-black text-xl text-navy-900/25 group-hover:text-teal-500 transition-colors tracking-tight">
-                      {client.init}
-                    </span>
-                  </div>
-                </div>
+                <Logo />
               </motion.div>
             ))}
           </div>
