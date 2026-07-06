@@ -2,6 +2,32 @@ import React, { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { Phone, Mail, MapPin, Menu, X, ChevronDown, ArrowUp } from 'lucide-react';
 
+const LogoMark = () => (
+  <svg width="30" height="32" viewBox="0 0 30 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <circle cx="15" cy="4" r="2.4" fill="#14B8A6"/>
+    <line x1="15" y1="6" x2="15" y2="24" stroke="#14B8A6" strokeWidth="1.6" strokeLinecap="round"/>
+    <line x1="3" y1="10" x2="27" y2="10" stroke="#14B8A6" strokeWidth="1.6" strokeLinecap="round"/>
+    <line x1="5" y1="10" x2="5" y2="14" stroke="#14B8A6" strokeWidth="1.4" strokeLinecap="round"/>
+    <line x1="25" y1="10" x2="25" y2="14" stroke="#14B8A6" strokeWidth="1.4" strokeLinecap="round"/>
+    <path d="M1 14 Q5 21 9 14" stroke="#14B8A6" strokeWidth="1.4" fill="none" strokeLinecap="round"/>
+    <path d="M21 14 Q25 21 29 14" stroke="#14B8A6" strokeWidth="1.4" fill="none" strokeLinecap="round"/>
+    <line x1="10" y1="24" x2="20" y2="24" stroke="#14B8A6" strokeWidth="1.6" strokeLinecap="round"/>
+  </svg>
+);
+
+const LogoMarkWhite = () => (
+  <svg width="30" height="32" viewBox="0 0 30 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <circle cx="15" cy="4" r="2.4" fill="white"/>
+    <line x1="15" y1="6" x2="15" y2="24" stroke="white" strokeWidth="1.6" strokeLinecap="round"/>
+    <line x1="3" y1="10" x2="27" y2="10" stroke="white" strokeWidth="1.6" strokeLinecap="round"/>
+    <line x1="5" y1="10" x2="5" y2="14" stroke="white" strokeWidth="1.4" strokeLinecap="round"/>
+    <line x1="25" y1="10" x2="25" y2="14" stroke="white" strokeWidth="1.4" strokeLinecap="round"/>
+    <path d="M1 14 Q5 21 9 14" stroke="white" strokeWidth="1.4" fill="none" strokeLinecap="round"/>
+    <path d="M21 14 Q25 21 29 14" stroke="white" strokeWidth="1.4" fill="none" strokeLinecap="round"/>
+    <line x1="10" y1="24" x2="20" y2="24" stroke="white" strokeWidth="1.6" strokeLinecap="round"/>
+  </svg>
+);
+
 const IconFacebook = () => (
   <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
     <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
@@ -98,11 +124,12 @@ const Layout = () => {
       <header className={`sticky top-0 z-50 bg-white transition-shadow duration-300 ${scrolled ? 'shadow-lg' : 'shadow-md'} border-b border-gray-100`}>
         <div className="max-w-7xl mx-auto px-6 lg:px-10 h-[72px] flex justify-between items-center">
 
-          <Link to="/" className="flex items-center gap-3 shrink-0">
-            <div className="flex items-center justify-center w-10 h-10 bg-teal-500 rounded-lg shadow-sm">
-              <span className="text-white font-black text-lg leading-none tracking-tighter">LC</span>
+          <Link to="/" className="flex items-center gap-3.5 shrink-0 group">
+            <LogoMark />
+            <div className="flex flex-col leading-none">
+              <span className="font-display font-bold text-[1.35rem] text-navy-900 tracking-tight leading-none">Labour Codes</span>
+              <span className="text-[9px] font-semibold text-teal-500 tracking-[0.22em] uppercase mt-1">Compliance · Law · Staffing</span>
             </div>
-            <div className="font-display font-bold text-xl text-navy-900 leading-none">Labour Codes</div>
           </Link>
 
           {/* Desktop Nav */}
@@ -213,11 +240,12 @@ const Layout = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-14">
 
             <div>
-              <div className="flex items-center gap-3 mb-5">
-                <div className="flex flex-col items-center justify-center w-9 h-9 bg-teal-500 rounded-lg">
-                  <span className="text-white font-black text-base leading-none">LC</span>
+              <div className="flex items-center gap-3.5 mb-5">
+                <LogoMarkWhite />
+                <div className="flex flex-col leading-none">
+                  <span className="font-display font-bold text-xl text-white tracking-tight leading-none">Labour Codes</span>
+                  <span className="text-[9px] font-semibold text-teal-400 tracking-[0.22em] uppercase mt-1">Compliance · Law · Staffing</span>
                 </div>
-                <span className="font-display font-bold text-xl text-white">Labour Codes</span>
               </div>
               <p className="text-white/55 mb-6 text-sm leading-relaxed">
                 India's premier professional services firm specializing in New Labour Codes, HR compliance, statutory filings, and staffing solutions.
