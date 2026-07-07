@@ -268,7 +268,7 @@ const Home = () => {
               { anim: animEstablishment,   title: 'Establishment & Factory',        desc: 'MLWF, Shops & Factories Act' },
               { anim: animPayrollPlanning, title: 'Payroll Processing',  desc: 'Planning, salary structuring' },
               { anim: animPayrollRecords,  title: 'Payroll Reports & Records',      desc: 'MIS, salary register, FNF' },
-              { anim: animHr,              title: 'HR Related Matters',             desc: 'Advisory and day-to-day support' },
+              { anim: animHr,              title: 'HR Related Matters',             desc: 'Advisory day-to-day support' },
             ].map((item, i) => (
               <motion.div key={i}
                 initial={{ opacity: 0, y: 28 }}
