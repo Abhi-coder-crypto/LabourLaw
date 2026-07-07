@@ -542,8 +542,10 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
           <div className="flex justify-between items-end mb-12">
             <div>
-              <p className="text-teal-500 font-bold tracking-[0.18em] uppercase text-xs mb-2">Latest Insights ——</p>
-              <h2 className="text-3xl md:text-4xl font-display font-bold text-navy-900">Stay informed with expert guidance</h2>
+              <p className="font-bold tracking-[0.18em] uppercase text-xs mb-2"
+                style={{ fontFamily: 'Poppins, sans-serif', color: '#a83a00' }}>Latest Insights</p>
+              <h2 className="text-3xl md:text-4xl font-bold text-navy-900"
+                style={{ fontFamily: 'Poppins, sans-serif' }}>Stay informed with expert guidance</h2>
             </div>
             <Link to="/resources"
               className="hidden md:flex items-center gap-2 text-navy-900 font-semibold text-sm hover:text-teal-600 transition-colors border-b border-navy-900 hover:border-teal-600 pb-0.5">
