@@ -210,14 +210,14 @@ const Home = () => {
       </section>
 
       {/* ── Why Choose Us ─────────────────────────────────── */}
-      <section className="py-24 bg-navy-900 relative overflow-hidden">
+      <section className="py-24 relative overflow-hidden" style={{ backgroundColor: '#a83a00' }}>
 
         {/* Background accents */}
-        <div className="absolute top-0 left-0 w-full h-1 bg-teal-500" />
-        <div className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full opacity-[0.04]"
-          style={{ background: 'radial-gradient(circle, #a83a00, transparent)' }} />
-        <div className="absolute -bottom-32 -left-32 w-[400px] h-[400px] rounded-full opacity-[0.04]"
-          style={{ background: 'radial-gradient(circle, #a83a00, transparent)' }} />
+        <div className="absolute top-0 left-0 w-full h-1" style={{ backgroundColor: '#fda102' }} />
+        <div className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full opacity-[0.12]"
+          style={{ background: 'radial-gradient(circle, #fda102, transparent)' }} />
+        <div className="absolute -bottom-32 -left-32 w-[400px] h-[400px] rounded-full opacity-[0.10]"
+          style={{ background: 'radial-gradient(circle, #fda102, transparent)' }} />
 
         <div className="max-w-7xl mx-auto px-6 lg:px-10 relative z-10">
           <div className="flex flex-col lg:flex-row gap-16 items-center">
@@ -229,19 +229,19 @@ const Home = () => {
 
                 {/* Eyebrow */}
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="w-8 h-[2px] bg-teal-500" />
-                  <p className="text-teal-400 font-semibold tracking-[0.2em] uppercase text-xs"
-                    style={{ fontFamily: 'Poppins, sans-serif' }}>Why Labour Law</p>
+                  <div className="w-8 h-[2px] bg-white" />
+                  <p className="font-semibold tracking-[0.2em] uppercase text-xs"
+                    style={{ fontFamily: 'Poppins, sans-serif', color: '#fda102' }}>Why Labour Law</p>
                 </div>
 
                 {/* Heading */}
                 <h2 className="font-bold text-white leading-[1.1] mb-6"
                   style={{ fontFamily: 'Poppins, sans-serif', fontSize: 'clamp(2rem, 3.5vw, 2.9rem)' }}>
                   Expertise that protects your business &amp; empowers your
-                  <span className="text-teal-400"> workforce.</span>
+                  <span style={{ color: '#fda102' }}> workforce.</span>
                 </h2>
 
-                <p className="text-white/55 mb-10 leading-relaxed text-[15px]"
+                <p className="text-white/80 mb-10 leading-relaxed text-[15px]"
                   style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400 }}>
                   We don't just file paperwork — we architect robust compliance frameworks. With India's labour law landscape shifting dramatically under the New Codes, you need a partner who anticipates regulatory changes before they impact your bottom line.
                 </p>
@@ -252,21 +252,22 @@ const Home = () => {
                     <motion.div key={i}
                       initial={{ opacity: 0, x: -16 }} whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }} transition={{ duration: 0.45, delay: i * 0.12 }}
-                      className="flex gap-5 py-5 border-b border-white/8 group">
+                      className="flex gap-5 py-5 border-b border-white/20 group">
                       {/* Number */}
-                      <span className="text-teal-500 font-black shrink-0 leading-none mt-0.5"
-                        style={{ fontFamily: 'Poppins, sans-serif', fontSize: '1.6rem' }}>
+                      <span className="font-black shrink-0 leading-none mt-0.5"
+                        style={{ fontFamily: 'Poppins, sans-serif', fontSize: '1.6rem', color: '#fda102' }}>
                         {String(i + 1).padStart(2, '0')}
                       </span>
                       {/* Icon + text */}
                       <div className="flex gap-4 items-start">
-                        <div className="mt-0.5 bg-teal-500/10 text-teal-400 w-10 h-10 rounded-xl flex items-center justify-center shrink-0 group-hover:bg-teal-500/20 transition-colors">
+                        <div className="mt-0.5 w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors"
+                          style={{ backgroundColor: 'rgba(253,161,2,0.18)', color: '#fda102' }}>
                           <item.icon size={18} />
                         </div>
                         <div>
                           <h4 className="font-bold text-white mb-1 text-[0.95rem]"
                             style={{ fontFamily: 'Poppins, sans-serif' }}>{item.title}</h4>
-                          <p className="text-white/50 text-sm leading-relaxed"
+                          <p className="text-white/70 text-sm leading-relaxed"
                             style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400 }}>{item.desc}</p>
                         </div>
                       </div>
@@ -278,7 +279,8 @@ const Home = () => {
                 <motion.div
                   initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.3 }}
-                  className="grid grid-cols-4 gap-4 mb-10 p-5 bg-white/5 rounded-2xl border border-white/8">
+                  className="grid grid-cols-4 gap-4 mb-10 p-5 rounded-2xl border border-white/20"
+                  style={{ backgroundColor: 'rgba(255,255,255,0.10)' }}>
                   {[
                     { num: '500+', label: 'Corporate Clients' },
                     { num: '21+', label: 'Years Experience' },
@@ -286,17 +288,17 @@ const Home = () => {
                     { num: '15+', label: 'States Covered' },
                   ].map((s, i) => (
                     <div key={i} className="text-center">
-                      <p className="font-black text-teal-400 leading-none mb-1"
-                        style={{ fontFamily: 'Poppins, sans-serif', fontSize: '1.6rem' }}>{s.num}</p>
-                      <p className="text-white/45 text-[11px] font-medium leading-snug"
+                      <p className="font-black leading-none mb-1"
+                        style={{ fontFamily: 'Poppins, sans-serif', fontSize: '1.6rem', color: '#fda102' }}>{s.num}</p>
+                      <p className="text-white/70 text-[11px] font-medium leading-snug"
                         style={{ fontFamily: 'Poppins, sans-serif' }}>{s.label}</p>
                     </div>
                   ))}
                 </motion.div>
 
                 <Link to="/about"
-                  className="inline-flex items-center gap-2 bg-teal-500 hover:bg-teal-600 text-white px-8 py-3.5 rounded-full font-bold text-sm transition-all shadow-lg hover:scale-[1.02]"
-                  style={{ fontFamily: 'Poppins, sans-serif' }}>
+                  className="inline-flex items-center gap-2 text-navy-900 px-8 py-3.5 rounded-full font-bold text-sm transition-all shadow-lg hover:scale-[1.02] hover:opacity-90"
+                  style={{ fontFamily: 'Poppins, sans-serif', backgroundColor: '#fda102' }}>
                   Learn Our Story <ArrowRight size={15} />
                 </Link>
               </motion.div>
@@ -307,14 +309,13 @@ const Home = () => {
               <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }} transition={{ duration: 0.65 }} className="relative">
 
-                {/* Teal frame accent */}
-                <div className="absolute -top-4 -right-4 w-full h-full rounded-2xl border-2 border-teal-500/30 z-0" />
+                {/* Frame accent */}
+                <div className="absolute -top-4 -right-4 w-full h-full rounded-2xl z-0 border-2 border-white/25" />
 
                 {/* Image */}
                 <div className="relative z-10 rounded-2xl overflow-hidden shadow-2xl aspect-[4/3]">
                   <img src="/assets/service-hr.png" alt="HR Experts" className="w-full h-full object-cover" />
-                  {/* Gradient overlay at bottom */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-navy-900/60 via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
                 </div>
 
                 {/* Floating quote card */}
@@ -322,7 +323,8 @@ const Home = () => {
                   initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.3 }}
                   className="absolute -bottom-6 -left-6 bg-white text-navy-900 p-5 rounded-2xl shadow-2xl max-w-[260px] hidden md:block z-20 border border-gray-100">
-                  <div className="w-8 h-8 bg-teal-500 rounded-lg flex items-center justify-center mb-3">
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center mb-3"
+                    style={{ backgroundColor: '#fda102' }}>
                     <Quote size={16} className="text-white" />
                   </div>
                   <p className="text-[13px] font-semibold leading-snug text-navy-900 mb-2"
@@ -330,8 +332,9 @@ const Home = () => {
                     "Compliance is not a cost center; it's the foundation of sustainable growth."
                   </p>
                   <div className="flex items-center gap-2 mt-3">
-                    <div className="w-6 h-6 rounded-full bg-teal-500 flex items-center justify-center text-white text-[10px] font-bold">LC</div>
-                    <span className="text-[11px] text-gray-400 font-medium" style={{ fontFamily: 'Poppins, sans-serif' }}>Labour Law Team</span>
+                    <div className="w-6 h-6 rounded-full flex items-center justify-center text-white text-[10px] font-bold"
+                      style={{ backgroundColor: '#a83a00' }}>MC</div>
+                    <span className="text-[11px] text-gray-400 font-medium" style={{ fontFamily: 'Poppins, sans-serif' }}>Maru Consultancy Team</span>
                   </div>
                 </motion.div>
 
@@ -339,9 +342,10 @@ const Home = () => {
                 <motion.div
                   initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }} transition={{ duration: 0.4, delay: 0.45 }}
-                  className="absolute -top-5 -right-5 w-20 h-20 bg-teal-500 rounded-2xl flex flex-col items-center justify-center shadow-xl z-20 hidden md:flex">
-                  <span className="font-black text-white text-xl leading-none" style={{ fontFamily: 'Poppins, sans-serif' }}>21+</span>
-                  <span className="text-white/80 text-[9px] font-semibold text-center leading-tight mt-0.5" style={{ fontFamily: 'Poppins, sans-serif' }}>Years<br/>Expert</span>
+                  className="absolute -top-5 -right-5 w-20 h-20 rounded-2xl flex flex-col items-center justify-center shadow-xl z-20 hidden md:flex"
+                  style={{ backgroundColor: '#fda102' }}>
+                  <span className="font-black text-navy-900 text-xl leading-none" style={{ fontFamily: 'Poppins, sans-serif' }}>21+</span>
+                  <span className="text-navy-900/70 text-[9px] font-semibold text-center leading-tight mt-0.5" style={{ fontFamily: 'Poppins, sans-serif' }}>Years<br/>Expert</span>
                 </motion.div>
 
               </motion.div>
