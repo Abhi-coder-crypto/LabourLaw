@@ -146,61 +146,34 @@ const Home = () => {
 
             {/* ── Right: Creative Image Collage ── */}
             <motion.div
-              className="lg:w-1/2 relative"
+              className="lg:w-1/2 w-full"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}>
 
-              {/* Outer grid wrapper — fixed height */}
-              <div className="relative w-full" style={{ height: '480px' }}>
+              {/* 2×2 grid — fills full width, fixed height */}
+              <div className="grid grid-cols-2 grid-rows-2 gap-4 w-full" style={{ height: '520px' }}>
 
-                {/* Slot A — tall portrait, top-left */}
-                <motion.div
-                  initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.3 }}
-                  className="absolute rounded-2xl overflow-hidden shadow-md border-2 border-dashed border-gray-200 bg-gray-50"
-                  style={{ top: 0, left: '4%', width: '38%', height: '52%' }}>
-                  <div className="w-full h-full flex flex-col items-center justify-center gap-2 text-gray-300">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                {[
+                  { delay: 0.3, initial: { opacity: 0, y: -14 } },
+                  { delay: 0.4, initial: { opacity: 0, x: 14 } },
+                  { delay: 0.5, initial: { opacity: 0, x: -14 } },
+                  { delay: 0.55, initial: { opacity: 0, y: 14 } },
+                ].map((slot, i) => (
+                  <motion.div
+                    key={i}
+                    initial={slot.initial}
+                    animate={{ opacity: 1, x: 0, y: 0 }}
+                    transition={{ duration: 0.5, delay: slot.delay }}
+                    className="rounded-2xl overflow-hidden shadow-sm border-2 border-dashed border-gray-200 bg-gray-50 flex flex-col items-center justify-center gap-2 text-gray-300 w-full h-full">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <rect x="3" y="3" width="18" height="18" rx="3"/>
+                      <circle cx="8.5" cy="8.5" r="1.5"/>
+                      <path d="M21 15l-5-5L5 21"/>
+                    </svg>
                     <span className="text-xs font-medium tracking-wide" style={{ fontFamily: 'Poppins, sans-serif' }}>Image</span>
-                  </div>
-                </motion.div>
-
-                {/* Slot B — landscape, top-right */}
-                <motion.div
-                  initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.5, delay: 0.4 }}
-                  className="absolute rounded-2xl overflow-hidden shadow-md border-2 border-dashed border-gray-200 bg-gray-50"
-                  style={{ top: '4%', right: 0, width: '54%', height: '38%' }}>
-                  <div className="w-full h-full flex flex-col items-center justify-center gap-2 text-gray-300">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-                    <span className="text-xs font-medium tracking-wide" style={{ fontFamily: 'Poppins, sans-serif' }}>Image</span>
-                  </div>
-                </motion.div>
-
-                {/* Slot C — square, center-left */}
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.92 }} animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5, delay: 0.5 }}
-                  className="absolute rounded-2xl overflow-hidden shadow-md border-2 border-dashed border-gray-200 bg-gray-50"
-                  style={{ top: '56%', left: '4%', width: '42%', height: '40%' }}>
-                  <div className="w-full h-full flex flex-col items-center justify-center gap-2 text-gray-300">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-                    <span className="text-xs font-medium tracking-wide" style={{ fontFamily: 'Poppins, sans-serif' }}>Image</span>
-                  </div>
-                </motion.div>
-
-                {/* Slot D — portrait, bottom-right */}
-                <motion.div
-                  initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.55 }}
-                  className="absolute rounded-2xl overflow-hidden shadow-md border-2 border-dashed border-gray-200 bg-gray-50"
-                  style={{ bottom: 0, right: 0, width: '52%', height: '56%' }}>
-                  <div className="w-full h-full flex flex-col items-center justify-center gap-2 text-gray-300">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-                    <span className="text-xs font-medium tracking-wide" style={{ fontFamily: 'Poppins, sans-serif' }}>Image</span>
-                  </div>
-                </motion.div>
+                  </motion.div>
+                ))}
 
               </div>
             </motion.div>

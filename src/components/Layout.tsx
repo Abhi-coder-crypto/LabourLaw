@@ -3,19 +3,6 @@ import { Outlet, Link, useLocation } from 'react-router-dom';
 import { Phone, Mail, MapPin, Menu, X, ChevronDown, ArrowUp } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const LogoMark = () => (
-  <svg width="30" height="32" viewBox="0 0 30 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <circle cx="15" cy="4" r="2.4" fill="#a83a00"/>
-    <line x1="15" y1="6" x2="15" y2="24" stroke="#a83a00" strokeWidth="1.6" strokeLinecap="round"/>
-    <line x1="3" y1="10" x2="27" y2="10" stroke="#a83a00" strokeWidth="1.6" strokeLinecap="round"/>
-    <line x1="5" y1="10" x2="5" y2="14" stroke="#a83a00" strokeWidth="1.4" strokeLinecap="round"/>
-    <line x1="25" y1="10" x2="25" y2="14" stroke="#a83a00" strokeWidth="1.4" strokeLinecap="round"/>
-    <path d="M1 14 Q5 21 9 14" stroke="#a83a00" strokeWidth="1.4" fill="none" strokeLinecap="round"/>
-    <path d="M21 14 Q25 21 29 14" stroke="#a83a00" strokeWidth="1.4" fill="none" strokeLinecap="round"/>
-    <line x1="10" y1="24" x2="20" y2="24" stroke="#a83a00" strokeWidth="1.6" strokeLinecap="round"/>
-  </svg>
-);
-
 const LogoMarkWhite = () => (
   <svg width="30" height="32" viewBox="0 0 30 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <circle cx="15" cy="4" r="2.4" fill="white"/>
@@ -50,6 +37,7 @@ const Layout = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [, setServicesOpen] = useState(false);
+  const [hoveredLink, setHoveredLink] = useState<string | null>(null);
   const location = useLocation();
 
   useEffect(() => {
@@ -96,59 +84,78 @@ const Layout = () => {
       <header className={`sticky top-0 z-50 bg-white transition-shadow duration-300 ${scrolled ? 'shadow-lg' : 'shadow-md'} border-b border-gray-100`}>
         <div className="max-w-7xl mx-auto px-6 lg:px-10 h-[76px] flex justify-between items-center">
 
-          <Link to="/" className="flex items-center gap-3 shrink-0 group">
-            <LogoMark />
-            <span className="font-bold text-[1.25rem] text-navy-900 tracking-tight leading-none" style={{ fontFamily: 'Poppins, sans-serif' }}>Maru Consultancy</span>
+          {/* Logo — actual brand image */}
+          <Link to="/" className="shrink-0">
+            <img src="/assets/maru-logo.png" alt="Maru Consultancy Services" className="h-11 w-auto object-contain" />
           </Link>
 
           {/* Desktop Nav */}
           <nav className="hidden lg:flex items-center gap-0.5">
-            {navLinks.map((link) => (
-              link.hasDropdown ? (
-                <div key={link.name} className="relative group">
+            {navLinks.map((link) => {
+              const active = isActive(link.path);
+              const highlighted = active || hoveredLink === link.name;
+              return link.hasDropdown ? (
+                <div
+                  key={link.name}
+                  className="relative group"
+                  onMouseEnter={() => setHoveredLink(link.name)}
+                  onMouseLeave={() => setHoveredLink(null)}
+                >
                   <Link
                     to={link.path}
-                    className={`flex items-center gap-1 font-semibold text-[0.95rem] px-4 py-2.5 rounded-md transition-all ${
-                      isActive(link.path)
-                        ? 'text-teal-600'
-                        : 'text-gray-800 hover:text-teal-600'
-                    }`}
-                    style={{ fontFamily: 'Poppins, sans-serif' }}
+                    className="flex items-center gap-1 font-semibold text-[0.95rem] px-4 py-2.5 transition-colors duration-200"
+                    style={{ fontFamily: 'Poppins, sans-serif', color: highlighted ? '#fda102' : '#111111' }}
                   >
                     {link.name}
                     <ChevronDown size={13} className="group-hover:rotate-180 transition-transform duration-200" />
                   </Link>
+                  {/* Hover underline */}
+                  <span
+                    className="absolute bottom-1 left-4 right-4 h-[2px] transition-transform duration-300 pointer-events-none"
+                    style={{ backgroundColor: '#a83a00', transform: highlighted ? 'scaleX(1)' : 'scaleX(0)', transformOrigin: 'left' }}
+                  />
                   <div className="absolute top-full left-0 mt-1 w-60 bg-white rounded-xl shadow-xl border border-gray-100 py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                     {serviceLinks.map((s) => (
                       <Link key={s.slug} to={`/services/${s.slug}`}
-                        className="block px-5 py-2.5 text-sm text-gray-700 hover:text-teal-600 hover:bg-teal-50 transition-colors font-medium"
-                        style={{ fontFamily: 'Poppins, sans-serif' }}>
+                        className="block px-5 py-2.5 text-sm text-gray-700 font-medium transition-colors duration-150"
+                        style={{ fontFamily: 'Poppins, sans-serif' }}
+                        onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#fda102'; }}
+                        onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = ''; }}>
                         {s.name}
                       </Link>
                     ))}
                   </div>
                 </div>
               ) : (
-                <Link
+                <div
                   key={link.name}
-                  to={link.path}
-                  className={`font-semibold text-[0.95rem] px-4 py-2.5 rounded-md transition-all ${
-                    isActive(link.path)
-                      ? 'text-teal-600'
-                      : 'text-gray-800 hover:text-teal-600'
-                  }`}
-                  style={{ fontFamily: 'Poppins, sans-serif' }}
+                  className="relative"
+                  onMouseEnter={() => setHoveredLink(link.name)}
+                  onMouseLeave={() => setHoveredLink(null)}
                 >
-                  {link.name}
-                </Link>
-              )
-            ))}
+                  <Link
+                    to={link.path}
+                    className="font-semibold text-[0.95rem] px-4 py-2.5 block transition-colors duration-200"
+                    style={{ fontFamily: 'Poppins, sans-serif', color: highlighted ? '#fda102' : '#111111' }}
+                  >
+                    {link.name}
+                  </Link>
+                  {/* Hover underline */}
+                  <span
+                    className="absolute bottom-1 left-4 right-4 h-[2px] transition-transform duration-300 pointer-events-none"
+                    style={{ backgroundColor: '#a83a00', transform: highlighted ? 'scaleX(1)' : 'scaleX(0)', transformOrigin: 'left' }}
+                  />
+                </div>
+              );
+            })}
           </nav>
 
           <div className="hidden lg:flex items-center gap-3">
             <Link to="/contact"
-              className="bg-navy-900 text-white px-7 py-2.5 rounded-full font-bold text-[0.9rem] hover:bg-teal-600 transition-colors shadow-sm whitespace-nowrap"
-              style={{ fontFamily: 'Poppins, sans-serif' }}>
+              className="text-white px-7 py-2.5 rounded-full font-bold text-[0.9rem] transition-colors duration-200 shadow-sm whitespace-nowrap"
+              style={{ fontFamily: 'Poppins, sans-serif', backgroundColor: '#a83a00' }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.backgroundColor = '#fda102'; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.backgroundColor = '#a83a00'; }}>
               Let's Connect
             </Link>
           </div>
@@ -202,7 +209,8 @@ const Layout = () => {
                   <Mail size={14} className="text-teal-500" /> contact@labourcodes.in
                 </a>
                 <Link to="/contact"
-                  className="mt-2 block w-full text-center bg-navy-900 text-white px-6 py-3 rounded-full font-semibold text-sm hover:bg-teal-600 transition-colors"
+                  className="mt-2 block w-full text-center text-white px-6 py-3 rounded-full font-semibold text-sm transition-colors"
+                  style={{ backgroundColor: '#a83a00' }}
                   onClick={() => setIsMenuOpen(false)}>
                   Let's Connect
                 </Link>
