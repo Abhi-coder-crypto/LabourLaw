@@ -112,19 +112,20 @@ const Home = () => {
           <div className="flex flex-col lg:grid lg:gap-10 items-center"
             style={{ gridTemplateColumns: '44fr 56fr' }}>
 
-            {/* ── Left: Text Content — flex-none keeps it from shrinking ── */}
+            {/* ── Left: Text Content ── */}
             <motion.div
               className="w-full flex flex-col"
               initial="hidden" animate="show"
               variants={{ show: { transition: { staggerChildren: 0.13 } } }}>
 
               <motion.h1 variants={fadeUp}
-                className="font-semibold mb-6 flex flex-col"
-                style={{ fontFamily: 'Poppins, sans-serif', fontSize: 'clamp(2.4rem, 4.2vw, 3.6rem)', gap: '0.18em', lineHeight: 1.1 }}>
-                <span className="text-navy-900">We bring</span>
+                className="font-semibold mb-6"
+                style={{ fontFamily: 'Poppins, sans-serif', fontSize: 'clamp(2.4rem, 4.2vw, 3.6rem)', lineHeight: 1.1 }}>
+                <span className="text-navy-900 block" style={{ marginBottom: '0.2em' }}>We bring</span>
 
-                {/* Sliding amber phrase */}
-                <span style={{ overflow: 'hidden', height: '1.1em', display: 'block' }}>
+                {/* Sliding amber phrase — absolutely positioned so its width never
+                    affects the grid column or button row layout */}
+                <span style={{ position: 'relative', display: 'block', height: '1.1em', overflow: 'hidden', marginBottom: '0.2em' }}>
                   <AnimatePresence mode="wait">
                     <motion.span
                       key={phraseIndex}
@@ -132,14 +133,14 @@ const Home = () => {
                       animate={{ y: '0%', opacity: 1 }}
                       exit={{ y: '-100%', opacity: 0 }}
                       transition={{ duration: 0.45, ease: [0.4, 0, 0.2, 1] }}
-                      className="block font-semibold"
-                      style={{ color: '#fda102', whiteSpace: 'nowrap', fontSize: 'inherit', lineHeight: 1.1 }}>
+                      className="font-semibold"
+                      style={{ position: 'absolute', left: 0, top: 0, color: '#fda102', whiteSpace: 'nowrap', fontSize: 'inherit', lineHeight: 1.1 }}>
                       {slidingPhrases[phraseIndex]}
                     </motion.span>
                   </AnimatePresence>
                 </span>
 
-                <span className="text-navy-900">to your growth</span>
+                <span className="text-navy-900 block">to your growth</span>
               </motion.h1>
 
               <motion.p variants={fadeUp}
@@ -148,19 +149,19 @@ const Home = () => {
                 Unlock the potential of your business with our comprehensive HR and compliance solutions. From recruitment to payroll management to compliance, we provide tailored services that ensure your business runs smoothly, efficiently, and in full compliance with all regulations.
               </motion.p>
 
-              <motion.div variants={fadeUp} className="flex flex-wrap gap-4 items-center">
+              <motion.div variants={fadeUp} className="flex flex-nowrap gap-3 items-center">
                 {/* Button 1: Book a Consultation */}
                 <Link to="/contact"
-                  className="inline-flex items-center gap-2 text-white px-8 py-3.5 rounded-full font-bold text-base transition-all shadow-lg hover:scale-[1.02]"
+                  className="inline-flex items-center gap-2 text-white px-5 py-3 rounded-full font-bold text-sm transition-all shadow-lg hover:scale-[1.02] whitespace-nowrap"
                   style={{ fontFamily: 'Poppins, sans-serif', backgroundColor: '#a83a00', border: '2px solid #fda102' }}
                   onMouseEnter={e => { (e.currentTarget as HTMLElement).style.backgroundColor = '#fda102'; (e.currentTarget as HTMLElement).style.color = '#111111'; }}
                   onMouseLeave={e => { (e.currentTarget as HTMLElement).style.backgroundColor = '#a83a00'; (e.currentTarget as HTMLElement).style.color = '#ffffff'; }}>
-                  Book a Consultation <ArrowRight size={15} />
+                  Book a Consultation <ArrowRight size={14} />
                 </Link>
 
                 {/* Button 2: Compliance Solutions → /services */}
                 <Link to="/services"
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-bold text-base transition-all shadow-lg hover:scale-[1.02]"
+                  className="inline-flex items-center gap-2 px-5 py-3 rounded-full font-bold text-sm transition-all shadow-lg hover:scale-[1.02] whitespace-nowrap"
                   style={{ fontFamily: 'Poppins, sans-serif', backgroundColor: '#ffffff', color: '#111111', border: '2px solid #fda102' }}
                   onMouseEnter={e => { (e.currentTarget as HTMLElement).style.backgroundColor = '#fda102'; }}
                   onMouseLeave={e => { (e.currentTarget as HTMLElement).style.backgroundColor = '#ffffff'; }}>
