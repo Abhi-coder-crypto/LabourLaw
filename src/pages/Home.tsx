@@ -583,30 +583,60 @@ const Home = () => {
       </section>
 
       {/* ── CTA Banner ────────────────────────────────────── */}
-      <section className="py-20 bg-teal-500 text-center relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10"
-          style={{ backgroundImage: 'radial-gradient(circle at 80% 50%, #ffffff 0%, transparent 60%)' }} />
-        <div className="max-w-3xl mx-auto px-6 md:px-10 relative z-10">
-          <motion.h2
-            initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }} transition={{ duration: 0.5 }}
-            className="text-3xl md:text-5xl font-display font-bold text-white mb-5 leading-tight">
-            Ready to secure your compliance?
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-white/80 text-base mb-10 leading-relaxed">
-            Schedule a detailed consultation with our legal experts to audit your current HR practices and identify risks.
-          </motion.p>
+      <section className="py-0 overflow-hidden" style={{ backgroundColor: '#a83a00' }}>
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-stretch">
+
+          {/* Left — text content */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }} transition={{ duration: 0.4, delay: 0.2 }}>
-            <Link to="/contact"
-              className="inline-flex items-center gap-2 bg-navy-900 text-white px-10 py-4 rounded-full font-bold hover:bg-navy-800 transition-colors shadow-xl text-sm">
-              Schedule Consultation Now <ArrowRight size={16} />
-            </Link>
+            initial={{ opacity: 0, x: -32 }} whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }} transition={{ duration: 0.55 }}
+            className="flex-1 flex flex-col justify-center px-10 py-16 lg:px-16 lg:py-20">
+            <h2
+              className="font-bold text-white mb-5 leading-tight"
+              style={{ fontFamily: 'Poppins, sans-serif', fontSize: 'clamp(2rem, 3.5vw, 3rem)' }}>
+              Ready to secure your compliance?
+            </h2>
+            <p
+              className="text-base leading-relaxed mb-8"
+              style={{ fontFamily: 'Poppins, sans-serif', color: 'rgba(255,255,255,0.85)' }}>
+              Schedule a detailed consultation with our legal experts to audit your current HR practices and identify risks before they become liabilities.
+            </p>
+            <div>
+              <Link
+                to="/contact"
+                className="inline-flex items-center gap-2.5 px-9 py-4 rounded-full font-bold text-white text-base shadow-lg transition-all duration-200"
+                style={{ fontFamily: 'Poppins, sans-serif', backgroundColor: '#fda102' }}
+                onMouseEnter={e => {
+                  (e.currentTarget as HTMLElement).style.backgroundColor = '#e8920a';
+                  (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)';
+                  (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 24px rgba(0,0,0,0.25)';
+                }}
+                onMouseLeave={e => {
+                  (e.currentTarget as HTMLElement).style.backgroundColor = '#fda102';
+                  (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
+                  (e.currentTarget as HTMLElement).style.boxShadow = '';
+                }}>
+                Schedule Consultation <ArrowRight size={17} />
+              </Link>
+            </div>
           </motion.div>
+
+          {/* Right — image, flush to edge */}
+          <motion.div
+            initial={{ opacity: 0, x: 32 }} whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }} transition={{ duration: 0.55, delay: 0.1 }}
+            className="flex-1 min-h-[320px] md:min-h-0 relative">
+            <img
+              src="/assets/cta-gavel.png"
+              alt="Labour law compliance gavel"
+              className="w-full h-full object-cover object-center"
+              style={{ display: 'block', minHeight: '320px', maxHeight: '480px' }}
+            />
+            {/* Gradient blend on left edge so image merges into the orange bg */}
+            <div className="absolute inset-y-0 left-0 w-24 pointer-events-none"
+              style={{ background: 'linear-gradient(to right, #a83a00, transparent)' }} />
+          </motion.div>
+
         </div>
       </section>
     </div>
