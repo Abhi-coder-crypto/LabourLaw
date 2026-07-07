@@ -5,14 +5,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const LogoMark = () => (
   <svg width="30" height="32" viewBox="0 0 30 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <circle cx="15" cy="4" r="2.4" fill="#9B1C1C"/>
-    <line x1="15" y1="6" x2="15" y2="24" stroke="#9B1C1C" strokeWidth="1.6" strokeLinecap="round"/>
-    <line x1="3" y1="10" x2="27" y2="10" stroke="#9B1C1C" strokeWidth="1.6" strokeLinecap="round"/>
-    <line x1="5" y1="10" x2="5" y2="14" stroke="#9B1C1C" strokeWidth="1.4" strokeLinecap="round"/>
-    <line x1="25" y1="10" x2="25" y2="14" stroke="#9B1C1C" strokeWidth="1.4" strokeLinecap="round"/>
-    <path d="M1 14 Q5 21 9 14" stroke="#9B1C1C" strokeWidth="1.4" fill="none" strokeLinecap="round"/>
-    <path d="M21 14 Q25 21 29 14" stroke="#9B1C1C" strokeWidth="1.4" fill="none" strokeLinecap="round"/>
-    <line x1="10" y1="24" x2="20" y2="24" stroke="#9B1C1C" strokeWidth="1.6" strokeLinecap="round"/>
+    <circle cx="15" cy="4" r="2.4" fill="#a83a00"/>
+    <line x1="15" y1="6" x2="15" y2="24" stroke="#a83a00" strokeWidth="1.6" strokeLinecap="round"/>
+    <line x1="3" y1="10" x2="27" y2="10" stroke="#a83a00" strokeWidth="1.6" strokeLinecap="round"/>
+    <line x1="5" y1="10" x2="5" y2="14" stroke="#a83a00" strokeWidth="1.4" strokeLinecap="round"/>
+    <line x1="25" y1="10" x2="25" y2="14" stroke="#a83a00" strokeWidth="1.4" strokeLinecap="round"/>
+    <path d="M1 14 Q5 21 9 14" stroke="#a83a00" strokeWidth="1.4" fill="none" strokeLinecap="round"/>
+    <path d="M21 14 Q25 21 29 14" stroke="#a83a00" strokeWidth="1.4" fill="none" strokeLinecap="round"/>
+    <line x1="10" y1="24" x2="20" y2="24" stroke="#a83a00" strokeWidth="1.6" strokeLinecap="round"/>
   </svg>
 );
 

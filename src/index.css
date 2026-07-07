@@ -6,16 +6,18 @@
   --color-navy-800: #1E293B;
   --color-navy-700: #334155;
 
-  /* Brand crimson / maroon — replaces teal throughout */
-  --color-teal-500: #9B1C1C;
-  --color-teal-600: #7F1414;
-  --color-teal-700: #671111;
-  --color-teal-400: #B52020;
-  --color-teal-50:  #FEF2F2;
-  --color-teal-100: #FDE8E8;
+  /* Primary brand: burnt orange */
+  --color-teal-500: #a83a00;
+  --color-teal-600: #8a2f00;
+  --color-teal-700: #6b2500;
 
-  --color-mint-50:  #FEF9F9;
-  --color-mint-100: #FDE8E8;
+  /* Secondary accent: golden amber */
+  --color-teal-400: #fda102;
+  --color-teal-50:  #FFF7ED;
+  --color-teal-100: #FFEDD5;
+
+  --color-mint-50:  #FFF9F0;
+  --color-mint-100: #FFE9C8;
 
   --font-sans: 'Inter', sans-serif;
   --font-display: 'Playfair Display', serif;
