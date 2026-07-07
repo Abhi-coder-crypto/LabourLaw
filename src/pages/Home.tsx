@@ -55,6 +55,11 @@ const Home = () => {
     { text: "Labour Law transformed our chaotic compliance process into a streamlined, risk-free system. Their expertise in the New Wage Code is unmatched.", author: "Rajesh Sharma", role: "HR Director, TechNova" },
     { text: "Their proactive approach to statutory audits saved us from significant penalties. They don't just consult — they partner with you for the long haul.", author: "Meera Reddy", role: "CEO, Manufacturing Corp" },
     { text: "The contract staffing solutions provided by LC allowed us to scale rapidly during peak season without any compliance headaches.", author: "Vikram Singh", role: "VP Operations, Retail Giant" },
+    { text: "Maru Consultancy's compliance framework saved us lakhs in potential penalties. Their team anticipates regulatory changes before they even happen.", author: "Priya Kapoor", role: "CFO, Apex Industries" },
+    { text: "We have expanded to 6 states and Maru handled every state-specific compliance requirement seamlessly. Truly a pan-India expert partner.", author: "Arun Nair", role: "MD, Sunrise Textiles" },
+    { text: "The statutory filing support is impeccable — PF, ESIC, PT all managed without a single deadline miss in over three years.", author: "Sneha Joshi", role: "Head HR, BuildRight Infra" },
+    { text: "Outstanding legal representation before the labour tribunal. The case was resolved in our favour and the whole process was stress-free.", author: "Deepak Mehta", role: "Director, Meridian Logistics" },
+    { text: "Their HR policy advisory helped us modernise our standing orders in line with the new codes. Employees and management are both happy.", author: "Kavitha Rao", role: "CHRO, NovaMed Healthcare" },
   ];
 
   const whyUs = [
@@ -421,49 +426,105 @@ const Home = () => {
 
       {/* ── Testimonials ──────────────────────────────────── */}
       <section className="py-20 bg-navy-900 text-white relative overflow-hidden">
-        <div className="absolute inset-0 opacity-[0.03]"
-          style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, #a83a00 0%, transparent 60%)' }} />
-        <div className="max-w-7xl mx-auto px-6 lg:px-10 relative z-10">
-          <div className="text-center mb-14">
-            <p className="text-teal-400 font-bold tracking-[0.18em] uppercase text-xs mb-3">Client Feedback</p>
-            <h2 className="text-3xl md:text-4xl font-display font-bold mb-3">Trusted by Industry Leaders</h2>
-            <p className="text-white/45 text-sm">Don't just take our word for it.</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-7">
-            {testimonials.map((test, i) => (
-              <motion.div key={i}
-                initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }} transition={{ duration: 0.45, delay: i * 0.1 }}
-                className="bg-white/5 border border-white/10 p-8 rounded-2xl hover:bg-white/8 transition-colors">
-                <div className="flex text-teal-400 mb-5">
-                  {[...Array(5)].map((_, j) => <Star key={j} size={14} fill="currentColor" />)}
-                </div>
-                <p className="text-sm font-medium italic mb-7 leading-relaxed text-white/85">"{test.text}"</p>
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-teal-500/20 flex items-center justify-center text-teal-400 font-bold text-sm shrink-0">
-                    {test.author.charAt(0)}
+        {/* Subtle radial glow */}
+        <div className="absolute inset-0 pointer-events-none"
+          style={{ backgroundImage: 'radial-gradient(ellipse at 15% 60%, rgba(168,58,0,0.18) 0%, transparent 55%), radial-gradient(ellipse at 85% 30%, rgba(253,161,2,0.08) 0%, transparent 55%)' }} />
+
+        <div className="relative z-10">
+          {/* Header */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }} transition={{ duration: 0.5 }}
+            className="text-center mb-14 px-6">
+            <p className="font-bold tracking-[0.22em] uppercase text-xs mb-3"
+              style={{ fontFamily: 'Poppins, sans-serif', color: '#fda102' }}>Client Feedback</p>
+            <h2 className="font-bold mb-3"
+              style={{ fontFamily: 'Poppins, sans-serif', fontSize: 'clamp(1.8rem, 3.2vw, 2.6rem)', color: '#ffffff' }}>
+              Trusted by Industry Leaders
+            </h2>
+            <p className="text-sm" style={{ fontFamily: 'Poppins, sans-serif', color: 'rgba(255,255,255,0.45)' }}>
+              Don't just take our word for it.
+            </p>
+          </motion.div>
+
+          {/* Auto-scrolling testimonial strip */}
+          <div className="overflow-hidden relative">
+            {/* Fade edges */}
+            <div className="absolute inset-y-0 left-0 w-28 z-10 pointer-events-none"
+              style={{ background: 'linear-gradient(to right, #0F172A, transparent)' }} />
+            <div className="absolute inset-y-0 right-0 w-28 z-10 pointer-events-none"
+              style={{ background: 'linear-gradient(to left, #0F172A, transparent)' }} />
+
+            <div className="animate-marquee-testimonials">
+              {[...testimonials, ...testimonials].map((test, i) => (
+                <div key={i}
+                  className="shrink-0 mx-4 p-7 rounded-2xl flex flex-col"
+                  style={{
+                    width: '340px',
+                    background: 'rgba(255,255,255,0.05)',
+                    border: '1px solid rgba(255,255,255,0.09)',
+                  }}>
+                  {/* Stars */}
+                  <div className="flex gap-0.5 mb-4">
+                    {[...Array(5)].map((_, j) => (
+                      <Star key={j} size={13} fill="#fda102" color="#fda102" />
+                    ))}
                   </div>
-                  <div>
-                    <p className="font-bold text-white text-sm">{test.author}</p>
-                    <p className="text-xs text-white/45 mt-0.5">{test.role}</p>
+                  {/* Quote */}
+                  <p className="text-sm leading-relaxed mb-6 flex-grow"
+                    style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400, color: 'rgba(255,255,255,0.82)', fontStyle: 'italic' }}>
+                    "{test.text}"
+                  </p>
+                  {/* Author */}
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm shrink-0"
+                      style={{ backgroundColor: '#a83a00', color: '#ffffff', fontFamily: 'Poppins, sans-serif' }}>
+                      {test.author.charAt(0)}
+                    </div>
+                    <div>
+                      <p className="font-semibold text-white text-sm"
+                        style={{ fontFamily: 'Poppins, sans-serif' }}>{test.author}</p>
+                      <p className="text-xs mt-0.5"
+                        style={{ fontFamily: 'Poppins, sans-serif', color: '#fda102' }}>{test.role}</p>
+                    </div>
                   </div>
                 </div>
-              </motion.div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ── Scrolling Client Logos ────────────────────────── */}
-      <section className="py-10 bg-white border-y border-gray-100 overflow-hidden">
-        <p className="text-center text-[10px] font-bold text-gray-300 uppercase tracking-[0.22em] mb-8">Serving 500+ Corporations Across India</p>
-        <div className="overflow-hidden relative">
+      {/* ── Scrolling Client Logos — two rows, opposite directions ── */}
+      <section className="py-12 bg-white border-y border-gray-100 overflow-hidden">
+        {/* Section label */}
+        <p className="text-center font-bold uppercase tracking-[0.22em] mb-10"
+          style={{ fontFamily: 'Poppins, sans-serif', fontSize: '10px', color: '#a83a00' }}>
+          Serving 500+ Corporations Across India
+        </p>
+
+        {/* Row 1 — scrolls LEFT */}
+        <div className="overflow-hidden relative mb-6">
           <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
           <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
           <div className="animate-marquee">
             {[...ALL_CLIENTS, ...ALL_CLIENTS].map(({ name, Logo }, i) => (
               <div key={i} title={name}
-                className="flex items-center justify-center mx-10 shrink-0 h-14 transition-all duration-300 cursor-default">
+                className="flex items-center justify-center mx-10 shrink-0 h-12 cursor-default opacity-70 hover:opacity-100 transition-opacity duration-300">
+                <Logo />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Row 2 — scrolls RIGHT (reversed list for visual variety) */}
+        <div className="overflow-hidden relative">
+          <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+          <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+          <div className="animate-marquee-reverse">
+            {[...[...ALL_CLIENTS].reverse(), ...[...ALL_CLIENTS].reverse()].map(({ name, Logo }, i) => (
+              <div key={i} title={name}
+                className="flex items-center justify-center mx-10 shrink-0 h-12 cursor-default opacity-70 hover:opacity-100 transition-opacity duration-300">
                 <Logo />
               </div>
             ))}
