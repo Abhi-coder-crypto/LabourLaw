@@ -383,10 +383,10 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
 
           {/* Header */}
-          <div className="text-center mb-12 max-w-2xl mx-auto">
-            <p className="font-semibold tracking-[0.2em] uppercase text-xs mb-3"
+          <div className="text-center mb-12 mx-auto">
+            <p className="font-bold text-base uppercase tracking-wider mb-3"
               style={{ fontFamily: 'Poppins, sans-serif', color: '#a83a00' }}>Our Expertise</p>
-            <h2 className="font-bold text-navy-900 mb-3"
+            <h2 className="font-bold text-navy-900 mb-3 whitespace-nowrap"
               style={{ fontFamily: 'Poppins, sans-serif', fontSize: 'clamp(1.6rem, 2.8vw, 2.2rem)' }}>
               Comprehensive Compliance Solutions
             </h2>
