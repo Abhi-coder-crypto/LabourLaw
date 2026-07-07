@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import heroVideo from '@assets/7552418-hd_1080_1920_25fps_1783420764090.mp4';
 import heroImage from '@assets/pexels-vlada-karpovich-7433855_1783420874088.jpg';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
-import { ArrowRight, ChevronRight, Star, TrendingUp, Shield, Users, ChevronDown } from 'lucide-react';
+import { ArrowRight, ChevronRight, Star, TrendingUp, Shield, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { ALL_CLIENTS } from '../components/ClientLogos';
 
@@ -44,32 +44,8 @@ const slidingPhrases = [
   'Legal Expertise',
 ];
 
-const servicesList = [
-  { name: 'Labour Law Compliance', slug: 'labour-law-compliance' },
-  { name: 'Payroll & Salary Structuring', slug: 'payroll-structuring' },
-  { name: 'Statutory Compliance & Filings', slug: 'statutory-filings' },
-  { name: 'People Outsourcing & Staffing', slug: 'contract-staffing' },
-  { name: 'Audits & Governance', slug: 'audits-governance' },
-  { name: 'Registrations & Licensing', slug: 'registrations-licensing' },
-  { name: 'HR Policy & Advisory', slug: 'hr-policy-advisory' },
-  { name: 'Legal Representation', slug: 'litigation-support' },
-  { name: 'Training & Workshops', slug: 'training-workshops' },
-];
-
 const Home = () => {
-  const [servicesOpen, setServicesOpen] = useState(false);
   const [phraseIndex, setPhraseIndex] = useState(0);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
-        setServicesOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handler);
-    return () => document.removeEventListener('mousedown', handler);
-  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -244,60 +220,71 @@ const Home = () => {
       {/* ── Why Choose Us ─────────────────────────────────── */}
       <section className="py-16 overflow-hidden" style={{ backgroundColor: '#a83a00' }}>
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <div className="flex flex-col lg:flex-row gap-14 items-center">
+          <div className="flex flex-col lg:flex-row gap-8 items-stretch">
 
-            {/* ── Left: Collage (same mosaic as hero) ── */}
+            {/* ── Left: One Stop Consultancy Partner card ── */}
             <motion.div
-              className="w-full lg:w-[45%] shrink-0"
+              className="w-full lg:w-1/2"
               initial={{ opacity: 0, x: -24 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}>
 
-              <div className="flex gap-3" style={{ height: '480px' }}>
+              <div className="bg-white rounded-2xl p-8 lg:p-10 shadow-2xl h-full flex flex-col">
+                {/* Eyebrow */}
+                <p className="font-bold text-base uppercase tracking-wider mb-4"
+                  style={{ fontFamily: 'Poppins, sans-serif', color: '#a83a00' }}>One Stop Consultancy Partner</p>
 
-                {/* Left column: one big tall card */}
-                <div className="flex flex-col" style={{ width: '42%' }}>
-                  <div
-                    className="rounded-2xl overflow-hidden border-2 border-dashed flex flex-col items-center justify-center gap-2 shadow-md"
-                    style={{ flex: 1, borderColor: 'rgba(255,255,255,0.35)', backgroundColor: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.45)' }}>
-                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-                    <span className="text-[11px] font-medium tracking-wide" style={{ fontFamily: 'Poppins, sans-serif' }}>Image / Video</span>
-                  </div>
+                {/* Heading */}
+                <h2 className="font-bold leading-[1.2] mb-6"
+                  style={{ fontFamily: 'Poppins, sans-serif', fontSize: 'clamp(1.35rem, 2.2vw, 1.85rem)', color: '#111111' }}>
+                  Everything your business needs,<br />
+                  <span style={{ color: '#a83a00' }}>under one roof.</span>
+                </h2>
+
+                {/* Service list */}
+                <div className="flex-1 space-y-0">
+                  {[
+                    { title: 'Statutory Registrations', desc: 'ESI, EPF, Professional Tax' },
+                    { title: 'Core Labour Law Acts', desc: 'Contract Labour, Gratuity, Bonus, Minimum Wages' },
+                    { title: 'Establishment & Factory Compliance', desc: 'MLWF, Shops Act, Factories Act, other labour laws, audits' },
+                    { title: 'Payroll Planning & Processing', desc: 'Manpower planning, salary structuring, processing' },
+                    { title: 'Payroll Reports & Records', desc: 'MIS, salary register, FNF, bank transfers' },
+                    { title: 'HR Related Matters', desc: 'Advisory and day-to-day support' },
+                  ].map((item, i) => (
+                    <motion.div key={i}
+                      initial={{ opacity: 0, x: 16 }} whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }} transition={{ duration: 0.4, delay: i * 0.07 }}
+                      className="flex gap-4 py-3.5 border-b border-gray-100 last:border-b-0">
+                      <span className="font-bold shrink-0 leading-none mt-0.5 text-lg"
+                        style={{ fontFamily: 'Poppins, sans-serif', color: '#fda102' }}>
+                        {String(i + 1).padStart(2, '0')}
+                      </span>
+                      <div>
+                        <h4 className="font-semibold mb-0.5 text-sm"
+                          style={{ fontFamily: 'Poppins, sans-serif', color: '#111111' }}>{item.title}</h4>
+                        <p className="text-xs leading-relaxed"
+                          style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400, color: '#666666' }}>{item.desc}</p>
+                      </div>
+                    </motion.div>
+                  ))}
                 </div>
-
-                {/* Right column: small card top + big card bottom */}
-                <div className="flex flex-col gap-3" style={{ width: '58%' }}>
-                  <div
-                    className="rounded-2xl overflow-hidden border-2 border-dashed flex flex-col items-center justify-center gap-2 shadow-md"
-                    style={{ flex: '0 0 42%', borderColor: 'rgba(255,255,255,0.35)', backgroundColor: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.45)' }}>
-                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-                    <span className="text-[11px] font-medium tracking-wide" style={{ fontFamily: 'Poppins, sans-serif' }}>Image / Video</span>
-                  </div>
-                  <div
-                    className="rounded-2xl overflow-hidden border-2 border-dashed flex flex-col items-center justify-center gap-2 shadow-md"
-                    style={{ flex: 1, borderColor: 'rgba(255,255,255,0.35)', backgroundColor: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.45)' }}>
-                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-                    <span className="text-[11px] font-medium tracking-wide" style={{ fontFamily: 'Poppins, sans-serif' }}>Image / Video</span>
-                  </div>
-                </div>
-
               </div>
             </motion.div>
 
-            {/* ── Right: Text Content — white card ── */}
-            <div className="lg:w-[55%]">
+            {/* ── Right: Why Labour Law card ── */}
+            <div className="w-full lg:w-1/2">
               <motion.div initial={{ opacity: 0, x: 28 }} whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }} transition={{ duration: 0.6 }}
-                className="bg-white rounded-2xl p-8 lg:p-10 shadow-2xl">
+                className="bg-white rounded-2xl p-8 lg:p-10 shadow-2xl h-full flex flex-col">
 
-                {/* Eyebrow — footer style */}
+                {/* Eyebrow */}
                 <p className="font-bold text-base uppercase tracking-wider mb-4"
                   style={{ fontFamily: 'Poppins, sans-serif', color: '#a83a00' }}>Why Labour Law</p>
 
                 {/* Heading */}
                 <h2 className="font-bold leading-[1.15] mb-4"
-                  style={{ fontFamily: 'Poppins, sans-serif', fontSize: 'clamp(1.5rem, 2.6vw, 2.1rem)', color: '#111111' }}>
+                  style={{ fontFamily: 'Poppins, sans-serif', fontSize: 'clamp(1.35rem, 2.2vw, 1.85rem)', color: '#111111' }}>
                   Expertise that protects your business &amp; empowers your
                   <span style={{ color: '#a83a00' }}> workforce.</span>
                 </h2>
@@ -307,28 +294,22 @@ const Home = () => {
                   We don't just file paperwork — we architect robust compliance frameworks. With India's labour law landscape shifting under the New Codes, you need a partner who anticipates regulatory changes before they impact your bottom line.
                 </p>
 
-                {/* Numbered feature rows */}
-                <div className="space-y-0">
+                {/* Numbered feature rows — no icons */}
+                <div className="flex-1 space-y-0">
                   {whyUs.map((item, i) => (
                     <motion.div key={i}
                       initial={{ opacity: 0, x: 16 }} whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }} transition={{ duration: 0.4, delay: i * 0.1 }}
-                      className="flex gap-4 py-4 border-b border-gray-100">
+                      className="flex gap-4 py-4 border-b border-gray-100 last:border-b-0">
                       <span className="font-bold shrink-0 leading-none mt-0.5 text-lg"
                         style={{ fontFamily: 'Poppins, sans-serif', color: '#fda102' }}>
                         {String(i + 1).padStart(2, '0')}
                       </span>
-                      <div className="flex gap-3 items-start">
-                        <div className="mt-0.5 w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
-                          style={{ backgroundColor: 'rgba(168,58,0,0.08)', color: '#a83a00' }}>
-                          <item.icon size={15} />
-                        </div>
-                        <div>
-                          <h4 className="font-semibold mb-0.5 text-sm"
-                            style={{ fontFamily: 'Poppins, sans-serif', color: '#111111' }}>{item.title}</h4>
-                          <p className="text-xs leading-relaxed"
-                            style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400, color: '#666666' }}>{item.desc}</p>
-                        </div>
+                      <div>
+                        <h4 className="font-semibold mb-0.5 text-sm"
+                          style={{ fontFamily: 'Poppins, sans-serif', color: '#111111' }}>{item.title}</h4>
+                        <p className="text-xs leading-relaxed"
+                          style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400, color: '#666666' }}>{item.desc}</p>
                       </div>
                     </motion.div>
                   ))}
