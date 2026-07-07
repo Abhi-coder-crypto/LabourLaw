@@ -244,7 +244,7 @@ const Home = () => {
 
       {/* ── One Stop Consultancy Partner ─────────────────── */}
       <section className="py-16 overflow-hidden" style={{ backgroundColor: '#a83a00' }}>
-        <div className="max-w-7xl mx-auto px-6 lg:px-10">
+        <div className="w-full px-6 lg:px-10">
 
           {/* Section header */}
           <motion.div className="text-center mb-12"
@@ -260,38 +260,39 @@ const Home = () => {
             </h2>
           </motion.div>
 
-          {/* 6-card horizontal grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 lg:gap-5">
+          {/* 6-card horizontal grid — full width so text fits on one line per card */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-5 lg:gap-6">
             {[
-              { anim: animStatutory,       title: 'Statutory Registrations',           desc: 'ESI, EPF, Professional Tax' },
-              { anim: animLabourActs,      title: 'Core Labour Law Acts',              desc: 'Contract Labour, Gratuity, Bonus, Minimum Wages' },
-              { anim: animEstablishment,   title: 'Establishment & Factory',           desc: 'MLWF, Shops Act, Factories Act, audits' },
-              { anim: animPayrollPlanning, title: 'Payroll Planning & Processing',     desc: 'Manpower planning, salary structuring' },
-              { anim: animPayrollRecords,  title: 'Payroll Reports & Records',         desc: 'MIS, salary register, FNF, bank transfers' },
-              { anim: animHr,              title: 'HR Related Matters',                desc: 'Advisory and day-to-day support' },
+              { anim: animStatutory,       title: 'Statutory Registrations',       desc: 'ESI, EPF, Professional Tax' },
+              { anim: animLabourActs,      title: 'Core Labour Law Acts',           desc: 'Contract Labour, Gratuity, Bonus, Minimum Wages' },
+              { anim: animEstablishment,   title: 'Establishment & Factory',        desc: 'MLWF, Shops Act, Factories Act, audits' },
+              { anim: animPayrollPlanning, title: 'Payroll Planning & Processing',  desc: 'Manpower planning, salary structuring' },
+              { anim: animPayrollRecords,  title: 'Payroll Reports & Records',      desc: 'MIS, salary register, FNF, bank transfers' },
+              { anim: animHr,              title: 'HR Related Matters',             desc: 'Advisory and day-to-day support' },
             ].map((item, i) => (
               <motion.div key={i}
                 initial={{ opacity: 0, y: 28 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.45, delay: i * 0.08 }}
-                className="flex flex-col items-center text-center rounded-2xl p-5 lg:p-6"
+                className="flex flex-col items-center text-center rounded-2xl p-6 lg:p-8"
                 style={{ backgroundColor: 'rgba(255,255,255,0.10)', backdropFilter: 'blur(4px)', border: '1px solid rgba(255,255,255,0.18)' }}>
 
-                {/* Lottie animation */}
+                {/* Lottie animation — larger */}
                 <LottieAnim
                   animationData={item.anim}
-                  className="w-20 h-20 lg:w-24 lg:h-24 mb-4 shrink-0"
+                  className="w-28 h-28 lg:w-32 lg:h-32 mb-5 shrink-0"
                 />
 
-                {/* Title */}
-                <h3 className="font-semibold text-white leading-snug mb-2"
-                  style={{ fontFamily: 'Poppins, sans-serif', fontSize: '0.8rem' }}>
+                {/* Title — single line */}
+                <h3 className="font-semibold text-white whitespace-nowrap mb-2"
+                  style={{ fontFamily: 'Poppins, sans-serif', fontSize: '0.88rem', lineHeight: 1.3 }}>
                   {item.title}
                 </h3>
 
-                {/* Desc */}
-                <p style={{ fontFamily: 'Poppins, sans-serif', fontSize: '0.7rem', fontWeight: 400, color: 'rgba(255,255,255,0.72)', lineHeight: 1.5 }}>
+                {/* Desc — single line */}
+                <p className="whitespace-nowrap"
+                  style={{ fontFamily: 'Poppins, sans-serif', fontSize: '0.73rem', fontWeight: 400, color: 'rgba(255,255,255,0.72)', lineHeight: 1.5 }}>
                   {item.desc}
                 </p>
 
