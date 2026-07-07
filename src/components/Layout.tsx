@@ -134,7 +134,7 @@ const Layout = () => {
               style={{ fontFamily: 'Poppins, sans-serif', backgroundColor: '#a83a00' }}
               onMouseEnter={e => { (e.currentTarget as HTMLElement).style.backgroundColor = '#fda102'; }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.backgroundColor = '#a83a00'; }}>
-              Let's Connect
+              Contact Us
             </Link>
           </div>
 
@@ -194,7 +194,7 @@ const Layout = () => {
                   className="mt-2 block w-full text-center text-white px-6 py-3 rounded-full font-semibold text-sm transition-colors"
                   style={{ backgroundColor: '#a83a00' }}
                   onClick={() => setIsMenuOpen(false)}>
-                  Let's Connect
+                  Contact Us
                 </Link>
               </div>
             </motion.div>

@@ -208,10 +208,10 @@ const Home = () => {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}>
 
-              <div className="flex gap-3" style={{ height: '620px' }}>
+              <div className="flex gap-3" style={{ height: '620px', paddingLeft: '6%' }}>
 
                 {/* ── Left column: one big tall portrait ── */}
-                <div className="flex flex-col" style={{ width: '42%' }}>
+                <div className="flex flex-col" style={{ width: '48%' }}>
                   <motion.div
                     initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.55, delay: 0.3 }}
@@ -223,7 +223,7 @@ const Home = () => {
                 </div>
 
                 {/* ── Right column: small card on top + big card on bottom ── */}
-                <div className="flex flex-col gap-3" style={{ width: '58%' }}>
+                <div className="flex flex-col gap-3" style={{ width: '52%' }}>
 
                   {/* Card B — smaller portrait/square on top */}
                   <motion.div
