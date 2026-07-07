@@ -82,11 +82,11 @@ const Home = () => {
               variants={{ show: { transition: { staggerChildren: 0.13 } } }}>
 
               <motion.h1 variants={fadeUp}
-                className="font-display font-bold leading-[1.1] mb-6"
-                style={{ fontSize: 'clamp(2.2rem, 4.5vw, 3.4rem)' }}>
+                className="font-bold leading-[1.08] mb-6"
+                style={{ fontFamily: 'Poppins, sans-serif', fontSize: 'clamp(2.6rem, 5vw, 3.8rem)' }}>
                 <span className="text-navy-900 block">We bring</span>
                 {/* Sliding amber phrase */}
-                <span className="block overflow-hidden" style={{ height: '1.15em' }}>
+                <span className="block overflow-hidden" style={{ height: '2.25em' }}>
                   <AnimatePresence mode="wait">
                     <motion.span
                       key={phraseIndex}
@@ -94,7 +94,7 @@ const Home = () => {
                       animate={{ y: '0%', opacity: 1 }}
                       exit={{ y: '-100%', opacity: 0 }}
                       transition={{ duration: 0.45, ease: [0.4, 0, 0.2, 1] }}
-                      className="block text-amber-500 whitespace-nowrap">
+                      className="block text-amber-500 font-bold">
                       {slidingPhrases[phraseIndex]}
                     </motion.span>
                   </AnimatePresence>
@@ -103,7 +103,8 @@ const Home = () => {
               </motion.h1>
 
               <motion.p variants={fadeUp}
-                className="text-gray-500 text-[15px] leading-relaxed mb-8 max-w-md">
+                className="text-gray-500 text-[15px] leading-relaxed mb-8 max-w-md"
+                style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400 }}>
                 Unlock the potential of your business with our comprehensive HR and compliance solutions. From recruitment to payroll management to compliance, we provide tailored services that ensure your business runs smoothly, efficiently, and in full compliance with all regulations.
               </motion.p>
 
@@ -143,56 +144,66 @@ const Home = () => {
               </motion.div>
             </motion.div>
 
-            {/* ── Right: Image Collage + Stat ── */}
-            <div className="lg:w-1/2 relative flex items-center justify-center min-h-[380px] lg:min-h-[520px]">
+            {/* ── Right: Creative Image Collage ── */}
+            <motion.div
+              className="lg:w-1/2 relative"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}>
 
-              {/* Big stat — centered background */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.85 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center z-10 pointer-events-none select-none">
-                <p className="font-display font-black text-navy-900 leading-none"
-                  style={{ fontSize: 'clamp(5rem, 12vw, 9rem)' }}>21+</p>
-                <p className="text-gray-500 font-semibold text-sm mt-1 tracking-wide">Year's experience working</p>
-              </motion.div>
+              {/* Outer grid wrapper — fixed height */}
+              <div className="relative w-full" style={{ height: '480px' }}>
 
-              {/* Top-left image */}
-              <motion.div
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.55, delay: 0.3 }}
-                className="absolute top-0 left-4 lg:left-8 w-36 lg:w-44 h-28 lg:h-32 rounded-xl overflow-hidden shadow-lg z-20">
-                <img src="/assets/service-hr.png" alt="Office" className="w-full h-full object-cover" />
-              </motion.div>
+                {/* Slot A — tall portrait, top-left */}
+                <motion.div
+                  initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                  className="absolute rounded-2xl overflow-hidden shadow-md border-2 border-dashed border-gray-200 bg-gray-50"
+                  style={{ top: 0, left: '4%', width: '38%', height: '52%' }}>
+                  <div className="w-full h-full flex flex-col items-center justify-center gap-2 text-gray-300">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                    <span className="text-xs font-medium tracking-wide" style={{ fontFamily: 'Poppins, sans-serif' }}>Image</span>
+                  </div>
+                </motion.div>
 
-              {/* Bottom-left image */}
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.55, delay: 0.45 }}
-                className="absolute bottom-8 left-4 lg:left-8 w-32 lg:w-40 h-32 lg:h-40 rounded-xl overflow-hidden shadow-lg z-20">
-                <img src="/assets/service-staffing.png" alt="Team" className="w-full h-full object-cover" />
-              </motion.div>
+                {/* Slot B — landscape, top-right */}
+                <motion.div
+                  initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: 0.4 }}
+                  className="absolute rounded-2xl overflow-hidden shadow-md border-2 border-dashed border-gray-200 bg-gray-50"
+                  style={{ top: '4%', right: 0, width: '54%', height: '38%' }}>
+                  <div className="w-full h-full flex flex-col items-center justify-center gap-2 text-gray-300">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                    <span className="text-xs font-medium tracking-wide" style={{ fontFamily: 'Poppins, sans-serif' }}>Image</span>
+                  </div>
+                </motion.div>
 
-              {/* Top-right image */}
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.55, delay: 0.4 }}
-                className="absolute top-4 right-4 lg:right-0 w-32 lg:w-36 h-36 lg:h-44 rounded-xl overflow-hidden shadow-lg z-20">
-                <img src="/assets/service-labour.png" alt="Compliance" className="w-full h-full object-cover" />
-              </motion.div>
+                {/* Slot C — square, center-left */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.92 }} animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: 0.5 }}
+                  className="absolute rounded-2xl overflow-hidden shadow-md border-2 border-dashed border-gray-200 bg-gray-50"
+                  style={{ top: '56%', left: '4%', width: '42%', height: '40%' }}>
+                  <div className="w-full h-full flex flex-col items-center justify-center gap-2 text-gray-300">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                    <span className="text-xs font-medium tracking-wide" style={{ fontFamily: 'Poppins, sans-serif' }}>Image</span>
+                  </div>
+                </motion.div>
 
-              {/* Bottom-right image */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.55, delay: 0.5 }}
-                className="absolute bottom-4 right-4 lg:right-0 w-36 lg:w-44 h-28 lg:h-36 rounded-xl overflow-hidden shadow-lg z-20">
-                <img src="/assets/service-payroll.png" alt="Payroll" className="w-full h-full object-cover" />
-              </motion.div>
-            </div>
+                {/* Slot D — portrait, bottom-right */}
+                <motion.div
+                  initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.55 }}
+                  className="absolute rounded-2xl overflow-hidden shadow-md border-2 border-dashed border-gray-200 bg-gray-50"
+                  style={{ bottom: 0, right: 0, width: '52%', height: '56%' }}>
+                  <div className="w-full h-full flex flex-col items-center justify-center gap-2 text-gray-300">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                    <span className="text-xs font-medium tracking-wide" style={{ fontFamily: 'Poppins, sans-serif' }}>Image</span>
+                  </div>
+                </motion.div>
+
+              </div>
+            </motion.div>
 
           </div>
         </div>

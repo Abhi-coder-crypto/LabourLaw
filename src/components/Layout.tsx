@@ -94,25 +94,26 @@ const Layout = () => {
 
       {/* Sticky Header */}
       <header className={`sticky top-0 z-50 bg-white transition-shadow duration-300 ${scrolled ? 'shadow-lg' : 'shadow-md'} border-b border-gray-100`}>
-        <div className="max-w-7xl mx-auto px-6 lg:px-10 h-[72px] flex justify-between items-center">
+        <div className="max-w-7xl mx-auto px-6 lg:px-10 h-[76px] flex justify-between items-center">
 
-          <Link to="/" className="flex items-center gap-3.5 shrink-0 group">
+          <Link to="/" className="flex items-center gap-3 shrink-0 group">
             <LogoMark />
-            <span className="font-display font-bold text-[1.35rem] text-navy-900 tracking-tight leading-none">Labour Law</span>
+            <span className="font-bold text-[1.25rem] text-navy-900 tracking-tight leading-none" style={{ fontFamily: 'Poppins, sans-serif' }}>Labour Law</span>
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-1">
+          <nav className="hidden lg:flex items-center gap-0.5">
             {navLinks.map((link) => (
               link.hasDropdown ? (
                 <div key={link.name} className="relative group">
                   <Link
                     to={link.path}
-                    className={`flex items-center gap-1 font-medium text-sm px-4 py-2 rounded-md transition-all ${
+                    className={`flex items-center gap-1 font-semibold text-[0.95rem] px-4 py-2.5 rounded-md transition-all ${
                       isActive(link.path)
-                        ? 'text-teal-600 bg-teal-50'
-                        : 'text-gray-700 hover:text-teal-600 hover:bg-gray-50'
+                        ? 'text-teal-600'
+                        : 'text-gray-800 hover:text-teal-600'
                     }`}
+                    style={{ fontFamily: 'Poppins, sans-serif' }}
                   >
                     {link.name}
                     <ChevronDown size={13} className="group-hover:rotate-180 transition-transform duration-200" />
@@ -120,7 +121,8 @@ const Layout = () => {
                   <div className="absolute top-full left-0 mt-1 w-60 bg-white rounded-xl shadow-xl border border-gray-100 py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                     {serviceLinks.map((s) => (
                       <Link key={s.slug} to={`/services/${s.slug}`}
-                        className="block px-5 py-2.5 text-sm text-gray-700 hover:text-teal-600 hover:bg-teal-50 transition-colors font-medium">
+                        className="block px-5 py-2.5 text-sm text-gray-700 hover:text-teal-600 hover:bg-teal-50 transition-colors font-medium"
+                        style={{ fontFamily: 'Poppins, sans-serif' }}>
                         {s.name}
                       </Link>
                     ))}
@@ -130,11 +132,12 @@ const Layout = () => {
                 <Link
                   key={link.name}
                   to={link.path}
-                  className={`font-medium text-sm px-4 py-2 rounded-md transition-all ${
+                  className={`font-semibold text-[0.95rem] px-4 py-2.5 rounded-md transition-all ${
                     isActive(link.path)
-                      ? 'text-teal-600 bg-teal-50'
-                      : 'text-gray-700 hover:text-teal-600 hover:bg-gray-50'
+                      ? 'text-teal-600'
+                      : 'text-gray-800 hover:text-teal-600'
                   }`}
+                  style={{ fontFamily: 'Poppins, sans-serif' }}
                 >
                   {link.name}
                 </Link>
@@ -144,7 +147,8 @@ const Layout = () => {
 
           <div className="hidden lg:flex items-center gap-3">
             <Link to="/contact"
-              className="bg-navy-900 text-white px-6 py-2.5 rounded-full font-semibold text-sm hover:bg-teal-600 transition-colors shadow-sm whitespace-nowrap">
+              className="bg-navy-900 text-white px-7 py-2.5 rounded-full font-bold text-[0.9rem] hover:bg-teal-600 transition-colors shadow-sm whitespace-nowrap"
+              style={{ fontFamily: 'Poppins, sans-serif' }}>
               Let's Connect
             </Link>
           </div>
