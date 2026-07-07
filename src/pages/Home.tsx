@@ -425,10 +425,10 @@ const Home = () => {
       </section>
 
       {/* ── Testimonials ──────────────────────────────────── */}
-      <section className="py-20 bg-navy-900 text-white relative overflow-hidden">
-        {/* Subtle radial glow */}
+      <section className="py-20 text-white relative overflow-hidden" style={{ backgroundColor: '#a83a00' }}>
+        {/* Subtle texture overlays — same style as Why Labour Law section */}
         <div className="absolute inset-0 pointer-events-none"
-          style={{ backgroundImage: 'radial-gradient(ellipse at 15% 60%, rgba(168,58,0,0.18) 0%, transparent 55%), radial-gradient(ellipse at 85% 30%, rgba(253,161,2,0.08) 0%, transparent 55%)' }} />
+          style={{ backgroundImage: 'radial-gradient(ellipse at 10% 70%, rgba(0,0,0,0.18) 0%, transparent 55%), radial-gradient(ellipse at 90% 20%, rgba(253,161,2,0.12) 0%, transparent 50%)' }} />
 
         <div className="relative z-10">
           {/* Header */}
@@ -436,33 +436,38 @@ const Home = () => {
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }} transition={{ duration: 0.5 }}
             className="text-center mb-14 px-6">
-            <p className="font-bold tracking-[0.22em] uppercase text-xs mb-3"
-              style={{ fontFamily: 'Poppins, sans-serif', color: '#fda102' }}>Client Feedback</p>
-            <h2 className="font-bold mb-3"
-              style={{ fontFamily: 'Poppins, sans-serif', fontSize: 'clamp(1.8rem, 3.2vw, 2.6rem)', color: '#ffffff' }}>
-              Trusted by Industry Leaders
+            {/* Eyebrow — same style as Why Labour Law */}
+            <div className="flex items-center justify-center gap-3 mb-3">
+              <div className="w-8 h-[2px] bg-white" />
+              <p className="font-semibold tracking-[0.2em] uppercase text-xs"
+                style={{ fontFamily: 'Poppins, sans-serif', color: '#fda102' }}>Client Feedback</p>
+              <div className="w-8 h-[2px] bg-white" />
+            </div>
+            <h2 className="font-semibold text-white mb-3"
+              style={{ fontFamily: 'Poppins, sans-serif', fontSize: 'clamp(1.6rem, 2.8vw, 2.4rem)' }}>
+              Trusted by Industry <span style={{ color: '#fda102' }}>Leaders</span>
             </h2>
-            <p className="text-sm" style={{ fontFamily: 'Poppins, sans-serif', color: 'rgba(255,255,255,0.45)' }}>
+            <p className="text-sm" style={{ fontFamily: 'Poppins, sans-serif', color: 'rgba(255,255,255,0.65)', fontWeight: 400 }}>
               Don't just take our word for it.
             </p>
           </motion.div>
 
           {/* Auto-scrolling testimonial strip */}
           <div className="overflow-hidden relative">
-            {/* Fade edges */}
+            {/* Fade edges matching section bg */}
             <div className="absolute inset-y-0 left-0 w-28 z-10 pointer-events-none"
-              style={{ background: 'linear-gradient(to right, #0F172A, transparent)' }} />
+              style={{ background: 'linear-gradient(to right, #a83a00, transparent)' }} />
             <div className="absolute inset-y-0 right-0 w-28 z-10 pointer-events-none"
-              style={{ background: 'linear-gradient(to left, #0F172A, transparent)' }} />
+              style={{ background: 'linear-gradient(to left, #a83a00, transparent)' }} />
 
-            <div className="animate-marquee-testimonials">
+            <div className="animate-marquee-testimonials pb-4">
               {[...testimonials, ...testimonials].map((test, i) => (
                 <div key={i}
                   className="shrink-0 mx-4 p-7 rounded-2xl flex flex-col"
                   style={{
-                    width: '340px',
-                    background: 'rgba(255,255,255,0.05)',
-                    border: '1px solid rgba(255,255,255,0.09)',
+                    width: '350px',
+                    background: 'rgba(255,255,255,0.10)',
+                    border: '1px solid rgba(255,255,255,0.22)',
                   }}>
                   {/* Stars */}
                   <div className="flex gap-0.5 mb-4">
@@ -472,20 +477,20 @@ const Home = () => {
                   </div>
                   {/* Quote */}
                   <p className="text-sm leading-relaxed mb-6 flex-grow"
-                    style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400, color: 'rgba(255,255,255,0.82)', fontStyle: 'italic' }}>
+                    style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400, color: 'rgba(255,255,255,0.88)', fontStyle: 'italic' }}>
                     "{test.text}"
                   </p>
                   {/* Author */}
                   <div className="flex items-center gap-3">
                     <div className="w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm shrink-0"
-                      style={{ backgroundColor: '#a83a00', color: '#ffffff', fontFamily: 'Poppins, sans-serif' }}>
+                      style={{ backgroundColor: '#fda102', color: '#1a1a1a', fontFamily: 'Poppins, sans-serif' }}>
                       {test.author.charAt(0)}
                     </div>
                     <div>
                       <p className="font-semibold text-white text-sm"
                         style={{ fontFamily: 'Poppins, sans-serif' }}>{test.author}</p>
                       <p className="text-xs mt-0.5"
-                        style={{ fontFamily: 'Poppins, sans-serif', color: '#fda102' }}>{test.role}</p>
+                        style={{ fontFamily: 'Poppins, sans-serif', color: 'rgba(255,255,255,0.6)' }}>{test.role}</p>
                     </div>
                   </div>
                 </div>
@@ -496,21 +501,21 @@ const Home = () => {
       </section>
 
       {/* ── Scrolling Client Logos — two rows, opposite directions ── */}
-      <section className="py-12 bg-white border-y border-gray-100 overflow-hidden">
+      <section className="py-14 bg-white border-y border-gray-100 overflow-hidden">
         {/* Section label */}
-        <p className="text-center font-bold uppercase tracking-[0.22em] mb-10"
-          style={{ fontFamily: 'Poppins, sans-serif', fontSize: '10px', color: '#a83a00' }}>
+        <p className="text-center font-semibold uppercase tracking-[0.25em] mb-10"
+          style={{ fontFamily: 'Poppins, sans-serif', fontSize: '11px', color: '#a83a00' }}>
           Serving 500+ Corporations Across India
         </p>
 
         {/* Row 1 — scrolls LEFT */}
-        <div className="overflow-hidden relative mb-6">
-          <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
-          <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+        <div className="overflow-hidden relative mb-8">
+          <div className="absolute inset-y-0 left-0 w-28 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+          <div className="absolute inset-y-0 right-0 w-28 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
           <div className="animate-marquee">
             {[...ALL_CLIENTS, ...ALL_CLIENTS].map(({ name, Logo }, i) => (
               <div key={i} title={name}
-                className="flex items-center justify-center mx-10 shrink-0 h-12 cursor-default opacity-70 hover:opacity-100 transition-opacity duration-300">
+                className="flex items-center justify-center mx-12 shrink-0 h-20 cursor-default opacity-75 hover:opacity-100 transition-opacity duration-300">
                 <Logo />
               </div>
             ))}
@@ -519,12 +524,12 @@ const Home = () => {
 
         {/* Row 2 — scrolls RIGHT (reversed list for visual variety) */}
         <div className="overflow-hidden relative">
-          <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
-          <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+          <div className="absolute inset-y-0 left-0 w-28 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+          <div className="absolute inset-y-0 right-0 w-28 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
           <div className="animate-marquee-reverse">
             {[...[...ALL_CLIENTS].reverse(), ...[...ALL_CLIENTS].reverse()].map(({ name, Logo }, i) => (
               <div key={i} title={name}
-                className="flex items-center justify-center mx-10 shrink-0 h-12 cursor-default opacity-70 hover:opacity-100 transition-opacity duration-300">
+                className="flex items-center justify-center mx-12 shrink-0 h-20 cursor-default opacity-75 hover:opacity-100 transition-opacity duration-300">
                 <Logo />
               </div>
             ))}

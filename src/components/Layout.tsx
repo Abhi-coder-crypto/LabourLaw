@@ -3,16 +3,16 @@ import { Outlet, Link, useLocation } from 'react-router-dom';
 import { Phone, Mail, MapPin, Menu, X, ChevronDown, ArrowUp } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const LogoMarkWhite = () => (
+const LogoMarkBrand = () => (
   <svg width="30" height="32" viewBox="0 0 30 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <circle cx="15" cy="4" r="2.4" fill="white"/>
-    <line x1="15" y1="6" x2="15" y2="24" stroke="white" strokeWidth="1.6" strokeLinecap="round"/>
-    <line x1="3" y1="10" x2="27" y2="10" stroke="white" strokeWidth="1.6" strokeLinecap="round"/>
-    <line x1="5" y1="10" x2="5" y2="14" stroke="white" strokeWidth="1.4" strokeLinecap="round"/>
-    <line x1="25" y1="10" x2="25" y2="14" stroke="white" strokeWidth="1.4" strokeLinecap="round"/>
-    <path d="M1 14 Q5 21 9 14" stroke="white" strokeWidth="1.4" fill="none" strokeLinecap="round"/>
-    <path d="M21 14 Q25 21 29 14" stroke="white" strokeWidth="1.4" fill="none" strokeLinecap="round"/>
-    <line x1="10" y1="24" x2="20" y2="24" stroke="white" strokeWidth="1.6" strokeLinecap="round"/>
+    <circle cx="15" cy="4" r="2.4" fill="#a83a00"/>
+    <line x1="15" y1="6" x2="15" y2="24" stroke="#a83a00" strokeWidth="1.6" strokeLinecap="round"/>
+    <line x1="3" y1="10" x2="27" y2="10" stroke="#a83a00" strokeWidth="1.6" strokeLinecap="round"/>
+    <line x1="5" y1="10" x2="5" y2="14" stroke="#a83a00" strokeWidth="1.4" strokeLinecap="round"/>
+    <line x1="25" y1="10" x2="25" y2="14" stroke="#a83a00" strokeWidth="1.4" strokeLinecap="round"/>
+    <path d="M1 14 Q5 21 9 14" stroke="#a83a00" strokeWidth="1.4" fill="none" strokeLinecap="round"/>
+    <path d="M21 14 Q25 21 29 14" stroke="#a83a00" strokeWidth="1.4" fill="none" strokeLinecap="round"/>
+    <line x1="10" y1="24" x2="20" y2="24" stroke="#a83a00" strokeWidth="1.6" strokeLinecap="round"/>
   </svg>
 );
 
@@ -226,47 +226,63 @@ const Layout = () => {
       </main>
 
       {/* Footer */}
-      <footer className="bg-navy-900 text-white pt-16 pb-8 border-t-4 border-teal-500">
+      <footer className="bg-white pt-16 pb-8 border-t-4" style={{ borderTopColor: '#a83a00' }}>
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-14">
 
+            {/* Brand column */}
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }} transition={{ duration: 0.5 }}>
               <div className="flex items-center gap-3.5 mb-5">
-                <LogoMarkWhite />
+                <LogoMarkBrand />
                 <div className="flex flex-col leading-none">
-                  <span className="font-bold text-xl text-white tracking-tight leading-none" style={{ fontFamily: 'Poppins, sans-serif' }}>Maru Consultancy</span>
-                  <span className="text-[9px] font-semibold text-teal-400 tracking-[0.22em] uppercase mt-1" style={{ fontFamily: 'Poppins, sans-serif' }}>Labour Laws Consultants & Practitioners</span>
+                  <span className="font-bold text-xl tracking-tight leading-none"
+                    style={{ fontFamily: 'Poppins, sans-serif', color: '#a83a00' }}>Maru Consultancy</span>
+                  <span className="text-[9px] font-semibold tracking-[0.2em] uppercase mt-1"
+                    style={{ fontFamily: 'Poppins, sans-serif', color: '#fda102' }}>Labour Laws Consultants & Practitioners</span>
                 </div>
               </div>
-              <p className="text-white/55 mb-6 text-sm leading-relaxed" style={{ fontFamily: 'Poppins, sans-serif' }}>
+              <p className="text-sm leading-relaxed mb-6"
+                style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400, color: '#6b7280' }}>
                 India's trusted labour law consultancy specializing in HR compliance, statutory filings, payroll, and staffing solutions across 15+ states.
               </p>
               <div className="flex gap-2.5">
-                <a href="https://facebook.com" target="_blank" rel="noreferrer"
-                  className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-teal-500 transition-colors">
-                  <IconFacebook />
-                </a>
-                <a href="https://linkedin.com" target="_blank" rel="noreferrer"
-                  className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-teal-500 transition-colors">
-                  <IconLinkedin />
-                </a>
-                <a href="https://twitter.com" target="_blank" rel="noreferrer"
-                  className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-teal-500 transition-colors">
-                  <IconTwitter />
-                </a>
+                {[
+                  { href: 'https://facebook.com', Icon: IconFacebook },
+                  { href: 'https://linkedin.com', Icon: IconLinkedin },
+                  { href: 'https://twitter.com', Icon: IconTwitter },
+                ].map(({ href, Icon }) => (
+                  <a key={href} href={href} target="_blank" rel="noreferrer"
+                    className="w-9 h-9 rounded-full flex items-center justify-center transition-colors duration-200"
+                    style={{ backgroundColor: '#f3f4f6', color: '#a83a00' }}
+                    onMouseEnter={e => {
+                      (e.currentTarget as HTMLElement).style.backgroundColor = '#a83a00';
+                      (e.currentTarget as HTMLElement).style.color = '#ffffff';
+                    }}
+                    onMouseLeave={e => {
+                      (e.currentTarget as HTMLElement).style.backgroundColor = '#f3f4f6';
+                      (e.currentTarget as HTMLElement).style.color = '#a83a00';
+                    }}>
+                    <Icon />
+                  </a>
+                ))}
               </div>
             </motion.div>
 
+            {/* Services column */}
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.1 }}>
-              <h3 className="font-bold text-sm mb-6 text-white uppercase tracking-wider">Our Services</h3>
+              <h3 className="font-bold text-sm mb-6 uppercase tracking-wider"
+                style={{ fontFamily: 'Poppins, sans-serif', color: '#a83a00' }}>Our Services</h3>
               <ul className="space-y-3">
                 {serviceLinks.slice(0, 5).map((s) => (
                   <li key={s.slug}>
                     <Link to={`/services/${s.slug}`}
-                      className="text-white/55 hover:text-teal-400 text-sm transition-colors flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-teal-500 shrink-0"></span>
+                      className="text-sm flex items-center gap-2 transition-colors duration-200"
+                      style={{ fontFamily: 'Poppins, sans-serif', color: '#6b7280' }}
+                      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#a83a00'; }}
+                      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = '#6b7280'; }}>
+                      <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: '#fda102' }} />
                       {s.name}
                     </Link>
                   </li>
@@ -274,54 +290,89 @@ const Layout = () => {
               </ul>
             </motion.div>
 
+            {/* Contact column */}
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.2 }}>
-              <h3 className="font-bold text-sm mb-6 text-white uppercase tracking-wider">Contact Us</h3>
+              <h3 className="font-bold text-sm mb-6 uppercase tracking-wider"
+                style={{ fontFamily: 'Poppins, sans-serif', color: '#a83a00' }}>Contact Us</h3>
               <ul className="space-y-4">
-                <li className="flex gap-3 text-white/55 text-sm">
-                  <MapPin size={16} className="text-teal-400 shrink-0 mt-0.5" />
+                <li className="flex gap-3 text-sm" style={{ fontFamily: 'Poppins, sans-serif', color: '#6b7280' }}>
+                  <MapPin size={16} className="shrink-0 mt-0.5" style={{ color: '#fda102' }} />
                   <span>15th Floor, Nariman Point, Mumbai, Maharashtra 400021</span>
                 </li>
-                <li className="flex gap-3 text-white/55 text-sm">
-                  <Phone size={15} className="text-teal-400 shrink-0 mt-0.5" />
+                <li className="flex gap-3 text-sm" style={{ fontFamily: 'Poppins, sans-serif', color: '#6b7280' }}>
+                  <Phone size={15} className="shrink-0 mt-0.5" style={{ color: '#fda102' }} />
                   <div>
-                    <a href="tel:+919876543210" className="block hover:text-teal-400 transition-colors">+91 98765 43210</a>
-                    <a href="tel:02245678900" className="block hover:text-teal-400 transition-colors">022 4567 8900</a>
+                    <a href="tel:+919876543210" className="block transition-colors duration-200"
+                      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#a83a00'; }}
+                      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = ''; }}>
+                      +91 98765 43210
+                    </a>
+                    <a href="tel:02245678900" className="block transition-colors duration-200"
+                      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#a83a00'; }}
+                      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = ''; }}>
+                      022 4567 8900
+                    </a>
                   </div>
                 </li>
-                <li className="flex gap-3 text-white/55 text-sm">
-                  <Mail size={15} className="text-teal-400 shrink-0 mt-0.5" />
-                  <div>
-                    <a href="mailto:contact@labourcodes.in" className="block hover:text-teal-400 transition-colors">contact@labourcodes.in</a>
-                  </div>
+                <li className="flex gap-3 text-sm" style={{ fontFamily: 'Poppins, sans-serif', color: '#6b7280' }}>
+                  <Mail size={15} className="shrink-0 mt-0.5" style={{ color: '#fda102' }} />
+                  <a href="mailto:contact@labourcodes.in" className="block transition-colors duration-200"
+                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#a83a00'; }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = ''; }}>
+                    contact@labourcodes.in
+                  </a>
                 </li>
               </ul>
             </motion.div>
 
+            {/* Newsletter column */}
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.3 }}>
-              <h3 className="font-bold text-sm mb-6 text-white uppercase tracking-wider">Newsletter</h3>
-              <p className="text-white/55 text-sm mb-4 leading-relaxed">Subscribe for critical compliance alerts and regulatory updates.</p>
+              <h3 className="font-bold text-sm mb-6 uppercase tracking-wider"
+                style={{ fontFamily: 'Poppins, sans-serif', color: '#a83a00' }}>Newsletter</h3>
+              <p className="text-sm mb-4 leading-relaxed"
+                style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400, color: '#6b7280' }}>
+                Subscribe for critical compliance alerts and regulatory updates.
+              </p>
               <form className="flex flex-col gap-2.5" onSubmit={(e) => e.preventDefault()}>
                 <input
                   type="email"
                   placeholder="Your Email Address"
-                  className="bg-white/10 border border-white/20 text-white rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-teal-500 transition-colors placeholder:text-white/35"
+                  className="rounded-lg px-4 py-2.5 text-sm focus:outline-none transition-colors"
+                  style={{
+                    fontFamily: 'Poppins, sans-serif',
+                    backgroundColor: '#f9fafb',
+                    border: '1px solid #e5e7eb',
+                    color: '#111827',
+                  }}
+                  onFocus={e => { (e.currentTarget as HTMLElement).style.borderColor = '#a83a00'; }}
+                  onBlur={e => { (e.currentTarget as HTMLElement).style.borderColor = '#e5e7eb'; }}
                 />
                 <button type="submit"
-                  className="bg-teal-500 text-white px-4 py-2.5 rounded-lg text-sm font-bold hover:bg-teal-600 transition-colors">
+                  className="px-4 py-2.5 rounded-lg text-sm font-bold text-white transition-all duration-200"
+                  style={{ fontFamily: 'Poppins, sans-serif', backgroundColor: '#a83a00' }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.backgroundColor = '#fda102'; (e.currentTarget as HTMLElement).style.color = '#1a1a1a'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.backgroundColor = '#a83a00'; (e.currentTarget as HTMLElement).style.color = '#ffffff'; }}>
                   Subscribe Now
                 </button>
               </form>
             </motion.div>
           </div>
 
-          <div className="pt-8 border-t border-white/10 text-white/35 text-xs flex flex-col md:flex-row justify-between items-center gap-4">
+          {/* Bottom bar */}
+          <div className="pt-8 border-t border-gray-200 text-xs flex flex-col md:flex-row justify-between items-center gap-4"
+            style={{ fontFamily: 'Poppins, sans-serif', color: '#9ca3af' }}>
             <p>&copy; {new Date().getFullYear()} Maru Consultancy Services Pvt. Ltd. All rights reserved.</p>
             <div className="flex gap-6">
-              <Link to="#" className="hover:text-white transition-colors">Privacy Policy</Link>
-              <Link to="#" className="hover:text-white transition-colors">Terms of Service</Link>
-              <Link to="#" className="hover:text-white transition-colors">Sitemap</Link>
+              {['Privacy Policy', 'Terms of Service', 'Sitemap'].map((label) => (
+                <Link key={label} to="#"
+                  className="transition-colors duration-200"
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#a83a00'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = ''; }}>
+                  {label}
+                </Link>
+              ))}
             </div>
           </div>
         </div>
@@ -331,7 +382,10 @@ const Layout = () => {
       {scrolled && (
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="fixed bottom-6 right-6 z-50 w-11 h-11 bg-navy-900 hover:bg-teal-500 text-white rounded-full flex items-center justify-center shadow-xl transition-all hover:scale-110"
+          className="fixed bottom-6 right-6 z-50 w-11 h-11 text-white rounded-full flex items-center justify-center shadow-xl transition-all hover:scale-110"
+          style={{ backgroundColor: '#a83a00' }}
+          onMouseEnter={e => { (e.currentTarget as HTMLElement).style.backgroundColor = '#fda102'; }}
+          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.backgroundColor = '#a83a00'; }}
           aria-label="Scroll to top">
           <ArrowUp size={18} />
         </button>
