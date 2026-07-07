@@ -37,7 +37,6 @@ const Layout = () => {
     { name: 'Clientele', path: '/clientele' },
     { name: 'Resources', path: '/resources' },
     { name: 'Careers', path: '/careers' },
-    { name: 'Contact Us', path: '/contact' },
   ];
 
   const serviceLinks = [
@@ -81,7 +80,7 @@ const Layout = () => {
                 >
                   <Link
                     to={link.path}
-                    className="flex items-center gap-1 font-bold text-[0.95rem] px-4 py-2.5 transition-colors duration-200"
+                    className="flex items-center gap-1 font-semibold text-[1.05rem] px-4 py-2.5 transition-colors duration-200"
                     style={{ fontFamily: 'Poppins, sans-serif', color: highlighted ? '#a83a00' : '#111111' }}
                   >
                     {link.name}
@@ -113,7 +112,7 @@ const Layout = () => {
                 >
                   <Link
                     to={link.path}
-                    className="font-bold text-[0.95rem] px-4 py-2.5 block transition-colors duration-200"
+                    className="font-semibold text-[1.05rem] px-4 py-2.5 block transition-colors duration-200"
                     style={{ fontFamily: 'Poppins, sans-serif', color: highlighted ? '#a83a00' : '#111111' }}
                   >
                     {link.name}

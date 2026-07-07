@@ -119,12 +119,12 @@ const Home = () => {
               variants={{ show: { transition: { staggerChildren: 0.13 } } }}>
 
               <motion.h1 variants={fadeUp}
-                className="font-bold leading-[1.1] mb-6"
-                style={{ fontFamily: 'Poppins, sans-serif', fontSize: 'clamp(2.4rem, 4.2vw, 3.6rem)' }}>
-                <span className="text-navy-900 block">We bring</span>
+                className="font-semibold mb-6 flex flex-col"
+                style={{ fontFamily: 'Poppins, sans-serif', fontSize: 'clamp(3rem, 5vw, 4.2rem)', gap: '0.18em', lineHeight: 1.1 }}>
+                <span className="text-navy-900">We bring</span>
 
                 {/* Sliding amber phrase */}
-                <span className="block" style={{ overflow: 'hidden', height: '1.2em' }}>
+                <span style={{ overflow: 'hidden', height: '1.1em', display: 'block' }}>
                   <AnimatePresence mode="wait">
                     <motion.span
                       key={phraseIndex}
@@ -132,14 +132,14 @@ const Home = () => {
                       animate={{ y: '0%', opacity: 1 }}
                       exit={{ y: '-100%', opacity: 0 }}
                       transition={{ duration: 0.45, ease: [0.4, 0, 0.2, 1] }}
-                      className="block font-bold"
-                      style={{ color: '#fda102', whiteSpace: 'nowrap', fontSize: 'clamp(2rem, 3.6vw, 3rem)' }}>
+                      className="block font-semibold"
+                      style={{ color: '#fda102', whiteSpace: 'nowrap', fontSize: 'inherit', lineHeight: 1.1 }}>
                       {slidingPhrases[phraseIndex]}
                     </motion.span>
                   </AnimatePresence>
                 </span>
 
-                <span className="text-navy-900 block">to your growth.</span>
+                <span className="text-navy-900">to your growth.</span>
               </motion.h1>
 
               <motion.p variants={fadeUp}
@@ -149,23 +149,24 @@ const Home = () => {
               </motion.p>
 
               <motion.div variants={fadeUp} className="flex flex-wrap gap-4 items-center">
+                {/* Button 1: Book a Consultation */}
                 <Link to="/contact"
                   className="inline-flex items-center gap-2 text-white px-8 py-3.5 rounded-full font-bold text-base transition-all shadow-lg hover:scale-[1.02]"
-                  style={{ fontFamily: 'Poppins, sans-serif', backgroundColor: '#a83a00' }}
+                  style={{ fontFamily: 'Poppins, sans-serif', backgroundColor: '#a83a00', border: '2px solid #fda102' }}
                   onMouseEnter={e => { (e.currentTarget as HTMLElement).style.backgroundColor = '#fda102'; (e.currentTarget as HTMLElement).style.color = '#111111'; }}
                   onMouseLeave={e => { (e.currentTarget as HTMLElement).style.backgroundColor = '#a83a00'; (e.currentTarget as HTMLElement).style.color = '#ffffff'; }}>
-                  Get Started Today <ArrowRight size={15} />
+                  Book a Consultation <ArrowRight size={15} />
                 </Link>
 
-                {/* Services dropdown */}
+                {/* Button 2: Compliance Solutions dropdown */}
                 <div className="relative" ref={dropdownRef}>
                   <button
                     onClick={() => setServicesOpen(!servicesOpen)}
-                    className="inline-flex items-center gap-2 text-white px-7 py-3.5 rounded-full font-bold text-base transition-all shadow-lg"
-                    style={{ fontFamily: 'Poppins, sans-serif', backgroundColor: '#a83a00' }}
-                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.backgroundColor = '#fda102'; (e.currentTarget as HTMLElement).style.color = '#111111'; }}
-                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.backgroundColor = '#a83a00'; (e.currentTarget as HTMLElement).style.color = '#ffffff'; }}>
-                    Our Services
+                    className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-bold text-base transition-all shadow-lg"
+                    style={{ fontFamily: 'Poppins, sans-serif', backgroundColor: '#ffffff', color: '#111111', border: '2px solid #fda102' }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.backgroundColor = '#fda102'; }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.backgroundColor = '#ffffff'; }}>
+                    Compliance Solutions
                     <ChevronDown size={15} className={`transition-transform duration-200 ${servicesOpen ? 'rotate-180' : ''}`} />
                   </button>
                   {servicesOpen && (
@@ -213,7 +214,7 @@ const Home = () => {
               <div className="flex gap-3" style={{ height: '620px', paddingLeft: '6%' }}>
 
                 {/* ── Left column: one big tall portrait — VIDEO ── */}
-                <div className="flex flex-col" style={{ width: '48%' }}>
+                <div className="flex flex-col" style={{ width: '58%' }}>
                   <motion.div
                     initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.55, delay: 0.3 }}
@@ -233,7 +234,7 @@ const Home = () => {
                 </div>
 
                 {/* ── Right column: small card on top + big card on bottom ── */}
-                <div className="flex flex-col gap-3" style={{ width: '52%' }}>
+                <div className="flex flex-col gap-3" style={{ width: '42%' }}>
 
                   {/* Card B — smaller portrait/square on top — IMAGE */}
                   <motion.div
