@@ -244,7 +244,7 @@ const Home = () => {
 
       {/* ── One Stop Consultancy Partner ─────────────────── */}
       <section className="py-16 overflow-hidden" style={{ backgroundColor: '#a83a00' }}>
-        <div className="w-full px-0">
+        <div className="w-full px-6 lg:px-10">
 
           {/* Section header */}
           <motion.div className="text-center mb-12"
@@ -261,7 +261,7 @@ const Home = () => {
           </motion.div>
 
           {/* 6-card horizontal grid — always single row */}
-          <div className="grid grid-cols-6 gap-px">
+          <div className="grid grid-cols-6 gap-4">
             {[
               { anim: animStatutory,       title: 'Statutory Registrations',       desc: 'ESI, EPF, Professional Tax' },
               { anim: animLabourActs,      title: 'Core Labour Law Acts',           desc: 'Contract Labour, Gratuity, Bonus' },
@@ -275,13 +275,13 @@ const Home = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.45, delay: i * 0.08 }}
-                className="flex flex-col items-center text-center rounded-2xl p-9 lg:p-14"
+                className="flex flex-col items-center text-center rounded-2xl p-6 lg:p-8"
                 style={{ backgroundColor: '#ffffff', border: '1px solid #e5e7eb' }}>
 
                 {/* Lottie animation — larger */}
                 <LottieAnim
                   animationData={item.anim}
-                  className="w-36 h-36 lg:w-40 lg:h-40 mb-6 shrink-0"
+                  className="w-28 h-28 lg:w-32 lg:h-32 mb-4 shrink-0"
                 />
 
                 {/* Title — single line */}
