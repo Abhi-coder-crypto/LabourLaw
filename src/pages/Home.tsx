@@ -632,9 +632,6 @@ const Home = () => {
               className="w-full h-full object-cover object-center"
               style={{ display: 'block', minHeight: '320px', maxHeight: '480px' }}
             />
-            {/* Gradient blend on left edge so image merges into the orange bg */}
-            <div className="absolute inset-y-0 left-0 w-24 pointer-events-none"
-              style={{ background: 'linear-gradient(to right, #a83a00, transparent)' }} />
           </motion.div>
 
         </div>
