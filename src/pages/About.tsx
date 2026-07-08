@@ -280,7 +280,7 @@ const About = () => {
             style={{ fontFamily: PP, color: 'rgba(255,255,255,0.4)' }}
             initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}
             viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.2 }}>
-            — Ramesh Maru, Founder
+            — Deepak Maru, Founder & Managing Partner
           </motion.p>
         </div>
       </section>
@@ -463,79 +463,61 @@ const About = () => {
       </section>
 
       {/* ══════════════════════════════════════════════════════
-          8. TEAM — Photo grid with hover color reveal
+          8. TEAM — 4 white cards on brand-colour band
          ══════════════════════════════════════════════════════ */}
-      <section className="py-20" style={{ backgroundColor: '#f9f5f2' }}>
-        <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <div className="flex items-end justify-between mb-12 flex-wrap gap-4">
-            <div>
-              <div className="flex items-center gap-4 mb-3">
-                <div className="w-8 h-0.5" style={{ backgroundColor: '#fda102' }} />
-                <p className="font-bold text-xs uppercase tracking-[0.25em]" style={{ fontFamily: PP, color: '#a83a00' }}>The People</p>
-              </div>
-              <h2 className="font-bold" style={{ fontFamily: PP, fontSize: 'clamp(1.6rem, 2.8vw, 2.4rem)', color: '#111' }}>
-                Meet the Team
-              </h2>
-            </div>
-            <p className="text-sm max-w-xs text-right hidden lg:block" style={{ fontFamily: PP, color: '#888' }}>
-              The sharp minds behind India&apos;s most trusted compliance practice.
+      <section className="py-16 overflow-hidden" style={{ backgroundColor: '#a83a00' }}>
+        <div className="w-full px-6 lg:px-10">
+
+          {/* Section header */}
+          <motion.div className="text-center mb-12"
+            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }} transition={{ duration: 0.5 }}>
+            <p className="font-bold text-sm uppercase tracking-widest mb-3"
+              style={{ fontFamily: PP, color: 'rgba(255,255,255,0.7)' }}>
+              The People Behind the Practice
             </p>
+            <h2 className="font-bold text-white leading-[1.15]"
+              style={{ fontFamily: PP, fontSize: 'clamp(1.6rem, 2.8vw, 2.4rem)' }}>
+              Meet the Team
+            </h2>
+          </motion.div>
+
+          {/* 4-card grid — single row */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {[
+              { name: 'Deepak Maru',  qualification: 'B.Com (Hons), LL.B', role: 'Advocate\nFounder & Managing Partner', img: '/assets/service-legal.png' },
+              { name: 'Sanjeev Maru', qualification: 'B.Com, LL.B',        role: 'Co-founder & Managing Partner',       img: '/assets/service-staffing.png' },
+              { name: 'Pankhil Maru', qualification: 'B.E (I.T), MBA (HR)', role: 'Managing Partner',                    img: '/assets/service-hr.png' },
+              { name: 'Nishit Maru',  qualification: 'BLS, LL.B, CS',       role: 'Managing Partner',                    img: '/assets/service-audits.png' },
+            ].map((m, i) => (
+              <motion.div key={i}
+                initial={{ opacity: 0, y: 28 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.45, delay: i * 0.08 }}
+                className="rounded-2xl overflow-hidden flex flex-col group cursor-default"
+                style={{ backgroundColor: '#ffffff' }}>
+
+                {/* Photo */}
+                <div className="relative overflow-hidden" style={{ height: '240px' }}>
+                  <img src={m.img} alt={m.name}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-40 transition-opacity duration-400"
+                    style={{ backgroundColor: '#a83a00' }} />
+                </div>
+
+                {/* Details */}
+                <div className="flex-1 flex flex-col items-center text-center px-6 py-7">
+                  <div className="w-8 h-0.5 mb-4" style={{ backgroundColor: '#fda102' }} />
+                  <h4 className="font-bold text-lg mb-1" style={{ fontFamily: PP, color: '#111' }}>{m.name}</h4>
+                  <p className="text-xs mb-2" style={{ fontFamily: PP, color: '#999' }}>{m.qualification}</p>
+                  <p className="font-semibold text-xs uppercase tracking-wide whitespace-pre-line leading-relaxed"
+                    style={{ fontFamily: PP, color: '#a83a00' }}>{m.role}</p>
+                </div>
+              </motion.div>
+            ))}
           </div>
 
-          {/* Asymmetric grid: 1 large + 3 side cards */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
-
-            {/* Large card */}
-            <motion.div className="lg:col-span-5 rounded-3xl overflow-hidden relative group cursor-default"
-              style={{ height: '480px' }}
-              initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }} transition={{ duration: 0.6 }}>
-              <img src="/assets/hero-office.png" alt=""
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-              <div className="absolute inset-0"
-                style={{ background: 'linear-gradient(to top, rgba(168,58,0,0.95) 0%, rgba(168,58,0,0.1) 55%)' }} />
-              <div className="absolute bottom-0 left-0 right-0 p-8">
-                <div className="w-10 h-0.5 mb-4" style={{ backgroundColor: '#fda102' }} />
-                <h4 className="font-bold text-white text-2xl mb-1" style={{ fontFamily: PP }}>Ramesh Maru</h4>
-                <p className="font-semibold text-xs uppercase tracking-widest mb-4" style={{ fontFamily: PP, color: '#fda102' }}>Founder & Managing Director</p>
-                <p className="text-xs leading-relaxed text-white/75 max-w-xs opacity-0 group-hover:opacity-100 translate-y-3 group-hover:translate-y-0 transition-all duration-400"
-                  style={{ fontFamily: PP }}>
-                  21+ years guiding India&apos;s finest corporates through the labyrinth of labour law compliance. Ramesh&apos;s vision turned a boutique firm into a pan-India powerhouse.
-                </p>
-              </div>
-            </motion.div>
-
-            {/* 3 smaller cards stacked */}
-            <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-5">
-              {[
-                { name: 'Priya Sharma',  title: 'Head of HR Advisory',            dept: 'HR Policy & Workforce Management',     img: '/assets/service-hr.png' },
-                { name: 'Ankit Verma',   title: 'Director — Payroll & Statutory',  dept: 'Payroll Processing, PF & ESIC',         img: '/assets/service-payroll.png' },
-                { name: 'Sunita Patel',  title: 'Senior Legal Consultant',          dept: 'Labour Litigation & Compliance Audits',  img: '/assets/service-legal.png' },
-              ].map((m, i) => (
-                <motion.div key={i}
-                  className="rounded-2xl overflow-hidden flex items-stretch group cursor-default"
-                  style={{ height: '138px', backgroundColor: '#ffffff' }}
-                  initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }}>
-                  {/* Photo strip */}
-                  <div className="w-32 shrink-0 relative overflow-hidden">
-                    <img src={m.img} alt="" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-600" />
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-60 transition-opacity duration-400"
-                      style={{ backgroundColor: '#a83a00' }} />
-                  </div>
-                  {/* Info */}
-                  <div className="flex-1 flex flex-col justify-center px-6">
-                    <p className="font-bold text-base mb-0.5" style={{ fontFamily: PP, color: '#111' }}>{m.name}</p>
-                    <p className="font-semibold text-xs uppercase tracking-wide mb-1.5" style={{ fontFamily: PP, color: '#a83a00' }}>{m.title}</p>
-                    <p className="text-xs" style={{ fontFamily: PP, color: '#999' }}>{m.dept}</p>
-                  </div>
-                  {/* Amber accent strip */}
-                  <div className="w-1 shrink-0 group-hover:w-2 transition-all duration-300" style={{ backgroundColor: '#fda102' }} />
-                </motion.div>
-              ))}
-            </div>
-
-          </div>
         </div>
       </section>
 
