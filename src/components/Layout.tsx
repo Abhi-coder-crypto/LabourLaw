@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { Phone, Mail, MapPin, Menu, X, ChevronDown, ArrowUp } from 'lucide-react';
+import { Menu, X, ChevronDown, ArrowUp } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import iconLocation from '@assets/placeholder_1783488477011.png';
+import iconCall from '@assets/call_1783488542810.png';
+import iconMail from '@assets/communication_1783488559887.png';
 
 const socialLinks = [
   { href: 'https://wa.me/919876543210',               img: '/assets/social-whatsapp.png',  label: 'WhatsApp'  },
@@ -184,10 +187,10 @@ const Layout = () => {
               ))}
               <div className="p-5 flex flex-col gap-3">
                 <a href="tel:+919876543210" className="flex items-center gap-2 text-sm text-gray-600">
-                  <Phone size={14} className="text-teal-500" /> +91 98765 43210
+                  <img src={iconCall} alt="" className="w-4 h-4 object-contain" /> +91 98765 43210
                 </a>
                 <a href="mailto:contact@labourcodes.in" className="flex items-center gap-2 text-sm text-gray-600">
-                  <Mail size={14} className="text-teal-500" /> contact@labourcodes.in
+                  <img src={iconMail} alt="" className="w-4 h-4 object-contain" /> contact@labourcodes.in
                 </a>
                 <Link to="/contact"
                   className="mt-2 block w-full text-center text-white px-6 py-3 rounded-full font-semibold text-sm transition-colors"
@@ -230,8 +233,8 @@ const Layout = () => {
               <div className="flex gap-3 flex-wrap">
                 {socialLinks.map(({ href, img, label }) => (
                   <a key={label} href={href} target="_blank" rel="noreferrer" aria-label={label}
-                    className="w-10 h-10 rounded-xl overflow-hidden hover:scale-110 transition-transform duration-200 shadow-sm">
-                    <img src={img} alt={label} className="w-full h-full object-cover" />
+                    className="w-10 h-10 hover:scale-110 transition-transform duration-200">
+                    <img src={img} alt={label} className="w-full h-full object-contain" />
                   </a>
                 ))}
               </div>
@@ -265,11 +268,11 @@ const Layout = () => {
                 style={{ fontFamily: 'Poppins, sans-serif', color: '#a83a00' }}>Contact Us</h3>
               <ul className="space-y-5">
                 <li className="flex gap-3" style={{ fontFamily: 'Poppins, sans-serif', color: '#111111' }}>
-                  <MapPin size={18} className="shrink-0 mt-0.5" style={{ color: '#fda102' }} />
+                  <img src={iconLocation} alt="" aria-hidden="true" className="w-5 h-5 shrink-0 mt-0.5 object-contain" />
                   <span className="text-base leading-snug">15th Floor, Nariman Point, Mumbai, Maharashtra 400021</span>
                 </li>
                 <li className="flex gap-3" style={{ fontFamily: 'Poppins, sans-serif', color: '#111111' }}>
-                  <Phone size={17} className="shrink-0 mt-0.5" style={{ color: '#fda102' }} />
+                  <img src={iconCall} alt="" aria-hidden="true" className="w-5 h-5 shrink-0 mt-0.5 object-contain" />
                   <div className="text-base">
                     <a href="tel:+919876543210" className="block transition-colors duration-200 font-medium"
                       onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#a83a00'; }}
@@ -284,7 +287,7 @@ const Layout = () => {
                   </div>
                 </li>
                 <li className="flex gap-3" style={{ fontFamily: 'Poppins, sans-serif', color: '#111111' }}>
-                  <Mail size={17} className="shrink-0 mt-0.5" style={{ color: '#fda102' }} />
+                  <img src={iconMail} alt="" aria-hidden="true" className="w-5 h-5 shrink-0 mt-0.5 object-contain" />
                   <a href="mailto:contact@labourcodes.in"
                     className="text-base transition-colors duration-200 font-medium"
                     onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#a83a00'; }}
