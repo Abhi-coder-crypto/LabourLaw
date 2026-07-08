@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight, CheckCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import heroVideo from '@assets/7552418-hd_1080_1920_25fps_1783420764090.mp4';
+import ctaVideo from '@assets/7691594-hd_1920_1080_25fps_1783493752065.mp4';
 import heroImage from '@assets/pexels-vlada-karpovich-7433855_1783420874088.jpg';
 
 const PP = 'Poppins, sans-serif';
@@ -524,14 +525,14 @@ const About = () => {
           9. VIDEO CTA — Video background, bold overlay
          ══════════════════════════════════════════════════════ */}
       <section className="relative overflow-hidden" style={{ minHeight: '440px' }}>
-        <video src={heroVideo} autoPlay loop muted playsInline
+        <video src={ctaVideo} autoPlay loop muted playsInline
           className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0"
-          style={{ background: 'linear-gradient(135deg, rgba(168,58,0,0.92) 0%, rgba(0,0,0,0.75) 100%)' }} />
+          style={{ backgroundColor: 'rgba(0,0,0,0.45)' }} />
 
         <div className="relative max-w-5xl mx-auto px-8 py-24 text-center">
-          <motion.p className="font-bold text-xs uppercase tracking-[0.3em] mb-5"
-            style={{ fontFamily: PP, color: '#fda102' }}
+          <motion.p className="font-bold uppercase tracking-[0.3em] mb-5"
+            style={{ fontFamily: PP, color: '#fda102', fontSize: 'clamp(1rem, 1.8vw, 1.35rem)' }}
             initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }} transition={{ duration: 0.4 }}>
             Ready to Get Compliant?
@@ -540,7 +541,7 @@ const About = () => {
             style={{ fontFamily: PP, fontSize: 'clamp(2rem, 5vw, 4rem)' }}
             initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }} transition={{ duration: 0.55, delay: 0.08 }}>
-            Let's build your compliance<br />framework — <span style={{ color: '#fda102' }}>together.</span>
+            Let's build your compliance<br /><span style={{ color: '#fda102' }}>framework together</span>
           </motion.h2>
           <motion.div className="flex flex-wrap gap-4 justify-center"
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
