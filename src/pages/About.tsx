@@ -357,68 +357,80 @@ const About = () => {
           </h2>
 
           {/* ── Horizontal timeline ── */}
-          <div className="relative">
-            {/* Track (background) */}
-            <div className="absolute left-0 right-0 hidden sm:block"
-              style={{ top: '44px', height: '2px', backgroundColor: 'rgba(255,255,255,0.18)' }} />
-            {/* Animated fill line — draws left to right */}
-            <motion.div className="absolute left-0 hidden sm:block"
-              style={{ top: '44px', height: '2px', backgroundColor: '#fda102', transformOrigin: 'left' }}
-              initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }}
-              viewport={{ once: true }} transition={{ duration: 1.6, ease: 'easeInOut' }} />
+          {/* Zone-1 height (image height) + its bottom margin + half the circle = exact vertical centre of every circle */}
+          {(() => {
+            const zoneH = 176; // image/zone-1 height in px (matches sm:h-44 image + sm:min-h)
+            const zoneMargin = 20; // mb-5
+            const circleHalf = 40; // w-20/h-20 → 80px / 2
+            const lineTop = zoneH + zoneMargin + circleHalf;
+            return (
+              <div className="relative">
+                {/* Track (background) — passes through circle centres only */}
+                <div className="absolute left-0 right-0 hidden sm:block"
+                  style={{ top: `${lineTop}px`, height: '2px', backgroundColor: 'rgba(255,255,255,0.18)' }} />
+                {/* Animated fill line — draws left to right */}
+                <motion.div className="absolute left-0 hidden sm:block"
+                  style={{ top: `${lineTop}px`, height: '2px', backgroundColor: '#fda102', transformOrigin: 'left' }}
+                  initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }}
+                  viewport={{ once: true }} transition={{ duration: 1.6, ease: 'easeInOut' }} />
 
-            <div className="grid grid-cols-1 sm:grid-cols-4 gap-14 sm:gap-6">
-              {[
-                { year: '2003', event: 'Founded', img: '/assets/service-statutory.png', lines: ['Established as a boutique advisory firm in Mumbai focused on compliance.'] },
-                { year: '2009', event: 'Pan-India', img: '/assets/service-payroll.png', lines: ['Expanded to Delhi NCR and Bangalore, becoming a true pan-India firm.'] },
-                { year: '2016', event: 'Tech-Enabled', img: '/assets/service-training.png', lines: ['Launched proprietary compliance software with real-time dashboards.'] },
-                { year: '2023', event: 'New Codes Authority', img: '/assets/service-hr.png', lines: ["India's go-to authority on the New Labour Codes nationwide."] },
-              ].map((m, i) => {
-                const down = i % 2 === 0; // even index: image up top, text below circle. odd: text above, image below.
-                const Image = (
-                  <div className="w-full h-24 sm:h-28 rounded-xl overflow-hidden shadow-lg">
-                    <img src={m.img} alt="" className="w-full h-full object-cover" />
-                  </div>
-                );
-                const Text = (
-                  <div>
-                    <p className="font-bold uppercase tracking-widest mb-3 text-center"
-                      style={{ fontFamily: PP, color: '#fda102', fontSize: '0.95rem' }}>{m.event}</p>
-                    <p className="max-w-[220px] mx-auto"
-                      style={{ fontFamily: PP, color: 'rgba(255,255,255,0.85)', lineHeight: 1.8, textAlign: 'justify', textAlignLast: 'center', fontSize: '0.9rem', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                      {m.lines.join(' ')}
-                    </p>
-                  </div>
-                );
+                <div className="grid grid-cols-1 sm:grid-cols-4 gap-14 sm:gap-6">
+                  {[
+                    { year: '2003', event: 'Founded', img: '/assets/service-statutory.png', lines: ['Established as a boutique', 'advisory firm in Mumbai,', 'focused on compliance.'] },
+                    { year: '2009', event: 'Pan-India', img: '/assets/service-payroll.png', lines: ['Expanded to Delhi NCR and', 'Bangalore, becoming a true', 'pan-India compliance firm.'] },
+                    { year: '2016', event: 'Tech-Enabled', img: '/assets/service-training.png', lines: ['Launched proprietary', 'compliance software with', 'real-time dashboards.'] },
+                    { year: '2023', event: 'New Codes Authority', img: '/assets/service-hr.png', lines: ["Became India's go-to", 'authority on the New', 'Labour Codes nationwide.'] },
+                  ].map((m, i) => {
+                    const down = i % 2 === 0; // even index: image above the circle, text below. odd: reversed.
+                    const Image = (
+                      <div className="w-full rounded-xl overflow-hidden shadow-lg" style={{ height: `${zoneH}px` }}>
+                        <img src={m.img} alt="" className="w-full h-full object-cover" />
+                      </div>
+                    );
+                    const Text = (
+                      <div>
+                        <p className="font-bold uppercase tracking-widest mb-3 text-center"
+                          style={{ fontFamily: PP, color: '#fda102', fontSize: '0.95rem' }}>{m.event}</p>
+                        <p className="max-w-[230px] mx-auto"
+                          style={{ fontFamily: PP, color: 'rgba(255,255,255,0.85)', lineHeight: 1.8, textAlign: 'justify', fontSize: '0.9rem' }}>
+                          {m.lines.map((line, li) => (
+                            <span key={li}>{line}{li < m.lines.length - 1 && <br />}</span>
+                          ))}
+                        </p>
+                      </div>
+                    );
 
-                return (
-                  <motion.div key={i} className="flex flex-col items-center text-center"
-                    initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.4, delay: i * 0.1 }}>
+                    return (
+                      <motion.div key={i} className="flex flex-col items-center text-center"
+                        initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.4, delay: i * 0.1 }}>
 
-                    {/* Image zone — always first on mobile (order-1); alternates before/after the circle on sm+ so circles stay aligned */}
-                    <div className={`w-full flex items-end justify-center mb-5 order-1 sm:min-h-[112px] ${down ? 'sm:order-1' : 'sm:order-3'}`}>
-                      {Image}
-                    </div>
+                        {/* Image zone — always first on mobile (order-1); alternates before/after the circle on sm+ so circles stay aligned */}
+                        <div className={`w-full flex items-end justify-center mb-5 order-1 ${down ? 'sm:order-1' : 'sm:order-3'}`}
+                          style={{ minHeight: `${zoneH}px` }}>
+                          {Image}
+                        </div>
 
-                    {/* Circle node */}
-                    <motion.div
-                      className="relative z-10 w-20 h-20 rounded-full flex items-center justify-center shrink-0 font-bold shadow-lg order-2"
-                      style={{ backgroundColor: '#fda102', color: '#ffffff', fontFamily: PP, fontSize: '1.15rem' }}
-                      initial={{ scale: 0 }} whileInView={{ scale: 1 }}
-                      viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.4, delay: 0.05 + i * 0.1, type: 'spring', stiffness: 260, damping: 18 }}>
-                      {m.year}
-                    </motion.div>
+                        {/* Circle node */}
+                        <motion.div
+                          className="relative z-10 w-20 h-20 rounded-full flex items-center justify-center shrink-0 font-bold shadow-lg order-2"
+                          style={{ backgroundColor: '#fda102', color: '#ffffff', fontFamily: PP, fontSize: '1.15rem' }}
+                          initial={{ scale: 0 }} whileInView={{ scale: 1 }}
+                          viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.4, delay: 0.05 + i * 0.1, type: 'spring', stiffness: 260, damping: 18 }}>
+                          {m.year}
+                        </motion.div>
 
-                    {/* Text zone — always last on mobile (order-3); alternates before/after the circle on sm+ */}
-                    <div className={`w-full flex items-start justify-center mt-5 order-3 ${down ? 'sm:order-3' : 'sm:order-1'}`}>
-                      {Text}
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </div>
+                        {/* Text zone — always last on mobile (order-3); alternates before/after the circle on sm+ */}
+                        <div className={`w-full flex items-start justify-center mt-5 order-3 ${down ? 'sm:order-3' : 'sm:order-1'}`}>
+                          {Text}
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })()}
         </div>
       </section>
 
