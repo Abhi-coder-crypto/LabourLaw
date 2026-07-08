@@ -1,430 +1,502 @@
+import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Shield, Award, ArrowRight, CheckCircle, TrendingUp, Handshake, Star } from 'lucide-react';
+import { ArrowRight, ArrowDown, CheckCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import heroVideo from '@assets/7552418-hd_1080_1920_25fps_1783420764090.mp4';
 import heroImage from '@assets/pexels-vlada-karpovich-7433855_1783420874088.jpg';
 
 const PP = 'Poppins, sans-serif';
 
+/* ── inline keyframes injected once ── */
+const STYLES = `
+@keyframes marquee { from { transform: translateX(0) } to { transform: translateX(-50%) } }
+@keyframes fadeUp  { from { opacity:0; transform:translateY(32px) } to { opacity:1; transform:translateY(0) } }
+`;
+
+const MARQUEE_ITEMS = [
+  'Labour Law Compliance', '✦', 'Payroll Processing', '✦',
+  'HR Advisory', '✦', 'Statutory Filings', '✦',
+  'Compliance Audits', '✦', 'Factory Act', '✦',
+  'New Labour Codes', '✦', 'Workforce Management', '✦',
+];
+
 const About = () => {
+  const styleInjected = useRef(false);
+  useEffect(() => {
+    if (styleInjected.current) return;
+    const el = document.createElement('style');
+    el.textContent = STYLES;
+    document.head.appendChild(el);
+    styleInjected.current = true;
+  }, []);
+
   return (
     <div className="w-full overflow-x-hidden">
 
       {/* ══════════════════════════════════════════════════════
-          1. HERO — Diagonal split: full-height, no collage
+          1. FULL-SCREEN VIDEO HERO
          ══════════════════════════════════════════════════════ */}
-      <section className="relative min-h-screen flex overflow-hidden">
+      <section className="relative w-full overflow-hidden" style={{ height: '100vh', minHeight: '640px' }}>
+        {/* Video background */}
+        <video src={heroVideo} autoPlay loop muted playsInline
+          className="absolute inset-0 w-full h-full object-cover" />
+        {/* Dark gradient overlay */}
+        <div className="absolute inset-0"
+          style={{ background: 'linear-gradient(135deg, rgba(168,58,0,0.88) 0%, rgba(0,0,0,0.55) 60%, rgba(0,0,0,0.2) 100%)' }} />
 
-        {/* Left dark panel */}
-        <div className="relative z-10 flex flex-col justify-center px-10 lg:px-20 w-full lg:w-[52%] py-24"
-          style={{ backgroundColor: '#a83a00' }}>
-          {/* Dot texture */}
-          <div className="absolute inset-0 pointer-events-none opacity-5"
-            style={{ backgroundImage: 'radial-gradient(circle, #ffffff 1.5px, transparent 1.5px)', backgroundSize: '30px 30px' }} />
+        {/* Content */}
+        <div className="relative h-full flex flex-col justify-center px-8 lg:px-20 max-w-7xl mx-auto">
+          <p className="font-bold text-xs uppercase tracking-[0.3em] mb-6"
+            style={{ fontFamily: PP, color: '#fda102',
+              animation: 'fadeUp 0.5s ease forwards' }}>
+            Maru Consultancy Services — Est. 2003
+          </p>
 
-          <motion.p className="font-bold text-xs uppercase tracking-[0.25em] mb-5 relative"
-            style={{ fontFamily: PP, color: '#fda102' }}
-            initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
-            Who We Are
-          </motion.p>
+          <h1 className="font-bold text-white leading-[1.05] mb-6"
+            style={{ fontFamily: PP, fontSize: 'clamp(2.8rem, 7vw, 6.5rem)',
+              animation: 'fadeUp 0.6s 0.1s ease both' }}>
+            We don&apos;t just<br />
+            file paperwork.<br />
+            <span style={{ color: '#fda102', WebkitTextStroke: '0px' }}>We architect</span><br />
+            compliance.
+          </h1>
 
-          <motion.h1
-            className="font-bold text-white leading-[1.1] mb-8 relative"
-            style={{ fontFamily: PP, fontSize: 'clamp(2.4rem, 5vw, 4.2rem)' }}
-            initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.55, delay: 0.1 }}>
-            India's Most<br />
-            <span style={{ color: '#fda102' }}>Trusted</span><br />
-            Labour Law<br />Partner.
-          </motion.h1>
+          <p className="text-sm leading-relaxed max-w-sm mb-10"
+            style={{ fontFamily: PP, color: 'rgba(255,255,255,0.75)',
+              animation: 'fadeUp 0.6s 0.2s ease both' }}>
+            Two decades of expertise protecting India&apos;s finest organisations from legal risk — and helping them thrive.
+          </p>
 
-          <motion.p
-            className="text-sm leading-relaxed mb-10 max-w-sm relative"
-            style={{ fontFamily: PP, color: 'rgba(255,255,255,0.75)' }}
-            initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: 0.2 }}>
-            Two decades of expertise in labour law compliance, HR governance, statutory filings, and workforce management — serving 500+ organisations across India.
-          </motion.p>
-
-          {/* Four stat pills */}
-          <motion.div className="grid grid-cols-2 gap-4 max-w-xs relative"
-            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }}>
-            {[['500+','Clients'],['21+','Years'],['15+','States'],['98%','Retention']].map(([n, l]) => (
-              <div key={l} className="rounded-xl p-4"
-                style={{ backgroundColor: 'rgba(255,255,255,0.10)', border: '1px solid rgba(255,255,255,0.15)' }}>
-                <p className="font-bold text-xl" style={{ fontFamily: PP, color: '#fda102' }}>{n}</p>
-                <p className="text-xs uppercase tracking-wider text-white/60" style={{ fontFamily: PP }}>{l}</p>
-              </div>
-            ))}
-          </motion.div>
-
-          <motion.div className="mt-10 flex gap-4 relative"
-            initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.4 }}>
+          <div className="flex flex-wrap gap-4"
+            style={{ animation: 'fadeUp 0.6s 0.3s ease both' }}>
             <Link to="/contact"
-              className="inline-flex items-center gap-2 rounded-full px-7 py-3 font-semibold text-sm transition-all hover:scale-[1.03]"
-              style={{ backgroundColor: '#fda102', color: '#ffffff', fontFamily: PP }}>
-              Get in Touch <ArrowRight size={15} />
+              className="inline-flex items-center gap-2 rounded-full px-8 py-3.5 font-semibold text-sm transition-all hover:scale-[1.04]"
+              style={{ backgroundColor: '#fda102', color: '#fff', fontFamily: PP }}>
+              Work With Us <ArrowRight size={15} />
             </Link>
             <Link to="/services"
-              className="inline-flex items-center gap-2 rounded-full px-7 py-3 font-semibold text-sm border transition-all hover:scale-[1.03]"
-              style={{ borderColor: 'rgba(255,255,255,0.4)', color: '#ffffff', fontFamily: PP }}>
+              className="inline-flex items-center gap-2 rounded-full px-8 py-3.5 font-semibold text-sm border transition-all hover:scale-[1.04]"
+              style={{ borderColor: 'rgba(255,255,255,0.5)', color: '#fff', fontFamily: PP }}>
               Our Services
             </Link>
-          </motion.div>
+          </div>
+
+          {/* Scroll cue */}
+          <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-60">
+            <p className="text-white text-xs uppercase tracking-widest" style={{ fontFamily: PP }}>Scroll</p>
+            <ArrowDown size={16} color="#fff" />
+          </div>
         </div>
 
-        {/* Right: full-height image */}
-        <motion.div className="hidden lg:block absolute right-0 top-0 bottom-0"
-          style={{ width: '52%' }}
-          initial={{ opacity: 0, scale: 1.04 }} animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.9, delay: 0.15 }}>
-          <video src={heroVideo} autoPlay loop muted playsInline aria-hidden="true"
-            className="w-full h-full object-cover" style={{ display: 'block' }} />
-          {/* Diagonal mask */}
-          <div className="absolute inset-0 pointer-events-none"
-            style={{ background: 'linear-gradient(105deg, #a83a00 12%, transparent 38%)' }} />
-        </motion.div>
+        {/* Bottom amber bar */}
+        <div className="absolute bottom-0 left-0 right-0 h-1" style={{ backgroundColor: '#fda102' }} />
       </section>
 
       {/* ══════════════════════════════════════════════════════
-          2. OUR STORY — Wide image banner with floating card
+          2. MARQUEE STRIP
          ══════════════════════════════════════════════════════ */}
-      <section className="relative bg-white">
-        {/* Full-width image strip */}
-        <div className="w-full overflow-hidden" style={{ height: '420px' }}>
-          <img src={heroImage} alt="" aria-hidden="true"
-            className="w-full h-full object-cover" />
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.6) 100%)' }} />
+      <div className="overflow-hidden py-4" style={{ backgroundColor: '#111111' }}>
+        <div style={{ display: 'flex', width: 'max-content', animation: 'marquee 28s linear infinite' }}>
+          {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, i) => (
+            <span key={i} className="font-semibold text-sm mx-6 whitespace-nowrap"
+              style={{ fontFamily: PP, color: item === '✦' ? '#fda102' : 'rgba(255,255,255,0.7)' }}>
+              {item}
+            </span>
+          ))}
         </div>
-
-        {/* Floating content card — overlaps image */}
-        <div className="relative max-w-7xl mx-auto px-6 lg:px-10">
-          <motion.div
-            className="relative -mt-40 lg:-mt-52 bg-white rounded-2xl shadow-2xl p-8 lg:p-14"
-            initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }} transition={{ duration: 0.7 }}>
-            <div className="flex flex-col lg:flex-row gap-12">
-              {/* Left: big label */}
-              <div className="lg:w-[30%] shrink-0">
-                <p className="font-bold text-xs uppercase tracking-[0.22em] mb-3"
-                  style={{ fontFamily: PP, color: '#a83a00' }}>Our Story</p>
-                <h2 className="font-bold leading-[1.15] mb-0"
-                  style={{ fontFamily: PP, fontSize: 'clamp(1.8rem, 3vw, 3rem)', color: '#111111' }}>
-                  Founded<br />on a<br />Vision.
-                </h2>
-                <div className="mt-6 w-12 h-1 rounded-full" style={{ backgroundColor: '#fda102' }} />
-              </div>
-              {/* Right: text */}
-              <div className="flex-1">
-                <div className="space-y-4 mb-8"
-                  style={{ fontFamily: PP, fontWeight: 400, color: '#555555', fontSize: '0.93rem', lineHeight: 1.85 }}>
-                  <p>Founded in 2003, Maru Consultancy Services began with a singular vision: to bridge the gap between complex legal statutes and practical business operations. What started as a boutique advisory firm in Mumbai has grown into a pan-India compliance powerhouse.</p>
-                  <p>We recognized early that compliance is not merely about avoiding penalties — it's about creating an ethical, structured, and highly motivated workforce aligned with India's evolving labour law framework.</p>
-                  <p>Today, we manage compliance for over 500 organisations — from dynamic startups to large corporates — processing millions of data points annually while maintaining a pristine record of legal adherence.</p>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-                  {[
-                    ['500+', 'Corporate Clients'],
-                    ['21+',  'Years in Practice'],
-                    ['15+',  'States Covered'],
-                  ].map(([num, lbl]) => (
-                    <div key={lbl} className="rounded-xl p-4 text-center"
-                      style={{ backgroundColor: '#f9f5f2', border: '1px solid #ece5df' }}>
-                      <p className="font-bold text-2xl mb-0.5" style={{ fontFamily: PP, color: '#a83a00' }}>{num}</p>
-                      <p className="text-xs uppercase tracking-wider" style={{ fontFamily: PP, color: '#888' }}>{lbl}</p>
-                    </div>
-                  ))}
-                </div>
-                <Link to="/contact"
-                  className="inline-flex items-center gap-2 rounded-full px-7 py-3 font-semibold text-sm text-white transition-all hover:scale-[1.02] shadow-md"
-                  style={{ backgroundColor: '#a83a00', fontFamily: PP }}>
-                  Start a Conversation <ArrowRight size={15} />
-                </Link>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-        <div className="pb-20" />
-      </section>
+      </div>
 
       {/* ══════════════════════════════════════════════════════
-          3. MISSION & VISION — Single split card (no grid)
-         ══════════════════════════════════════════════════════ */}
-      <section className="py-20" style={{ backgroundColor: '#f9f5f2' }}>
-        <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <motion.div className="text-center mb-12"
-            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }} transition={{ duration: 0.5 }}>
-            <p className="font-bold text-xs uppercase tracking-[0.22em] mb-3" style={{ fontFamily: PP, color: '#a83a00' }}>Our Purpose</p>
-            <h2 className="font-bold" style={{ fontFamily: PP, fontSize: 'clamp(1.6rem, 2.8vw, 2.4rem)', color: '#111111' }}>
-              Mission &amp; Vision
-            </h2>
-          </motion.div>
-
-          {/* One big horizontal card, split down the middle */}
-          <motion.div className="rounded-3xl overflow-hidden shadow-xl flex flex-col lg:flex-row"
-            initial={{ opacity: 0, y: 32 }} whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }} transition={{ duration: 0.65 }}>
-            {/* Mission — white */}
-            <div className="flex-1 p-10 lg:p-14 bg-white border-b lg:border-b-0 lg:border-r border-gray-100">
-              <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-7 text-white"
-                style={{ backgroundColor: '#a83a00' }}>
-                <Shield size={26} />
-              </div>
-              <p className="font-bold text-xs uppercase tracking-[0.2em] mb-3" style={{ fontFamily: PP, color: '#fda102' }}>Mission</p>
-              <h3 className="font-bold text-xl mb-5" style={{ fontFamily: PP, color: '#111111' }}>Empower Through Compliance</h3>
-              <p style={{ fontFamily: PP, color: '#555', fontSize: '0.92rem', lineHeight: 1.85 }}>
-                To empower businesses with foolproof compliance strategies, enabling them to focus on growth while we secure their legal and operational foundation. We strive to make compliance a seamless, automated part of corporate success.
-              </p>
-              <div className="mt-8 space-y-3">
-                {['Zero-penalty compliance track record', 'Tech-enabled statutory tracking', 'Dedicated consultant per client'].map((pt) => (
-                  <div key={pt} className="flex items-center gap-3">
-                    <CheckCircle size={15} style={{ color: '#fda102', flexShrink: 0 }} />
-                    <span style={{ fontFamily: PP, fontSize: '0.85rem', color: '#444' }}>{pt}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Vision — tinted */}
-            <div className="flex-1 p-10 lg:p-14" style={{ backgroundColor: '#a83a00' }}>
-              <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-7"
-                style={{ backgroundColor: 'rgba(255,255,255,0.15)' }}>
-                <TrendingUp size={26} color="#fda102" />
-              </div>
-              <p className="font-bold text-xs uppercase tracking-[0.2em] mb-3" style={{ fontFamily: PP, color: '#fda102' }}>Vision</p>
-              <h3 className="font-bold text-xl mb-5 text-white" style={{ fontFamily: PP }}>India's Gold Standard</h3>
-              <p style={{ fontFamily: PP, color: 'rgba(255,255,255,0.78)', fontSize: '0.92rem', lineHeight: 1.85 }}>
-                To be the undisputed authority and most trusted partner in India for comprehensive labour law management, setting the gold standard for HR governance and ethical workforce practices across all industries and all scales of business.
-              </p>
-              <div className="mt-8 space-y-3">
-                {['Pan-India authority in New Labour Codes', 'Ethical and transparent practices', 'Long-term client partnerships'].map((pt) => (
-                  <div key={pt} className="flex items-center gap-3">
-                    <CheckCircle size={15} style={{ color: '#fda102', flexShrink: 0 }} />
-                    <span style={{ fontFamily: PP, fontSize: '0.85rem', color: 'rgba(255,255,255,0.8)' }}>{pt}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════════════════
-          4. CORE VALUES — Stacked vertical with side image
+          3. BENTO IMAGE GRID — Our Story
          ══════════════════════════════════════════════════════ */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <div className="flex flex-col lg:flex-row gap-16 items-center">
 
-            {/* Left: sticky image */}
-            <motion.div className="lg:w-[42%] shrink-0"
-              initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }}
+          {/* Section label */}
+          <div className="flex items-center gap-4 mb-10">
+            <div className="w-8 h-0.5" style={{ backgroundColor: '#fda102' }} />
+            <p className="font-bold text-xs uppercase tracking-[0.25em]" style={{ fontFamily: PP, color: '#a83a00' }}>Our Story</p>
+          </div>
+
+          <div className="grid grid-cols-12 grid-rows-2 gap-4" style={{ height: '580px' }}>
+
+            {/* Large left cell */}
+            <motion.div className="col-span-12 lg:col-span-5 row-span-2 rounded-3xl overflow-hidden relative group"
+              initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }} transition={{ duration: 0.65 }}>
-              <div className="relative">
-                <div className="rounded-3xl overflow-hidden shadow-2xl" style={{ height: '520px' }}>
-                  <img src={heroImage} alt="" aria-hidden="true" className="w-full h-full object-cover" />
-                </div>
-                {/* Floating badge */}
-                <div className="absolute -bottom-6 -right-6 rounded-2xl p-6 shadow-xl"
-                  style={{ backgroundColor: '#fda102' }}>
-                  <p className="font-bold text-3xl text-white" style={{ fontFamily: PP }}>21+</p>
-                  <p className="text-xs uppercase tracking-widest text-white/80" style={{ fontFamily: PP }}>Years of Excellence</p>
-                </div>
+              <img src="/assets/hero-office.png" alt="Our office"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+              <div className="absolute inset-0"
+                style={{ background: 'linear-gradient(to top, rgba(168,58,0,0.85) 0%, transparent 55%)' }} />
+              <div className="absolute bottom-0 left-0 p-8">
+                <p className="font-bold text-4xl text-white mb-1" style={{ fontFamily: PP }}>Est.</p>
+                <p className="font-bold text-white" style={{ fontFamily: PP, fontSize: '6rem', lineHeight: 1, color: '#fda102' }}>2003</p>
               </div>
             </motion.div>
 
-            {/* Right: stacked value rows */}
-            <div className="flex-1">
-              <motion.div initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }} transition={{ duration: 0.6 }}>
-                <p className="font-bold text-xs uppercase tracking-[0.22em] mb-3" style={{ fontFamily: PP, color: '#a83a00' }}>What Drives Us</p>
-                <h2 className="font-bold mb-10" style={{ fontFamily: PP, fontSize: 'clamp(1.6rem, 2.8vw, 2.4rem)', color: '#111111' }}>
-                  Our Core Values
-                </h2>
+            {/* Top-right: stat card */}
+            <motion.div className="col-span-12 lg:col-span-4 row-span-1 rounded-3xl flex flex-col justify-center px-8 py-7"
+              style={{ backgroundColor: '#a83a00' }}
+              initial={{ opacity: 0, y: -24 }} whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }} transition={{ duration: 0.55, delay: 0.1 }}>
+              <p className="font-bold text-xs uppercase tracking-[0.2em] mb-3" style={{ fontFamily: PP, color: '#fda102' }}>By the Numbers</p>
+              <div className="grid grid-cols-3 gap-4">
+                {[['500+','Clients'],['21+','Years'],['15+','States']].map(([n,l]) => (
+                  <div key={l}>
+                    <p className="font-bold text-2xl text-white" style={{ fontFamily: PP }}>{n}</p>
+                    <p className="text-xs text-white/60 uppercase tracking-wide" style={{ fontFamily: PP }}>{l}</p>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Top-right image */}
+            <motion.div className="col-span-12 lg:col-span-3 row-span-1 rounded-3xl overflow-hidden relative group"
+              initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }} transition={{ duration: 0.55, delay: 0.15 }}>
+              <img src="/assets/service-hr.png" alt=""
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+            </motion.div>
+
+            {/* Bottom-right: story text */}
+            <motion.div className="col-span-12 lg:col-span-7 row-span-1 rounded-3xl p-8 flex flex-col justify-between"
+              style={{ backgroundColor: '#f9f5f2' }}
+              initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }} transition={{ duration: 0.55, delay: 0.2 }}>
+              <h2 className="font-bold leading-[1.2] mb-4"
+                style={{ fontFamily: PP, fontSize: 'clamp(1.3rem, 2.2vw, 1.8rem)', color: '#111' }}>
+                Founded on a vision of<br /><span style={{ color: '#a83a00' }}>simplified compliance.</span>
+              </h2>
+              <p className="text-sm leading-relaxed mb-4" style={{ fontFamily: PP, color: '#666', lineHeight: 1.8 }}>
+                What started as a boutique advisory in Mumbai has grown into a pan-India powerhouse trusted by some of India&apos;s most respected corporations. We manage compliance for 500+ organisations — from dynamic startups to Fortune 500 conglomerates.
+              </p>
+              <Link to="/contact" className="inline-flex items-center gap-2 font-semibold text-sm hover:gap-3 transition-all w-fit"
+                style={{ fontFamily: PP, color: '#a83a00' }}>
+                Our full story <ArrowRight size={15} />
+              </Link>
+            </motion.div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════
+          4. BIG PULL QUOTE
+         ══════════════════════════════════════════════════════ */}
+      <section className="py-20 relative overflow-hidden" style={{ backgroundColor: '#111111' }}>
+        <div className="absolute inset-0 pointer-events-none select-none flex items-center justify-center overflow-hidden">
+          <p className="font-bold text-white opacity-[0.03]"
+            style={{ fontFamily: PP, fontSize: 'clamp(8rem, 22vw, 22rem)', whiteSpace: 'nowrap', lineHeight: 1 }}>
+            MARU
+          </p>
+        </div>
+        <div className="relative max-w-5xl mx-auto px-8 lg:px-16 text-center">
+          <div className="text-5xl mb-6" style={{ color: '#fda102', lineHeight: 1 }}>"</div>
+          <motion.p className="font-bold text-white leading-[1.2] mb-8"
+            style={{ fontFamily: PP, fontSize: 'clamp(1.5rem, 3.5vw, 3rem)' }}
+            initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }} transition={{ duration: 0.6 }}>
+            Compliance is not a checkbox.<br />
+            It's the foundation on which<br />
+            <span style={{ color: '#fda102' }}>every great business is built.</span>
+          </motion.p>
+          <motion.p className="font-semibold text-sm uppercase tracking-widest"
+            style={{ fontFamily: PP, color: 'rgba(255,255,255,0.4)' }}
+            initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}
+            viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.2 }}>
+            — Ramesh Maru, Founder
+          </motion.p>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════
+          5. CORE VALUES — Poster image cards with overlays
+         ══════════════════════════════════════════════════════ */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-6 lg:px-10">
+          <div className="flex items-end justify-between mb-12 flex-wrap gap-4">
+            <div>
+              <div className="flex items-center gap-4 mb-3">
+                <div className="w-8 h-0.5" style={{ backgroundColor: '#fda102' }} />
+                <p className="font-bold text-xs uppercase tracking-[0.25em]" style={{ fontFamily: PP, color: '#a83a00' }}>What Drives Us</p>
+              </div>
+              <h2 className="font-bold" style={{ fontFamily: PP, fontSize: 'clamp(1.6rem, 2.8vw, 2.4rem)', color: '#111' }}>
+                Our Core Values
+              </h2>
+            </div>
+          </div>
+
+          {/* 4 image-backed poster cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {[
+              { num: '01', title: 'Absolute\nIntegrity', desc: 'No shortcuts. Every engagement is guided by the letter and spirit of the law.', img: '/assets/service-legal.png', accent: '#fda102' },
+              { num: '02', title: 'Unmatched\nExcellence', desc: 'Precision in every detail, backed by continuous learning and mastery of new regulations.', img: '/assets/service-labour.png', accent: '#fda102' },
+              { num: '03', title: 'Client\nPartnership', desc: 'A genuine extension of your team, invested in your growth and long-term success.', img: '/assets/service-staffing.png', accent: '#fda102' },
+              { num: '04', title: 'Continuous\nInnovation', desc: 'Tech-powered compliance tools that make real-time tracking effortless and accurate.', img: '/assets/service-audits.png', accent: '#fda102' },
+            ].map((v, i) => (
+              <motion.div key={i}
+                className="relative rounded-2xl overflow-hidden group cursor-default"
+                style={{ height: '380px' }}
+                initial={{ opacity: 0, y: 32 }} whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }} transition={{ duration: 0.55, delay: i * 0.1 }}>
+                {/* Background photo */}
+                <img src={v.img} alt="" className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                {/* Permanent gradient overlay */}
+                <div className="absolute inset-0"
+                  style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 60%, rgba(0,0,0,0.15) 100%)' }} />
+                {/* Hover tint */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-40 transition-opacity duration-500"
+                  style={{ backgroundColor: '#a83a00' }} />
+                {/* Content */}
+                <div className="absolute inset-0 p-7 flex flex-col justify-between">
+                  <p className="font-bold text-5xl opacity-30 text-white" style={{ fontFamily: PP }}>{v.num}</p>
+                  <div>
+                    <div className="w-8 h-0.5 mb-4" style={{ backgroundColor: v.accent }} />
+                    <h4 className="font-bold text-white text-xl leading-tight mb-3 whitespace-pre-line" style={{ fontFamily: PP }}>{v.title}</h4>
+                    <p className="text-xs leading-relaxed text-white/70 translate-y-4 opacity-0 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-400" style={{ fontFamily: PP }}>{v.desc}</p>
+                  </div>
+                </div>
               </motion.div>
-              <div className="space-y-0 divide-y divide-gray-100">
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════
+          6. MILESTONES — Giant year as background text
+         ══════════════════════════════════════════════════════ */}
+      <section className="py-20" style={{ backgroundColor: '#f9f5f2' }}>
+        <div className="max-w-7xl mx-auto px-6 lg:px-10">
+          <div className="flex items-center gap-4 mb-14">
+            <div className="w-8 h-0.5" style={{ backgroundColor: '#fda102' }} />
+            <p className="font-bold text-xs uppercase tracking-[0.25em]" style={{ fontFamily: PP, color: '#a83a00' }}>Our Journey</p>
+          </div>
+
+          <div className="space-y-6">
+            {[
+              { year: '2003', event: 'Founded', detail: 'Established as a boutique advisory firm in Mumbai with a core focus on Factory Act compliance and statutory filings.', img: '/assets/service-statutory.png' },
+              { year: '2009', event: 'Pan-India', detail: 'Expanded operations to Delhi NCR and Bangalore — becoming a true pan-India compliance firm serving 100+ clients.', img: '/assets/service-payroll.png' },
+              { year: '2016', event: 'Tech-Enabled', detail: 'Launched proprietary compliance tracking software delivering real-time dashboards and automated reminders to enterprise clients.', img: '/assets/service-training.png' },
+              { year: '2023', event: 'New Codes Authority', detail: "Became India's go-to authority on the New Labour Codes, serving 500+ organisations across 15+ states.", img: '/assets/service-hr.png' },
+            ].map((m, i) => (
+              <motion.div key={i}
+                className="flex flex-col lg:flex-row rounded-2xl overflow-hidden group"
+                style={{ backgroundColor: '#ffffff', boxShadow: '0 2px 16px rgba(0,0,0,0.07)' }}
+                initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30 }} whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }} transition={{ duration: 0.6, delay: i * 0.05 }}>
+
+                {/* Year slab */}
+                <div className="lg:w-48 shrink-0 flex items-center justify-center py-8 lg:py-0 relative overflow-hidden"
+                  style={{ backgroundColor: i % 2 === 0 ? '#a83a00' : '#111111' }}>
+                  <p className="font-bold text-white relative z-10"
+                    style={{ fontFamily: PP, fontSize: '2.2rem' }}>{m.year}</p>
+                  <p className="absolute font-bold opacity-[0.07] text-white"
+                    style={{ fontFamily: PP, fontSize: '6rem', lineHeight: 1 }}>{m.year}</p>
+                </div>
+
+                {/* Detail */}
+                <div className="flex-1 flex flex-col lg:flex-row items-center gap-6 p-7">
+                  <div className="flex-1">
+                    <p className="font-bold text-xs uppercase tracking-widest mb-2"
+                      style={{ fontFamily: PP, color: '#fda102' }}>{m.event}</p>
+                    <p className="text-sm leading-relaxed" style={{ fontFamily: PP, color: '#444', lineHeight: 1.8 }}>{m.detail}</p>
+                  </div>
+                  <div className="w-full lg:w-28 h-20 lg:h-20 rounded-xl overflow-hidden shrink-0">
+                    <img src={m.img} alt="" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                  </div>
+                </div>
+
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════
+          7. WHY CHOOSE MARU — Checklist + big image
+         ══════════════════════════════════════════════════════ */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-6 lg:px-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+
+            {/* Left: image with floating cards */}
+            <motion.div className="relative"
+              initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }} transition={{ duration: 0.65 }}>
+              <div className="rounded-3xl overflow-hidden" style={{ height: '520px' }}>
+                <img src={heroImage} alt="" className="w-full h-full object-cover" />
+              </div>
+              {/* Floating amber badge */}
+              <div className="absolute -bottom-6 -right-4 rounded-2xl p-6 shadow-2xl"
+                style={{ backgroundColor: '#fda102' }}>
+                <p className="font-bold text-white text-3xl" style={{ fontFamily: PP }}>98%</p>
+                <p className="font-semibold text-white/80 text-xs uppercase tracking-wider" style={{ fontFamily: PP }}>Client Retention</p>
+              </div>
+              {/* Floating dark badge */}
+              <div className="absolute -top-5 -left-4 rounded-2xl px-6 py-4 shadow-xl"
+                style={{ backgroundColor: '#111111' }}>
+                <p className="font-bold text-xl" style={{ fontFamily: PP, color: '#fda102' }}>500+</p>
+                <p className="text-xs text-white/60 uppercase tracking-wide" style={{ fontFamily: PP }}>Clients Served</p>
+              </div>
+            </motion.div>
+
+            {/* Right: checklist */}
+            <motion.div
+              initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }} transition={{ duration: 0.65, delay: 0.1 }}>
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-8 h-0.5" style={{ backgroundColor: '#fda102' }} />
+                <p className="font-bold text-xs uppercase tracking-[0.25em]" style={{ fontFamily: PP, color: '#a83a00' }}>Why Choose Maru</p>
+              </div>
+              <h2 className="font-bold leading-[1.15] mb-8"
+                style={{ fontFamily: PP, fontSize: 'clamp(1.6rem, 2.8vw, 2.6rem)', color: '#111' }}>
+                What sets us apart<br />from the <span style={{ color: '#a83a00' }}>rest.</span>
+              </h2>
+
+              <div className="space-y-5 mb-10">
                 {[
-                  { num: '01', icon: <Shield size={22} />, title: 'Absolute Integrity', desc: 'Upholding the highest ethical standards in every engagement — no shortcuts, only rigorous adherence to the letter and spirit of the law.' },
-                  { num: '02', icon: <Award size={22} />, title: 'Unmatched Excellence', desc: 'Precision in every detail, backed by profound legal knowledge and a commitment to staying ahead of every regulatory change.' },
-                  { num: '03', icon: <Handshake size={22} />, title: 'Client Partnership', desc: 'A genuine extension of your team — deeply invested in your operational continuity, growth, and long-term success.' },
-                  { num: '04', icon: <Star size={22} />, title: 'Continuous Innovation', desc: 'Embracing technology and new methodologies to deliver faster, smarter, and more accurate compliance solutions.' },
-                ].map((v, i) => (
-                  <motion.div key={i}
-                    className="flex gap-6 py-7 items-start"
-                    initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }} transition={{ duration: 0.45, delay: i * 0.1 }}>
-                    <p className="font-bold text-sm shrink-0 w-8 pt-1" style={{ fontFamily: PP, color: '#fda102' }}>{v.num}</p>
-                    <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-white"
-                      style={{ backgroundColor: '#a83a00' }}>
-                      {v.icon}
+                  { point: 'Pan-India presence across 15+ states', sub: 'State-specific expertise from Kashmir to Kanyakumari, covering all major industrial hubs.' },
+                  { point: 'Experts in New Labour Codes', sub: "One of India's earliest and most trusted authorities on the consolidated labour code framework." },
+                  { point: 'Proactive risk identification', sub: 'We audit for vulnerabilities before they become penalties — not after. Reactive compliance is a liability.' },
+                  { point: 'Dedicated consultant per client', sub: 'Every client gets a named consultant who knows their business, their sector, and their risk profile.' },
+                  { point: 'Tech-enabled tracking & reporting', sub: 'Real-time dashboards and automated reminders so nothing ever slips through the cracks.' },
+                ].map((item, i) => (
+                  <motion.div key={i} className="flex gap-4 items-start"
+                    initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }} transition={{ duration: 0.4, delay: i * 0.07 }}>
+                    <div className="w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5"
+                      style={{ backgroundColor: '#fda102' }}>
+                      <CheckCircle size={14} color="#fff" />
                     </div>
                     <div>
-                      <h4 className="font-bold mb-1.5 text-base" style={{ fontFamily: PP, color: '#111' }}>{v.title}</h4>
-                      <p className="text-sm leading-relaxed" style={{ fontFamily: PP, color: '#666' }}>{v.desc}</p>
+                      <p className="font-semibold text-sm" style={{ fontFamily: PP, color: '#111' }}>{item.point}</p>
+                      <p className="text-xs leading-relaxed mt-0.5" style={{ fontFamily: PP, color: '#777' }}>{item.sub}</p>
                     </div>
                   </motion.div>
                 ))}
               </div>
-            </div>
+
+              <Link to="/contact"
+                className="inline-flex items-center gap-2 rounded-full px-8 py-3.5 font-semibold text-sm text-white transition-all hover:scale-[1.03] shadow-lg"
+                style={{ backgroundColor: '#a83a00', fontFamily: PP }}>
+                Let's Talk Compliance <ArrowRight size={15} />
+              </Link>
+            </motion.div>
           </div>
         </div>
       </section>
 
       {/* ══════════════════════════════════════════════════════
-          5. MILESTONES — Horizontal zigzag timeline
+          8. TEAM — Photo grid with hover color reveal
          ══════════════════════════════════════════════════════ */}
-      <section className="py-20 overflow-hidden" style={{ backgroundColor: '#f9f5f2' }}>
+      <section className="py-20" style={{ backgroundColor: '#f9f5f2' }}>
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <motion.div className="text-center mb-16"
-            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }} transition={{ duration: 0.5 }}>
-            <p className="font-bold text-xs uppercase tracking-[0.22em] mb-3" style={{ fontFamily: PP, color: '#a83a00' }}>Our Journey</p>
-            <h2 className="font-bold" style={{ fontFamily: PP, fontSize: 'clamp(1.6rem, 2.8vw, 2.4rem)', color: '#111111' }}>Key Milestones</h2>
-          </motion.div>
-
-          {/* Zigzag: odd items above line, even items below */}
-          <div className="relative">
-            {/* Center horizontal line */}
-            <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-0.5 hidden lg:block"
-              style={{ backgroundColor: '#fda102', opacity: 0.4 }} />
-
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-0">
-              {[
-                { year: '2003', event: 'Established as a boutique advisory firm in Mumbai with a focus on Factory Act compliance.', above: true },
-                { year: '2009', event: 'Expanded operations to Delhi NCR and Bangalore — true pan-India presence.', above: false },
-                { year: '2016', event: 'Launched proprietary compliance tracking tools for enterprise-scale clients.', above: true },
-                { year: '2023', event: 'Became the go-to authority on New Labour Codes, serving 500+ organisations.', above: false },
-              ].map((m, i) => (
-                <motion.div key={i}
-                  className={`relative flex flex-col ${m.above ? 'lg:flex-col' : 'lg:flex-col-reverse'} items-center`}
-                  initial={{ opacity: 0, y: m.above ? -24 : 24 }} whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }} transition={{ duration: 0.55, delay: i * 0.12 }}>
-                  {/* Text block */}
-                  <div className={`rounded-2xl p-6 mx-4 mb-4 lg:mb-0 ${m.above ? 'lg:mb-6' : 'lg:mt-6'}`}
-                    style={{ backgroundColor: m.above ? '#ffffff' : '#a83a00', boxShadow: '0 4px 24px rgba(0,0,0,0.08)' }}>
-                    <p className="font-bold text-xl mb-2" style={{ fontFamily: PP, color: m.above ? '#a83a00' : '#fda102' }}>{m.year}</p>
-                    <p className="text-xs leading-relaxed" style={{ fontFamily: PP, color: m.above ? '#555' : 'rgba(255,255,255,0.82)' }}>{m.event}</p>
-                  </div>
-                  {/* Dot on the line */}
-                  <div className="w-5 h-5 rounded-full border-4 border-white shadow-md shrink-0"
-                    style={{ backgroundColor: '#fda102' }} />
-                </motion.div>
-              ))}
+          <div className="flex items-end justify-between mb-12 flex-wrap gap-4">
+            <div>
+              <div className="flex items-center gap-4 mb-3">
+                <div className="w-8 h-0.5" style={{ backgroundColor: '#fda102' }} />
+                <p className="font-bold text-xs uppercase tracking-[0.25em]" style={{ fontFamily: PP, color: '#a83a00' }}>The People</p>
+              </div>
+              <h2 className="font-bold" style={{ fontFamily: PP, fontSize: 'clamp(1.6rem, 2.8vw, 2.4rem)', color: '#111' }}>
+                Meet the Team
+              </h2>
             </div>
+            <p className="text-sm max-w-xs text-right hidden lg:block" style={{ fontFamily: PP, color: '#888' }}>
+              The sharp minds behind India&apos;s most trusted compliance practice.
+            </p>
           </div>
-        </div>
-      </section>
 
-      {/* ══════════════════════════════════════════════════════
-          6. TEAM — Asymmetric: 1 large founder + 3 small
-         ══════════════════════════════════════════════════════ */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <motion.div className="text-center mb-14"
-            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }} transition={{ duration: 0.5 }}>
-            <p className="font-bold text-xs uppercase tracking-[0.22em] mb-3" style={{ fontFamily: PP, color: '#a83a00' }}>The People Behind Our Work</p>
-            <h2 className="font-bold" style={{ fontFamily: PP, fontSize: 'clamp(1.6rem, 2.8vw, 2.4rem)', color: '#111111' }}>Our Leadership Team</h2>
-          </motion.div>
+          {/* Asymmetric grid: 1 large + 3 side cards */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
 
-          <div className="flex flex-col lg:flex-row gap-6">
-            {/* Large founder card */}
-            <motion.div className="lg:w-[40%] shrink-0 rounded-3xl overflow-hidden shadow-lg group"
-              initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }}
+            {/* Large card */}
+            <motion.div className="lg:col-span-5 rounded-3xl overflow-hidden relative group cursor-default"
+              style={{ height: '480px' }}
+              initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }} transition={{ duration: 0.6 }}>
-              <div className="relative h-full" style={{ minHeight: '460px', background: 'linear-gradient(145deg, #a83a00 0%, #7a2900 100%)' }}>
-                <div className="absolute inset-0 pointer-events-none opacity-5"
-                  style={{ backgroundImage: 'radial-gradient(circle, #ffffff 1px, transparent 1px)', backgroundSize: '24px 24px' }} />
-                <div className="relative z-10 flex flex-col items-center justify-center h-full p-10 text-center">
-                  <div className="w-32 h-32 rounded-full border-4 flex items-center justify-center text-5xl font-bold text-white mb-6 group-hover:scale-105 transition-transform"
-                    style={{ fontFamily: PP, backgroundColor: 'rgba(253,161,2,0.25)', borderColor: '#fda102' }}>
-                    R
-                  </div>
-                  <div className="w-10 h-0.5 mb-5" style={{ backgroundColor: '#fda102' }} />
-                  <h4 className="font-bold text-white text-xl mb-2" style={{ fontFamily: PP }}>Ramesh Maru</h4>
-                  <p className="font-semibold text-xs uppercase tracking-widest mb-4" style={{ fontFamily: PP, color: '#fda102' }}>Founder & Managing Director</p>
-                  <p className="text-xs leading-relaxed" style={{ fontFamily: PP, color: 'rgba(255,255,255,0.7)' }}>
-                    21+ years of expertise in Indian labour law, statutory compliance, and HR governance across all industry verticals.
-                  </p>
-                </div>
+              <img src="/assets/hero-office.png" alt=""
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+              <div className="absolute inset-0"
+                style={{ background: 'linear-gradient(to top, rgba(168,58,0,0.95) 0%, rgba(168,58,0,0.1) 55%)' }} />
+              <div className="absolute bottom-0 left-0 right-0 p-8">
+                <div className="w-10 h-0.5 mb-4" style={{ backgroundColor: '#fda102' }} />
+                <h4 className="font-bold text-white text-2xl mb-1" style={{ fontFamily: PP }}>Ramesh Maru</h4>
+                <p className="font-semibold text-xs uppercase tracking-widest mb-4" style={{ fontFamily: PP, color: '#fda102' }}>Founder & Managing Director</p>
+                <p className="text-xs leading-relaxed text-white/75 max-w-xs opacity-0 group-hover:opacity-100 translate-y-3 group-hover:translate-y-0 transition-all duration-400"
+                  style={{ fontFamily: PP }}>
+                  21+ years guiding India&apos;s finest corporates through the labyrinth of labour law compliance. Ramesh&apos;s vision turned a boutique firm into a pan-India powerhouse.
+                </p>
               </div>
             </motion.div>
 
-            {/* 3 smaller cards in a grid */}
-            <div className="flex-1 grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 lg:grid-rows-3 gap-6">
+            {/* 3 smaller cards stacked */}
+            <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-5">
               {[
-                { name: 'Priya Sharma',  role: 'Head of HR Advisory',            initial: 'P', spec: 'HR Policy & Workforce Management' },
-                { name: 'Ankit Verma',   role: 'Director — Payroll & Statutory',  initial: 'A', spec: 'Payroll Processing & PF/ESIC' },
-                { name: 'Sunita Patel',  role: 'Senior Legal Consultant',          initial: 'S', spec: 'Labour Litigation & Compliance Audits' },
-              ].map((member, i) => (
+                { name: 'Priya Sharma',  title: 'Head of HR Advisory',            dept: 'HR Policy & Workforce Management',     img: '/assets/service-hr.png' },
+                { name: 'Ankit Verma',   title: 'Director — Payroll & Statutory',  dept: 'Payroll Processing, PF & ESIC',         img: '/assets/service-payroll.png' },
+                { name: 'Sunita Patel',  title: 'Senior Legal Consultant',          dept: 'Labour Litigation & Compliance Audits',  img: '/assets/service-legal.png' },
+              ].map((m, i) => (
                 <motion.div key={i}
-                  className="flex items-center gap-5 rounded-2xl p-6 bg-white border hover:shadow-md transition-all hover:-translate-y-0.5"
-                  style={{ borderColor: '#ece5df' }}
+                  className="rounded-2xl overflow-hidden flex items-stretch group cursor-default"
+                  style={{ height: '138px', backgroundColor: '#ffffff' }}
                   initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }}>
-                  <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl font-bold text-white shrink-0"
-                    style={{ fontFamily: PP, backgroundColor: '#a83a00' }}>
-                    {member.initial}
+                  {/* Photo strip */}
+                  <div className="w-32 shrink-0 relative overflow-hidden">
+                    <img src={m.img} alt="" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-600" />
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-60 transition-opacity duration-400"
+                      style={{ backgroundColor: '#a83a00' }} />
                   </div>
-                  <div>
-                    <p className="font-bold text-sm" style={{ fontFamily: PP, color: '#111' }}>{member.name}</p>
-                    <p className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ fontFamily: PP, color: '#a83a00' }}>{member.role}</p>
-                    <p className="text-xs" style={{ fontFamily: PP, color: '#888' }}>{member.spec}</p>
+                  {/* Info */}
+                  <div className="flex-1 flex flex-col justify-center px-6">
+                    <p className="font-bold text-base mb-0.5" style={{ fontFamily: PP, color: '#111' }}>{m.name}</p>
+                    <p className="font-semibold text-xs uppercase tracking-wide mb-1.5" style={{ fontFamily: PP, color: '#a83a00' }}>{m.title}</p>
+                    <p className="text-xs" style={{ fontFamily: PP, color: '#999' }}>{m.dept}</p>
                   </div>
+                  {/* Amber accent strip */}
+                  <div className="w-1 shrink-0 group-hover:w-2 transition-all duration-300" style={{ backgroundColor: '#fda102' }} />
                 </motion.div>
               ))}
             </div>
+
           </div>
         </div>
       </section>
 
       {/* ══════════════════════════════════════════════════════
-          7. CTA — Full-bleed typographic quote
+          9. VIDEO CTA — Video background, bold overlay
          ══════════════════════════════════════════════════════ */}
-      <section className="relative py-24 overflow-hidden" style={{ backgroundColor: '#a83a00' }}>
-        {/* Background dot pattern */}
-        <div className="absolute inset-0 pointer-events-none opacity-5"
-          style={{ backgroundImage: 'radial-gradient(circle, #ffffff 1.5px, transparent 1.5px)', backgroundSize: '30px 30px' }} />
-        {/* Large decorative text */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
-          <p className="font-bold text-white opacity-[0.04]"
-            style={{ fontFamily: PP, fontSize: 'clamp(6rem, 18vw, 18rem)', whiteSpace: 'nowrap', lineHeight: 1 }}>
-            MARU
-          </p>
-        </div>
+      <section className="relative overflow-hidden" style={{ minHeight: '440px' }}>
+        <video src={heroVideo} autoPlay loop muted playsInline
+          className="absolute inset-0 w-full h-full object-cover" />
+        <div className="absolute inset-0"
+          style={{ background: 'linear-gradient(135deg, rgba(168,58,0,0.92) 0%, rgba(0,0,0,0.75) 100%)' }} />
 
-        <div className="relative max-w-4xl mx-auto px-6 text-center">
-          <motion.p className="font-bold text-xs uppercase tracking-[0.25em] mb-6"
+        <div className="relative max-w-5xl mx-auto px-8 py-24 text-center">
+          <motion.p className="font-bold text-xs uppercase tracking-[0.3em] mb-5"
             style={{ fontFamily: PP, color: '#fda102' }}
             initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }} transition={{ duration: 0.4 }}>
-            Join Our Team
+            Ready to Get Compliant?
           </motion.p>
           <motion.h2 className="font-bold text-white leading-[1.1] mb-8"
-            style={{ fontFamily: PP, fontSize: 'clamp(2rem, 4.5vw, 3.8rem)' }}
+            style={{ fontFamily: PP, fontSize: 'clamp(2rem, 5vw, 4rem)' }}
             initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.08 }}>
-            Are you a sharp legal mind<br />
-            looking for your next<br />
-            <span style={{ color: '#fda102' }}>big challenge?</span>
+            viewport={{ once: true }} transition={{ duration: 0.55, delay: 0.08 }}>
+            Let's build your compliance<br />framework — <span style={{ color: '#fda102' }}>together.</span>
           </motion.h2>
-          <motion.p className="text-sm leading-relaxed mb-10 max-w-xl mx-auto"
-            style={{ fontFamily: PP, color: 'rgba(255,255,255,0.75)' }}
-            initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }} transition={{ duration: 0.45, delay: 0.16 }}>
-            We are always looking for HR professionals and legal experts who share our dedication to compliance excellence and client success.
-          </motion.p>
           <motion.div className="flex flex-wrap gap-4 justify-center"
-            initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }} transition={{ duration: 0.4, delay: 0.24 }}>
-            <Link to="/careers"
-              className="inline-flex items-center gap-2 rounded-full px-8 py-3.5 font-semibold text-sm transition-all hover:scale-[1.04] shadow-lg"
-              style={{ backgroundColor: '#fda102', color: '#ffffff', fontFamily: PP }}>
-              View Opportunities <ArrowRight size={16} />
-            </Link>
+            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }} transition={{ duration: 0.45, delay: 0.18 }}>
             <Link to="/contact"
-              className="inline-flex items-center gap-2 rounded-full px-8 py-3.5 font-semibold text-sm border transition-all hover:scale-[1.04]"
-              style={{ borderColor: 'rgba(255,255,255,0.4)', color: '#ffffff', fontFamily: PP }}>
-              Contact Us
+              className="inline-flex items-center gap-2 rounded-full px-10 py-4 font-semibold text-sm transition-all hover:scale-[1.04] shadow-xl"
+              style={{ backgroundColor: '#fda102', color: '#fff', fontFamily: PP }}>
+              Schedule a Consultation <ArrowRight size={16} />
+            </Link>
+            <Link to="/careers"
+              className="inline-flex items-center gap-2 rounded-full px-10 py-4 font-semibold text-sm border transition-all hover:scale-[1.04]"
+              style={{ borderColor: 'rgba(255,255,255,0.5)', color: '#fff', fontFamily: PP }}>
+              Join Our Team
             </Link>
           </motion.div>
         </div>
