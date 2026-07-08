@@ -10,8 +10,15 @@ const PP = 'Poppins, sans-serif';
 
 /* ── inline keyframes injected once ── */
 const STYLES = `
-@keyframes marquee { from { transform: translateX(0) } to { transform: translateX(-50%) } }
+@keyframes marquee { from { transform: translate3d(0,0,0) } to { transform: translate3d(-50%,0,0) } }
 @keyframes fadeUp  { from { opacity:0; transform:translateY(32px) } to { opacity:1; transform:translateY(0) } }
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 40s linear infinite;
+  will-change: transform;
+  backface-visibility: hidden;
+}
 `;
 
 const MARQUEE_SERVICES = [
@@ -197,7 +204,7 @@ const About = () => {
           {/* Main headline */}
           <div className="relative flex flex-col justify-center">
             <motion.p className="font-bold text-xs uppercase tracking-[0.28em] mb-5"
-              style={{ fontFamily: PP, color: 'rgba(255,255,255,0.5)' }}
+              style={{ fontFamily: PP, color: '#ffffff' }}
               initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.45, delay: 0.1 }}>
               About Maru Consultancy Services
@@ -214,8 +221,8 @@ const About = () => {
               Partner.
             </motion.h1>
 
-            <motion.p className="text-base leading-[1.85] max-w-[460px] mb-8"
-              style={{ fontFamily: PP, color: 'rgba(255,255,255,0.7)' }}
+            <motion.p className="text-base leading-[1.85] max-w-[460px] mb-8 text-justify"
+              style={{ fontFamily: PP, color: '#ffffff' }}
               initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.26 }}>
               Two decades of expertise in labour law compliance, HR governance,
@@ -256,7 +263,7 @@ const About = () => {
           2. MARQUEE STRIP
          ══════════════════════════════════════════════════════ */}
       <div className="overflow-hidden py-3" style={{ backgroundColor: '#a83a00' }}>
-        <div style={{ display: 'flex', width: 'max-content', animation: 'marquee 32s linear infinite' }}>
+        <div className="marquee-track">
           {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, i) => (
             <span key={i} className="font-light text-xl mx-6 whitespace-nowrap"
               style={{ fontFamily: PP, color: '#ffffff' }}>
