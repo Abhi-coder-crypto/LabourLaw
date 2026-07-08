@@ -156,29 +156,18 @@ const About = () => {
           1. HERO — Hard two-panel split
          ══════════════════════════════════════════════════════ */}
       <section className="relative w-full overflow-hidden"
-        style={{ height: 'calc(100vh - 76px)', minHeight: '520px', display: 'grid', gridTemplateColumns: '48% 52%' }}>
+        style={{ height: 'calc(100vh - 76px)', maxHeight: '620px', minHeight: '460px', display: 'grid', gridTemplateColumns: '48% 52%' }}>
 
         {/* ── LEFT PANEL: solid brand colour ── */}
-        <div className="relative flex flex-col justify-between z-10 px-10 lg:px-14 pt-16 pb-10"
+        <div className="relative flex flex-col justify-center z-10 px-10 lg:px-14 py-10"
           style={{ backgroundColor: '#a83a00', height: '100%' }}>
 
           {/* Subtle dot texture */}
           <div className="absolute inset-0 pointer-events-none"
             style={{ backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.07) 1.5px, transparent 1.5px)', backgroundSize: '28px 28px' }} />
 
-          {/* Top badge */}
-          <motion.div className="relative"
-            initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45 }}>
-            <span className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-widest"
-              style={{ backgroundColor: 'rgba(253,161,2,0.18)', color: '#fda102', border: '1px solid rgba(253,161,2,0.35)', fontFamily: PP }}>
-              <span className="w-1.5 h-1.5 rounded-full bg-current" />
-              Est. 2003 · Mumbai, India
-            </span>
-          </motion.div>
-
           {/* Main headline */}
-          <div className="relative flex-1 flex flex-col justify-center py-10">
+          <div className="relative flex flex-col justify-center">
             <motion.p className="font-bold text-xs uppercase tracking-[0.28em] mb-5"
               style={{ fontFamily: PP, color: 'rgba(255,255,255,0.5)' }}
               initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
