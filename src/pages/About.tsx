@@ -400,14 +400,23 @@ const About = () => {
                       </div>
                     );
 
+                    // Whichever zone lands "before the circle" at sm+ must get the same fixed
+                    // height + bottom alignment, regardless of whether it holds the image or the
+                    // text — otherwise the circles drift out of line depending on up/down.
+                    const imgZoneClass = down
+                      ? 'order-1 items-end mb-5 sm:order-1 sm:items-end sm:mb-5'
+                      : 'order-1 items-end mb-5 sm:order-3 sm:items-start sm:mt-5 sm:mb-0';
+                    const textZoneClass = down
+                      ? 'order-3 items-start mt-5 sm:order-3 sm:items-start sm:mt-5'
+                      : `order-3 items-start mt-5 sm:order-1 sm:items-end sm:mb-5 sm:mt-0 sm:min-h-[${zoneH}px]`;
+
                     return (
                       <motion.div key={i} className="flex flex-col items-center text-center"
                         initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.4, delay: i * 0.1 }}>
 
-                        {/* Image zone — always first on mobile (order-1); alternates before/after the circle on sm+ so circles stay aligned */}
-                        <div className={`w-full flex items-end justify-center mb-5 order-1 ${down ? 'sm:order-1' : 'sm:order-3'}`}
-                          style={{ minHeight: `${zoneH}px` }}>
+                        {/* Image zone — always first on mobile; alternates before/after the circle on sm+ */}
+                        <div className={`w-full flex justify-center ${imgZoneClass}`} style={{ minHeight: `${zoneH}px` }}>
                           {Image}
                         </div>
 
@@ -420,8 +429,9 @@ const About = () => {
                           {m.year}
                         </motion.div>
 
-                        {/* Text zone — always last on mobile (order-3); alternates before/after the circle on sm+ */}
-                        <div className={`w-full flex items-start justify-center mt-5 order-3 ${down ? 'sm:order-3' : 'sm:order-1'}`}>
+                        {/* Text zone — always last on mobile; alternates before/after the circle on sm+.
+                            Gets the same fixed height as the image zone when it moves in front of the circle. */}
+                        <div className={`w-full flex justify-center ${textZoneClass}`}>
                           {Text}
                         </div>
                       </motion.div>
