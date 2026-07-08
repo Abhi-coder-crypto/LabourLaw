@@ -342,16 +342,16 @@ const About = () => {
       {/* ══════════════════════════════════════════════════════
           6. OUR JOURNEY — Horizontal 30-year animated timeline
          ══════════════════════════════════════════════════════ */}
-      <section id="journey" className="py-24 relative overflow-hidden" style={{ backgroundColor: '#a83a00' }}>
+      <section id="journey" className="py-12 relative overflow-hidden" style={{ backgroundColor: '#a83a00' }}>
         {/* Subtle dot texture, consistent with hero */}
         <div className="absolute inset-0 pointer-events-none"
           style={{ backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.06) 1.5px, transparent 1.5px)', backgroundSize: '28px 28px' }} />
 
         <div className="relative max-w-7xl mx-auto px-6 lg:px-10">
-          <div className="flex justify-center mb-5">
+          <div className="flex justify-center mb-4">
             <p className="font-bold uppercase tracking-[0.3em]" style={{ fontFamily: PP, color: '#fda102', fontSize: '1rem' }}>Our Journey</p>
           </div>
-          <h2 className="font-bold text-white text-center leading-[1.15] mb-20 mx-auto sm:whitespace-nowrap"
+          <h2 className="font-bold text-white text-center leading-[1.15] mb-10 mx-auto sm:whitespace-nowrap"
             style={{ fontFamily: PP, fontSize: 'clamp(1.3rem, 2.6vw, 2.4rem)' }}>
             Three decades of building India&apos;s compliance backbone
           </h2>
