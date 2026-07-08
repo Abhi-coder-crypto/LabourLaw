@@ -14,12 +14,20 @@ const STYLES = `
 @keyframes fadeUp  { from { opacity:0; transform:translateY(32px) } to { opacity:1; transform:translateY(0) } }
 `;
 
-const MARQUEE_ITEMS = [
-  'Labour Law Compliance', '✦', 'Payroll Processing', '✦',
-  'HR Advisory', '✦', 'Statutory Filings', '✦',
-  'Compliance Audits', '✦', 'Factory Act', '✦',
-  'New Labour Codes', '✦', 'Workforce Management', '✦',
+const MARQUEE_SERVICES = [
+  'Labour Law Compliance',
+  'Payroll & Salary Structuring',
+  'Statutory Compliance & Filings',
+  'People Outsourcing & Staffing',
+  'Audits & Governance',
+  'Registrations & Licensing',
+  'HR Policy & Advisory',
+  'Legal Representation',
+  'Training & Workshops',
 ];
+
+const MARQUEE_ITEMS = MARQUEE_SERVICES.flatMap((s) => [s, '|']);
+MARQUEE_ITEMS.pop();
 
 const STORY_SLIDES = [
   {
@@ -148,7 +156,7 @@ const About = () => {
           1. HERO — Hard two-panel split
          ══════════════════════════════════════════════════════ */}
       <section className="relative w-full overflow-hidden"
-        style={{ height: '100vh', minHeight: '640px', display: 'grid', gridTemplateColumns: '48% 52%' }}>
+        style={{ height: 'calc(100vh - 76px)', minHeight: '520px', display: 'grid', gridTemplateColumns: '48% 52%' }}>
 
         {/* ── LEFT PANEL: solid brand colour ── */}
         <div className="relative flex flex-col justify-between z-10 px-10 lg:px-14 pt-16 pb-10"
@@ -237,41 +245,6 @@ const About = () => {
           <video src={heroVideo} autoPlay loop muted playsInline
             className="absolute inset-0 w-full h-full object-cover" />
 
-          {/* Light left-edge bleed — blends panels */}
-          <div className="absolute inset-0 pointer-events-none"
-            style={{ background: 'linear-gradient(to right, rgba(168,58,0,0.65) 0%, rgba(0,0,0,0.15) 45%, transparent 100%)' }} />
-
-          {/* Floating white card — bottom-left of video */}
-          <motion.div
-            className="absolute bottom-10 left-6 lg:left-10 right-6 lg:right-auto rounded-2xl p-5 shadow-2xl"
-            style={{ backgroundColor: '#ffffff', maxWidth: '300px' }}
-            initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.55 }}>
-            <p className="font-bold text-xs uppercase tracking-widest mb-3"
-              style={{ fontFamily: PP, color: '#a83a00' }}>Why Clients Choose Us</p>
-            <div className="space-y-2">
-              {[
-                'Pan-India compliance expertise',
-                'Dedicated consultant per client',
-                'Tech-enabled real-time tracking',
-              ].map((pt) => (
-                <div key={pt} className="flex items-center gap-2.5">
-                  <CheckCircle size={13} style={{ color: '#fda102', flexShrink: 0 }} />
-                  <span className="text-xs" style={{ fontFamily: PP, color: '#333' }}>{pt}</span>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Floating amber badge — top-right */}
-          <motion.div
-            className="absolute top-10 right-8 rounded-2xl px-5 py-4 shadow-xl text-center"
-            style={{ backgroundColor: '#fda102' }}
-            initial={{ opacity: 0, scale: 0.85 }} animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.65 }}>
-            <p className="font-bold text-white text-2xl leading-none" style={{ fontFamily: PP }}>98%</p>
-            <p className="text-white/80 text-[10px] uppercase tracking-wider mt-1" style={{ fontFamily: PP }}>Client Retention</p>
-          </motion.div>
         </div>
 
         {/* Bottom amber line */}
@@ -282,11 +255,11 @@ const About = () => {
       {/* ══════════════════════════════════════════════════════
           2. MARQUEE STRIP
          ══════════════════════════════════════════════════════ */}
-      <div className="overflow-hidden py-4" style={{ backgroundColor: '#111111' }}>
-        <div style={{ display: 'flex', width: 'max-content', animation: 'marquee 28s linear infinite' }}>
+      <div className="overflow-hidden py-3" style={{ backgroundColor: '#a83a00' }}>
+        <div style={{ display: 'flex', width: 'max-content', animation: 'marquee 32s linear infinite' }}>
           {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, i) => (
             <span key={i} className="font-semibold text-sm mx-6 whitespace-nowrap"
-              style={{ fontFamily: PP, color: item === '✦' ? '#fda102' : 'rgba(255,255,255,0.7)' }}>
+              style={{ fontFamily: PP, color: '#ffffff' }}>
               {item}
             </span>
           ))}
