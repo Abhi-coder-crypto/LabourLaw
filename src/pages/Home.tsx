@@ -483,23 +483,9 @@ const Home = () => {
             initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }} transition={{ duration: 0.55 }}
             className="text-center mb-4 px-6">
-            {/* Customer review icon — inline SVG so fill is exactly #fda102 */}
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="56" height="56"
-              fill="#fda102" className="mx-auto mb-4" aria-hidden="true">
-              {/* Stars row */}
-              <polygon points="8,18 9.5,13 11,18 6,15 13,15" />
-              <polygon points="20,16 21.8,10 23.6,16 17.5,12.5 26.1,12.5" />
-              <polygon points="32,14 34,8 36,14 29,10.5 39,10.5" />
-              <polygon points="44,16 45.8,10 47.6,16 41.5,12.5 50.1,12.5" />
-              <polygon points="56,18 57.5,13 59,18 54,15 61,15" />
-              {/* People silhouettes */}
-              <circle cx="20" cy="32" r="5" />
-              <path d="M10,48 Q10,38 20,38 Q30,38 30,48 Z" />
-              <circle cx="44" cy="32" r="5" />
-              <path d="M34,48 Q34,38 44,38 Q54,38 54,48 Z" />
-              <circle cx="32" cy="28" r="6" />
-              <path d="M20,48 Q20,36 32,36 Q44,36 44,48 Z" />
-            </svg>
+            <img src={customerReviewIcon} alt="" aria-hidden="true"
+              className="mx-auto mb-4"
+              style={{ width: '56px', height: '56px', filter: 'brightness(0) saturate(100%) invert(68%) sepia(86%) saturate(607%) hue-rotate(1deg) brightness(101%) contrast(106%)' }} />
             <h2 className="font-bold text-white mb-0"
               style={{ fontFamily: 'Poppins, sans-serif', fontSize: 'clamp(1.9rem, 3.2vw, 2.8rem)' }}>
               Trusted by Industry Leaders
