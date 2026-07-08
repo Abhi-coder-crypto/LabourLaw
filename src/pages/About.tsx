@@ -260,7 +260,7 @@ const About = () => {
       {/* ══════════════════════════════════════════════════════
           4. BIG PULL QUOTE
          ══════════════════════════════════════════════════════ */}
-      <section id="pull-quote" className="py-20 relative overflow-hidden" style={{ backgroundColor: '#a83a00' }}>
+      <section id="pull-quote" className="py-10 relative overflow-hidden" style={{ backgroundColor: '#a83a00' }}>
         <div className="absolute inset-0 pointer-events-none select-none flex items-center justify-center overflow-hidden">
           <p className="font-bold text-white opacity-[0.08] text-center whitespace-nowrap"
             style={{ fontFamily: PP, fontSize: 'clamp(1.6rem, 6vw, 8rem)', lineHeight: 1, letterSpacing: '0.03em' }}>
