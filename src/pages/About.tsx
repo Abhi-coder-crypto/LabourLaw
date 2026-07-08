@@ -554,7 +554,7 @@ const About = () => {
       {/* ══════════════════════════════════════════════════════
           7. WHY CHOOSE MARU — Checklist + big image
          ══════════════════════════════════════════════════════ */}
-      <section className="py-20 bg-white">
+      <section id="why-choose" className="py-8 bg-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
 
           {/* Centered top logo */}
