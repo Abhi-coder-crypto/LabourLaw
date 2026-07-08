@@ -263,7 +263,7 @@ const About = () => {
       <section id="pull-quote" className="py-10 relative overflow-hidden" style={{ backgroundColor: '#a83a00' }}>
         <div className="absolute inset-0 pointer-events-none select-none flex items-center justify-center overflow-hidden px-6 lg:px-12">
           <p className="font-bold text-white opacity-[0.08] text-center whitespace-nowrap"
-            style={{ fontFamily: PP, fontSize: 'clamp(2.5rem, 9vw, 11rem)', lineHeight: 1.05, letterSpacing: '0.03em' }}>
+            style={{ fontFamily: PP, fontSize: 'clamp(1.8rem, 6.5vw, 8rem)', lineHeight: 1.05, letterSpacing: '0.02em' }}>
             MARU CONSULTANCY<br />SERVICES
           </p>
         </div>
