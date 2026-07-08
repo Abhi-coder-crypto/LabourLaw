@@ -63,13 +63,13 @@ const Services = () => {
             style={{
               fontFamily: PP,
               fontSize: 'clamp(2rem, 5vw, 3.6rem)',
-              fontWeight: 300,
+              fontWeight: 500,
               letterSpacing: '0.06em',
-              color: '#ffffff',
             }}>
-            Our <span style={{ color: '#fda102', fontWeight: 600 }}>Consultancy</span> Services
+            <span style={{ color: '#a83a00' }}>Our </span>
+            <span style={{ color: '#fda102' }}>Consultancy Services</span>
           </h1>
-          <p className="font-light leading-relaxed mx-auto" style={{ fontFamily: PP, fontSize: 'clamp(0.9rem, 1.6vw, 1.1rem)', color: 'rgba(255,255,255,0.78)', maxWidth: '520px' }}>
+          <p className="leading-relaxed mx-auto" style={{ fontFamily: PP, fontSize: 'clamp(1.05rem, 2vw, 1.35rem)', fontWeight: 300, color: 'rgba(255,255,255,0.82)', maxWidth: '560px' }}>
             Precision-crafted compliance solutions that protect your workforce, your business, and your future.
           </p>
         </motion.div>
@@ -78,13 +78,6 @@ const Services = () => {
       {/* ── Services Grid ─────────────────────────────────── */}
       <section className="py-20 bg-[#f8fafb]">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <motion.div className="text-center mb-14"
-            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }} transition={{ duration: 0.5 }}>
-            <p className="font-semibold text-[11px] uppercase tracking-[0.24em] mb-3" style={{ fontFamily: PP, color: '#a83a00' }}>Our Expertise</p>
-            <h2 className="font-light mb-3" style={{ fontFamily: PP, fontSize: 'clamp(1.9rem, 3vw, 2.6rem)', color: '#111' }}>9 Specialized Practice Areas</h2>
-            <p className="text-gray-500 max-w-xl mx-auto text-base font-light" style={{ fontFamily: PP }}>Every service is designed to give your organization complete legal protection and operational efficiency.</p>
-          </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
             {services.map((service, i) => (
               <motion.div key={service.slug}
