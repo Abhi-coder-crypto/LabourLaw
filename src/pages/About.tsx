@@ -554,7 +554,7 @@ const About = () => {
       {/* ══════════════════════════════════════════════════════
           7. WHY CHOOSE MARU — Checklist + big image
          ══════════════════════════════════════════════════════ */}
-      <section id="why-choose" className="pt-2 pb-8 bg-white">
+      <section id="why-choose" className="pt-10 pb-8 bg-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
 
           {/* Centered top logo */}
@@ -562,7 +562,7 @@ const About = () => {
             initial={{ opacity: 0, y: -16 }} whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }} transition={{ duration: 0.5 }}>
             <img src="/assets/maru-logo-full.png" alt="Maru Consultancy Services"
-              className="w-auto object-contain" style={{ height: '70px' }} />
+              className="w-auto object-contain" style={{ height: '110px' }} />
           </motion.div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
