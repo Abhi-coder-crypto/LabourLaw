@@ -305,16 +305,52 @@ const Home = () => {
 
       {/* ── Why Labour Law ────────────────────────────────── */}
       <section className="py-16" style={{ backgroundColor: '#f9f5f2' }}>
-        <div className="max-w-5xl mx-auto px-6 lg:px-10">
-          <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }} transition={{ duration: 0.6 }}
-            className="bg-white rounded-2xl p-8 lg:p-12 shadow-xl">
+        <div className="max-w-7xl mx-auto px-6 lg:px-10">
+          <div className="flex flex-col lg:flex-row gap-10 lg:gap-12 items-center">
 
-            {/* Two-column layout: left = heading + para, right = numbered list */}
-            <div className="flex flex-col lg:flex-row gap-10 lg:gap-16">
+            {/* ── Left: collage (same as hero) ── */}
+            <motion.div
+              className="w-full lg:w-[48%] shrink-0"
+              initial={{ opacity: 0, x: -24 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}>
+              <div className="flex gap-3" style={{ height: '520px' }}>
 
-              {/* Left */}
-              <div className="lg:w-[45%] shrink-0">
+                {/* Left column: tall video */}
+                <div className="flex flex-col" style={{ width: '58%' }}>
+                  <div className="rounded-2xl overflow-hidden shadow-md" style={{ flex: 1 }}>
+                    <video
+                      src={heroVideo}
+                      autoPlay loop muted playsInline aria-hidden="true"
+                      className="w-full h-full object-cover"
+                      style={{ display: 'block' }}
+                    />
+                  </div>
+                </div>
+
+                {/* Right column: two stacked images */}
+                <div className="flex flex-col gap-3" style={{ width: '42%' }}>
+                  <div className="rounded-2xl overflow-hidden shadow-md" style={{ flex: '0 0 42%' }}>
+                    <img src={heroImage} alt="" aria-hidden="true" className="w-full h-full object-cover" />
+                  </div>
+                  <div className="rounded-2xl overflow-hidden shadow-md" style={{ flex: 1 }}>
+                    <img src={heroImage} alt="" aria-hidden="true" className="w-full h-full object-cover" />
+                  </div>
+                </div>
+
+              </div>
+            </motion.div>
+
+            {/* ── Right: white card with text + numbered list ── */}
+            <motion.div
+              className="flex-1"
+              initial={{ opacity: 0, x: 24 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}>
+              <div className="bg-white rounded-2xl p-8 lg:p-12 shadow-xl">
+
                 <p className="font-bold text-sm uppercase tracking-widest mb-4"
                   style={{ fontFamily: 'Poppins, sans-serif', color: '#a83a00' }}>Why Labour Law</p>
                 <h2 className="font-bold leading-[1.2] mb-5"
@@ -322,35 +358,36 @@ const Home = () => {
                   Expertise that protects your business &amp; empowers your
                   <span style={{ color: '#a83a00' }}> workforce.</span>
                 </h2>
-                <p className="leading-relaxed text-sm"
+                <p className="leading-relaxed text-sm mb-8"
                   style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400, color: '#555555' }}>
                   We don't just file paperwork — we architect robust compliance frameworks. With India's labour law landscape shifting under the New Codes, you need a partner who anticipates regulatory changes before they impact your bottom line.
                 </p>
-              </div>
 
-              {/* Right: numbered rows */}
-              <div className="flex-1 divide-y divide-gray-100">
-                {whyUs.map((item, i) => (
-                  <motion.div key={i}
-                    initial={{ opacity: 0, x: 16 }} whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }} transition={{ duration: 0.4, delay: i * 0.1 }}
-                    className="flex gap-5 py-5 first:pt-0 last:pb-0">
-                    <span className="font-bold shrink-0 text-xl leading-none mt-0.5"
-                      style={{ fontFamily: 'Poppins, sans-serif', color: '#fda102' }}>
-                      {String(i + 1).padStart(2, '0')}
-                    </span>
-                    <div>
-                      <h4 className="font-semibold mb-1 text-sm"
-                        style={{ fontFamily: 'Poppins, sans-serif', color: '#111111' }}>{item.title}</h4>
-                      <p className="text-xs leading-relaxed"
-                        style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400, color: '#666666' }}>{item.desc}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
+                {/* Numbered rows */}
+                <div className="divide-y divide-gray-100">
+                  {whyUs.map((item, i) => (
+                    <motion.div key={i}
+                      initial={{ opacity: 0, x: 16 }} whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }} transition={{ duration: 0.4, delay: i * 0.1 }}
+                      className="flex gap-5 py-5 first:pt-0 last:pb-0">
+                      <span className="font-bold shrink-0 text-xl leading-none mt-0.5"
+                        style={{ fontFamily: 'Poppins, sans-serif', color: '#fda102' }}>
+                        {String(i + 1).padStart(2, '0')}
+                      </span>
+                      <div>
+                        <h4 className="font-semibold mb-1 text-sm"
+                          style={{ fontFamily: 'Poppins, sans-serif', color: '#111111' }}>{item.title}</h4>
+                        <p className="text-xs leading-relaxed"
+                          style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400, color: '#666666' }}>{item.desc}</p>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
 
-            </div>
-          </motion.div>
+              </div>
+            </motion.div>
+
+          </div>
         </div>
       </section>
 
