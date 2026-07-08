@@ -46,7 +46,7 @@ const Services = () => {
           autoPlay muted loop playsInline
           preload="metadata"
           aria-hidden="true"
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover" style={{ objectPosition: 'center center' }}
         />
         {/* Dark tint overlay */}
         <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.52)' }} />
