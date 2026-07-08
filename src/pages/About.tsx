@@ -347,14 +347,18 @@ const About = () => {
         <div className="absolute inset-0 pointer-events-none"
           style={{ backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.06) 1.5px, transparent 1.5px)', backgroundSize: '28px 28px' }} />
 
-        <div className="relative max-w-7xl mx-auto px-6 lg:px-10">
-          <div className="flex justify-center mb-4">
+        <div className="relative max-w-[1600px] mx-auto px-6 lg:px-16">
+          <motion.div className="flex justify-center mb-4"
+            initial={{ opacity: 0, y: -16 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.4 }} transition={{ duration: 0.5 }}>
             <p className="font-bold uppercase tracking-[0.3em]" style={{ fontFamily: PP, color: '#fda102', fontSize: '1rem' }}>Our Journey</p>
-          </div>
-          <h2 className="font-bold text-white text-center leading-[1.15] mb-10 mx-auto sm:whitespace-nowrap"
-            style={{ fontFamily: PP, fontSize: 'clamp(1.3rem, 2.6vw, 2.4rem)' }}>
+          </motion.div>
+          <motion.h2 className="font-bold text-white text-center leading-[1.15] mb-10 mx-auto sm:whitespace-nowrap"
+            style={{ fontFamily: PP, fontSize: 'clamp(1.3rem, 2.6vw, 2.4rem)' }}
+            initial={{ opacity: 0, y: -16 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.4 }} transition={{ duration: 0.5, delay: 0.1 }}>
             Three decades of building India&apos;s compliance backbone
-          </h2>
+          </motion.h2>
 
           {/* ── Horizontal timeline ── */}
           {/* Zone-1 height (image height) + its bottom margin + half the circle = exact vertical centre of every circle */}
@@ -374,7 +378,7 @@ const About = () => {
                   initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }}
                   viewport={{ once: true }} transition={{ duration: 1.6, ease: 'easeInOut' }} />
 
-                <div className="grid grid-cols-1 sm:grid-cols-4 gap-14 sm:gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-4 gap-14 sm:gap-10">
                   {[
                     { year: '2003', event: 'Founded', img: '/assets/service-statutory.png', lines: ['Established as a boutique', 'advisory firm in Mumbai,', 'focused on compliance.'] },
                     { year: '2009', event: 'Pan-India', img: '/assets/service-payroll.png', lines: ['Expanded to Delhi NCR and', 'Bangalore, becoming a true', 'pan-India compliance firm.'] },
@@ -391,8 +395,8 @@ const About = () => {
                       <div>
                         <p className="font-bold uppercase tracking-widest mb-3 text-center"
                           style={{ fontFamily: PP, color: '#fda102', fontSize: '0.95rem' }}>{m.event}</p>
-                        <p className="max-w-[230px] mx-auto"
-                          style={{ fontFamily: PP, color: 'rgba(255,255,255,0.85)', lineHeight: 1.8, textAlign: 'justify', fontSize: '0.9rem' }}>
+                        <p className="max-w-[280px] mx-auto"
+                          style={{ fontFamily: PP, color: 'rgba(255,255,255,0.85)', lineHeight: 1.8, textAlign: 'justify', textAlignLast: 'center', fontSize: '0.95rem' }}>
                           {m.lines.map((line, li) => (
                             <span key={li}>{line}{li < m.lines.length - 1 && <br />}</span>
                           ))}
