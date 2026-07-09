@@ -1,6 +1,12 @@
 import { useState } from 'react';
-import { MapPin, Phone, Mail, Clock, ArrowRight, CheckCircle, MessageSquare } from 'lucide-react';
+import { ArrowRight, CheckCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
+import heroVideo from '@assets/7683053-hd_1920_1080_24fps_1783584828907.mp4';
+import phoneIcon from '@assets/viber_1783585147187.png';
+import emailIconGmail from '@assets/communication_(1)_1783585150612.png';
+import mapPinIcon from '@assets/placeholder_(1)_1783585153327.png';
+import clockIcon from '@assets/time_1783585157179.png';
+import messageIcon from '@assets/email_(1)_1783585304315.png';
 
 const PP = 'Poppins, sans-serif';
 
