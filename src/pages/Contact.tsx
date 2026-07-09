@@ -1,124 +1,185 @@
 import { useState } from 'react';
-import { MapPin, Phone, Mail, Clock, ArrowRight, CheckCircle } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, ArrowRight, CheckCircle, MessageSquare } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+
+const PP = 'Poppins, sans-serif';
+
+const FIELD_STYLE: React.CSSProperties = {
+  fontFamily: PP,
+  fontSize: '0.92rem',
+  width: '100%',
+  border: '1.5px solid #e5e7eb',
+  borderRadius: '12px',
+  padding: '12px 16px',
+  outline: 'none',
+  backgroundColor: '#fafafa',
+  color: '#111',
+  transition: 'border-color 0.2s',
+};
+
+const LABEL_STYLE: React.CSSProperties = {
+  fontFamily: PP,
+  fontSize: '0.8rem',
+  fontWeight: 600,
+  color: '#a83a00',
+  display: 'block',
+  marginBottom: '6px',
+  letterSpacing: '0.04em',
+  textTransform: 'uppercase',
+};
 
 const Contact = () => {
   const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState({ name: '', email: '', phone: '', company: '', service: '', message: '' });
+  const [focused, setFocused] = useState('');
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
-  };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitted(true);
-  };
+  const handleSubmit = (e: React.FormEvent) => { e.preventDefault(); setSubmitted(true); };
+
+  const inputProps = (name: string) => ({
+    style: { ...FIELD_STYLE, borderColor: focused === name ? '#a83a00' : '#e5e7eb' },
+    onFocus: () => setFocused(name),
+    onBlur: () => setFocused(''),
+  });
 
   return (
-    <div className="w-full">
+    <div className="w-full" style={{ fontFamily: PP }}>
 
-      {/* ── Hero ──────────────────────────────────────────── */}
-      <section className="relative overflow-hidden" style={{ minHeight: '420px' }}>
-        <img src="/assets/hero-office.png" alt="Contact Us"
-          className="absolute inset-0 w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-r from-navy-900/85 via-navy-900/65 to-navy-900/20" />
-        <div className="relative max-w-7xl mx-auto px-6 lg:px-10 flex items-center py-20" style={{ minHeight: '420px' }}>
-          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.55 }}
-            className="bg-white rounded-2xl p-8 md:p-10 shadow-2xl max-w-md">
-            <p className="text-teal-500 font-bold text-[11px] uppercase tracking-[0.18em] mb-3">Get In Touch</p>
-            <h1 className="text-2xl md:text-3xl font-display font-bold text-navy-900 mb-4 leading-snug">
-              Ready to put your worries to rest?
-            </h1>
-            <p className="text-gray-500 text-sm leading-relaxed mb-6">
-              Don't get lost in the abyss of compliance uncertainty. Reach out to us — our experts are ready to analyze your situation and build a clear roadmap.
-            </p>
-            <nav className="flex items-center gap-2 text-xs font-semibold">
-              <Link to="/" className="bg-navy-900 text-white px-3 py-1.5 rounded-lg hover:bg-teal-600 transition-colors">Home</Link>
-              <span className="text-gray-300">›</span>
-              <span className="text-teal-600">Contact Us</span>
-            </nav>
-          </motion.div>
-        </div>
+      {/* ── Hero ── */}
+      <section className="flex items-center justify-center overflow-hidden relative"
+        style={{ backgroundColor: '#a83a00', minHeight: '200px', maxHeight: '300px', height: '38vh' }}>
+        <div className="absolute top-[-60px] right-[-60px] w-[320px] h-[320px] rounded-full opacity-10 pointer-events-none"
+          style={{ backgroundColor: '#fda102' }} />
+        <div className="absolute bottom-[-80px] left-[-40px] w-[240px] h-[240px] rounded-full opacity-10 pointer-events-none"
+          style={{ backgroundColor: '#7a2900' }} />
+        <motion.div
+          initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-center px-8 w-full max-w-4xl mx-auto relative z-10">
+          <p className="uppercase tracking-[0.3em] font-semibold mb-2"
+            style={{ fontFamily: PP, fontSize: '0.9rem', color: '#fda102' }}>
+            Get In Touch
+          </p>
+          <h1 className="font-bold mb-3"
+            style={{ fontFamily: PP, fontSize: 'clamp(1.4rem, 3vw, 2.6rem)', color: '#fff' }}>
+            Ready to Put Your Worries to Rest?
+          </h1>
+          <p style={{
+            fontFamily: PP, fontSize: 'clamp(0.88rem, 1.3vw, 1rem)',
+            color: 'rgba(255,255,255,0.82)', maxWidth: '560px', margin: '0 auto', lineHeight: 1.7,
+          }}>
+            Our experts are ready to analyse your compliance situation and build a clear roadmap for you.
+          </p>
+        </motion.div>
       </section>
 
-      {/* ── How Can We Help ───────────────────────────────── */}
-      <section className="bg-white py-10 border-b border-gray-100">
+      {/* ── Quick contact strip ── */}
+      <section className="bg-white border-b border-gray-100 py-0">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <motion.h2
-            initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45 }}
-            className="text-2xl font-display font-bold text-navy-900 mb-2">How can we help?</motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45, delay: 0.08 }}
-            className="text-gray-500 text-[15px]">We're here to help our clients, employees and communities accomplish their goals. Tell us what you're looking for.</motion.p>
+          <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-gray-100">
+            {[
+              { icon: Phone, label: 'Call Us', value: '+91 98765 43210', href: 'tel:+919876543210' },
+              { icon: Mail, label: 'Email Us', value: 'contact@maruconsultancy.in', href: 'mailto:contact@maruconsultancy.in' },
+              { icon: MapPin, label: 'Our Office', value: 'Nariman Point, Mumbai', href: '#map' },
+            ].map((item, i) => (
+              <a key={i} href={item.href}
+                className="flex items-center gap-4 px-8 py-5 hover:bg-[#f8fafb] transition-colors group">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors"
+                  style={{ backgroundColor: 'rgba(168,58,0,0.08)' }}>
+                  <item.icon size={18} style={{ color: '#a83a00' }} />
+                </div>
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-wider mb-0.5"
+                    style={{ fontFamily: PP, color: '#a83a00' }}>{item.label}</p>
+                  <p className="font-semibold text-sm" style={{ fontFamily: PP, color: '#111' }}>{item.value}</p>
+                </div>
+              </a>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* ── Form + Info ───────────────────────────────────── */}
-      <section className="py-16 bg-[#f8fafb]">
+      {/* ── Form + Info ── */}
+      <section className="py-16" style={{ backgroundColor: '#f8fafb' }}>
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
 
-            {/* Form */}
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="lg:col-span-7 bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-gray-100">
+            {/* ── Form ── */}
+            <motion.div
+              initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55 }}
+              className="lg:col-span-7 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
 
-              {submitted ? (
-                <div className="flex flex-col items-center justify-center text-center py-12">
-                  <div className="w-16 h-16 bg-teal-50 text-teal-500 rounded-full flex items-center justify-center mb-5 shadow-sm">
-                    <CheckCircle size={32} />
-                  </div>
-                  <h3 className="text-2xl font-display font-bold text-navy-900 mb-3">Message Sent!</h3>
-                  <p className="text-gray-500 text-sm max-w-sm leading-relaxed">
-                    Thank you for reaching out. One of our compliance experts will get back to you within 1 business day.
-                  </p>
-                  <button onClick={() => { setSubmitted(false); setForm({ name: '', email: '', phone: '', company: '', service: '', message: '' }); }}
-                    className="mt-7 text-teal-600 font-bold text-sm hover:text-navy-900 transition-colors flex items-center gap-1.5">
-                    Send another message <ArrowRight size={14} />
-                  </button>
+              {/* Card header */}
+              <div className="px-10 py-6 border-b border-gray-100 flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl flex items-center justify-center"
+                  style={{ backgroundColor: 'rgba(168,58,0,0.08)' }}>
+                  <MessageSquare size={17} style={{ color: '#a83a00' }} />
                 </div>
-              ) : (
-                <>
-                  <h3 className="text-xl font-bold text-navy-900 mb-1.5">Leave a note</h3>
-                  <p className="text-gray-400 text-sm mb-8">We have answers to all your compliance questions. Feel free to get in touch.</p>
+                <div>
+                  <h3 className="font-bold leading-none" style={{ fontFamily: PP, fontSize: '1.1rem', color: '#111' }}>
+                    Send Us a Message
+                  </h3>
+                  <p className="text-gray-400 text-xs mt-0.5" style={{ fontFamily: PP }}>
+                    We'll get back to you within 1 business day.
+                  </p>
+                </div>
+              </div>
+
+              <div className="p-8 md:p-10">
+                {submitted ? (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
+                    className="flex flex-col items-center justify-center text-center py-12">
+                    <div className="w-16 h-16 rounded-full flex items-center justify-center mb-5 shadow-md"
+                      style={{ backgroundColor: 'rgba(168,58,0,0.09)' }}>
+                      <CheckCircle size={32} style={{ color: '#a83a00' }} />
+                    </div>
+                    <h3 className="font-bold mb-2" style={{ fontFamily: PP, fontSize: '1.5rem', color: '#111' }}>
+                      Message Sent!
+                    </h3>
+                    <p className="text-gray-500 text-sm max-w-sm leading-relaxed" style={{ fontFamily: PP }}>
+                      Thank you for reaching out. One of our compliance experts will get back to you within 1 business day.
+                    </p>
+                    <button onClick={() => { setSubmitted(false); setForm({ name: '', email: '', phone: '', company: '', service: '', message: '' }); }}
+                      className="mt-7 font-semibold text-sm flex items-center gap-1.5 transition-opacity hover:opacity-70"
+                      style={{ fontFamily: PP, color: '#a83a00' }}>
+                      Send another message <ArrowRight size={14} />
+                    </button>
+                  </motion.div>
+                ) : (
                   <form className="space-y-5" onSubmit={handleSubmit}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                       <div>
-                        <label className="block text-sm font-semibold text-teal-600 mb-1.5">Name *</label>
+                        <label style={LABEL_STYLE}>Full Name *</label>
                         <input name="name" value={form.name} onChange={handleChange} required
-                          type="text" placeholder="Your full name"
-                          className="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-teal-400/30 focus:border-teal-500 outline-none transition-all bg-white text-sm" />
+                          type="text" placeholder="Your full name" {...inputProps('name')} />
                       </div>
                       <div>
-                        <label className="block text-sm font-semibold text-teal-600 mb-1.5">Email *</label>
+                        <label style={LABEL_STYLE}>Email Address *</label>
                         <input name="email" value={form.email} onChange={handleChange} required
-                          type="email" placeholder="your@email.com"
-                          className="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-teal-400/30 focus:border-teal-500 outline-none transition-all bg-white text-sm" />
+                          type="email" placeholder="your@email.com" {...inputProps('email')} />
                       </div>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                       <div>
-                        <label className="block text-sm font-semibold text-teal-600 mb-1.5">Phone *</label>
+                        <label style={LABEL_STYLE}>Phone Number *</label>
                         <input name="phone" value={form.phone} onChange={handleChange} required
-                          type="tel" placeholder="+91 98765 43210"
-                          className="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-teal-400/30 focus:border-teal-500 outline-none transition-all bg-white text-sm" />
+                          type="tel" placeholder="+91 98765 43210" {...inputProps('phone')} />
                       </div>
                       <div>
-                        <label className="block text-sm font-semibold text-teal-600 mb-1.5">Company</label>
+                        <label style={LABEL_STYLE}>Company Name</label>
                         <input name="company" value={form.company} onChange={handleChange}
-                          type="text" placeholder="Your company name"
-                          className="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-teal-400/30 focus:border-teal-500 outline-none transition-all bg-white text-sm" />
+                          type="text" placeholder="Your company" {...inputProps('company')} />
                       </div>
                     </div>
                     <div>
-                      <label className="block text-sm font-semibold text-teal-600 mb-1.5">Service Interest</label>
+                      <label style={LABEL_STYLE}>Service Interest</label>
                       <select name="service" value={form.service} onChange={handleChange}
-                        className="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-teal-400/30 focus:border-teal-500 outline-none transition-all bg-white text-sm appearance-none text-gray-700">
+                        style={{ ...FIELD_STYLE, borderColor: focused === 'service' ? '#a83a00' : '#e5e7eb', appearance: 'none' }}
+                        onFocus={() => setFocused('service')} onBlur={() => setFocused('')}>
                         <option value="">Select a service...</option>
                         <option>Labour Law Compliance</option>
                         <option>Payroll &amp; Salary Structuring</option>
@@ -133,82 +194,105 @@ const Contact = () => {
                       </select>
                     </div>
                     <div>
-                      <label className="block text-sm font-semibold text-teal-600 mb-1.5">Message</label>
+                      <label style={LABEL_STYLE}>Your Message</label>
                       <textarea name="message" value={form.message} onChange={handleChange}
-                        rows={5} placeholder="Describe your compliance challenge or query in detail..."
-                        className="w-full border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-teal-400/30 focus:border-teal-500 outline-none transition-all bg-white text-sm resize-none"></textarea>
+                        rows={5} placeholder="Describe your compliance challenge or query..."
+                        style={{ ...FIELD_STYLE, borderColor: focused === 'message' ? '#a83a00' : '#e5e7eb', resize: 'none' }}
+                        onFocus={() => setFocused('message')} onBlur={() => setFocused('')} />
                     </div>
                     <button type="submit"
-                      className="w-full bg-navy-900 text-white py-4 rounded-xl font-bold text-sm hover:bg-teal-600 transition-colors shadow-md flex items-center justify-center gap-2">
+                      className="w-full py-4 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 shadow-md transition-opacity hover:opacity-90"
+                      style={{ fontFamily: PP, backgroundColor: '#a83a00', color: '#fff' }}>
                       Send Message <ArrowRight size={16} />
                     </button>
                   </form>
-                </>
-              )}
+                )}
+              </div>
             </motion.div>
 
-            {/* Info Column */}
+            {/* ── Info Sidebar ── */}
             <div className="lg:col-span-5 flex flex-col gap-6">
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                className="bg-navy-900 text-white p-8 md:p-10 rounded-2xl shadow-xl relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-40 h-40 bg-teal-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-                <h3 className="text-xl font-bold mb-1 relative z-10">Get in touch</h3>
-                <p className="text-white/50 text-sm mb-8 relative z-10">Our team is available Monday–Friday, 9:30 AM to 6:30 PM IST.</p>
-                <ul className="space-y-6 relative z-10">
-                  <li className="flex gap-4">
-                    <div className="w-11 h-11 rounded-xl bg-teal-500/15 flex items-center justify-center shrink-0 text-teal-400">
-                      <MapPin size={18} />
+
+              {/* Contact info card */}
+              <motion.div
+                initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.55, delay: 0.1 }}
+                className="rounded-2xl overflow-hidden border border-gray-100 shadow-sm">
+                <div className="px-7 py-4 text-xs font-bold uppercase tracking-widest text-center"
+                  style={{ backgroundColor: '#a83a00', color: '#fda102', fontFamily: PP }}>
+                  Contact Details
+                </div>
+                <div className="bg-white p-7 space-y-6">
+                  {[
+                    {
+                      icon: MapPin,
+                      label: 'Office Address',
+                      lines: ['15th Floor, Nariman Point,', 'Mumbai, Maharashtra 400021', 'India'],
+                    },
+                    {
+                      icon: Phone,
+                      label: 'Phone Numbers',
+                      lines: ['+91 98765 43210', '022 4567 8900'],
+                      hrefs: ['tel:+919876543210', 'tel:02245678900'],
+                    },
+                    {
+                      icon: Mail,
+                      label: 'Email Addresses',
+                      lines: ['contact@maruconsultancy.in', 'support@maruconsultancy.in'],
+                      hrefs: ['mailto:contact@maruconsultancy.in', 'mailto:support@maruconsultancy.in'],
+                    },
+                    {
+                      icon: Clock,
+                      label: 'Working Hours',
+                      lines: ['Monday – Friday: 9:30 AM – 6:30 PM', 'Saturday & Sunday: Closed'],
+                    },
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-start gap-4">
+                      <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                        style={{ backgroundColor: 'rgba(168,58,0,0.08)' }}>
+                        <item.icon size={17} style={{ color: '#a83a00' }} />
+                      </div>
+                      <div>
+                        <p className="font-bold text-xs uppercase tracking-wider mb-1"
+                          style={{ fontFamily: PP, color: '#a83a00' }}>{item.label}</p>
+                        {item.lines.map((line, j) =>
+                          item.hrefs ? (
+                            <a key={j} href={item.hrefs[j]}
+                              className="block text-sm leading-relaxed transition-opacity hover:opacity-60"
+                              style={{ fontFamily: PP, color: '#444' }}>{line}</a>
+                          ) : (
+                            <p key={j} className="text-sm leading-relaxed"
+                              style={{ fontFamily: PP, color: '#444' }}>{line}</p>
+                          )
+                        )}
+                      </div>
                     </div>
-                    <div>
-                      <p className="font-bold mb-1 text-sm">Address</p>
-                      <p className="text-white/55 text-sm leading-relaxed">15th Floor, Nariman Point,<br />Mumbai, Maharashtra 400021<br />India</p>
-                    </div>
-                  </li>
-                  <li className="flex gap-4">
-                    <div className="w-11 h-11 rounded-xl bg-teal-500/15 flex items-center justify-center shrink-0 text-teal-400">
-                      <Phone size={18} />
-                    </div>
-                    <div>
-                      <p className="font-bold mb-1 text-sm">Contact</p>
-                      <a href="tel:+919876543210" className="block text-white/55 text-sm hover:text-teal-400 transition-colors">+91 98765 43210</a>
-                      <a href="tel:02245678900" className="block text-white/55 text-sm hover:text-teal-400 transition-colors">022 4567 8900</a>
-                    </div>
-                  </li>
-                  <li className="flex gap-4">
-                    <div className="w-11 h-11 rounded-xl bg-teal-500/15 flex items-center justify-center shrink-0 text-teal-400">
-                      <Mail size={18} />
-                    </div>
-                    <div>
-                      <p className="font-bold mb-1 text-sm">Email</p>
-                      <a href="mailto:contact@labourcodes.in" className="block text-white/55 text-sm hover:text-teal-400 transition-colors">contact@labourcodes.in</a>
-                      <a href="mailto:support@labourcodes.in" className="block text-white/55 text-sm hover:text-teal-400 transition-colors">support@labourcodes.in</a>
-                    </div>
-                  </li>
-                  <li className="flex gap-4">
-                    <div className="w-11 h-11 rounded-xl bg-teal-500/15 flex items-center justify-center shrink-0 text-teal-400">
-                      <Clock size={18} />
-                    </div>
-                    <div>
-                      <p className="font-bold mb-1 text-sm">Working Hours</p>
-                      <p className="text-white/55 text-sm">Monday – Friday: 9:30 AM – 6:30 PM<br />Saturday &amp; Sunday: Closed</p>
-                    </div>
-                  </li>
-                </ul>
+                  ))}
+                </div>
               </motion.div>
 
-              {/* Map Placeholder */}
+              {/* Why reach out */}
               <motion.div
-                initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                className="bg-gray-100 h-56 rounded-2xl overflow-hidden relative border border-gray-200">
-                <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&q=80&w=800"
-                  alt="Mumbai Nariman Point" className="w-full h-full object-cover opacity-70" />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="bg-white/90 backdrop-blur-sm px-5 py-3 rounded-xl shadow-lg flex items-center gap-2.5">
-                    <MapPin size={16} className="text-teal-500" />
-                    <span className="text-sm font-semibold text-navy-900">Nariman Point, Mumbai</span>
-                  </div>
+                initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.55, delay: 0.2 }}
+                className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                <div className="px-7 py-4 text-xs font-bold uppercase tracking-widest text-center"
+                  style={{ backgroundColor: '#a83a00', color: '#fda102', fontFamily: PP }}>
+                  Why Reach Out?
+                </div>
+                <div className="p-7 space-y-4">
+                  {[
+                    'Free initial compliance assessment',
+                    'Response within 1 business day',
+                    'No obligation consultation',
+                    'Pan-India coverage — wherever you operate',
+                    'Dedicated expert assigned to your case',
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-start gap-3">
+                      <CheckCircle size={16} className="shrink-0 mt-0.5" style={{ color: '#a83a00' }} />
+                      <span className="text-sm" style={{ fontFamily: PP, color: '#333', lineHeight: 1.6 }}>{item}</span>
+                    </div>
+                  ))}
                 </div>
               </motion.div>
             </div>
@@ -216,30 +300,36 @@ const Contact = () => {
         </div>
       </section>
 
-      {/* ── Quick Contact Strips ──────────────────────────── */}
-      <section className="py-14 bg-white border-t border-gray-100">
+      {/* ── Map Section ── */}
+      <section id="map" className="bg-white pt-0 pb-16">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {[
-              { icon: Phone, label: 'Call Us Directly', value: '+91 98765 43210', href: 'tel:+919876543210', cta: 'Call Now' },
-              { icon: Mail, label: 'Email Our Team', value: 'contact@labourcodes.in', href: 'mailto:contact@labourcodes.in', cta: 'Send Email' },
-              { icon: MapPin, label: 'Visit Our Office', value: 'Nariman Point, Mumbai', href: '#', cta: 'Get Directions' },
-            ].map((item, i) => (
-              <motion.a
-                key={i} href={item.href}
-                initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }} transition={{ duration: 0.4, delay: i * 0.1 }}
-                className="flex items-center gap-5 p-6 rounded-2xl border border-gray-100 bg-[#f8fafb] hover:border-teal-200 hover:shadow-sm transition-all group">
-                <div className="w-12 h-12 rounded-xl bg-teal-50 text-teal-500 flex items-center justify-center shrink-0 group-hover:bg-teal-500 group-hover:text-white transition-colors shadow-sm">
-                  <item.icon size={20} />
-                </div>
-                <div>
-                  <p className="text-xs text-gray-400 font-semibold mb-0.5">{item.label}</p>
-                  <p className="font-bold text-navy-900 text-sm">{item.value}</p>
-                </div>
-              </motion.a>
-            ))}
+          <div className="text-center mb-8">
+            <p className="font-bold tracking-[0.25em] uppercase text-xs mb-2"
+              style={{ fontFamily: PP, color: '#a83a00' }}>Find Us</p>
+            <h2 className="font-bold"
+              style={{ fontFamily: PP, fontSize: 'clamp(1.6rem, 2.5vw, 2.2rem)', color: '#111' }}>
+              Our Office Location
+            </h2>
           </div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }} transition={{ duration: 0.5 }}
+            className="rounded-2xl overflow-hidden border border-gray-100 shadow-md"
+            style={{ height: '400px', position: 'relative' }}>
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3773.9!2d72.8232!3d18.9256!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7d1c6cfb3b99b%3A0x4a5a3a6d7e5f4f1a!2sNariman%20Point%2C%20Mumbai%2C%20Maharashtra%20400021!5e0!3m2!1sen!2sin!4v1700000000000"
+              width="100%" height="100%" style={{ border: 0 }} allowFullScreen loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade" title="Maru Consultancy Office Location"
+            />
+            <div className="absolute bottom-4 left-4 right-4 md:right-auto">
+              <div className="bg-white rounded-xl px-5 py-3 shadow-lg flex items-center gap-2.5 border border-gray-100">
+                <MapPin size={16} style={{ color: '#a83a00' }} />
+                <span className="font-semibold text-sm" style={{ fontFamily: PP, color: '#111' }}>
+                  Nariman Point, Mumbai — 400021
+                </span>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
     </div>
