@@ -57,26 +57,26 @@ const CareerDetail = () => {
           transition={{ duration: 0.6 }}
           className="text-center px-8 w-full max-w-4xl mx-auto">
 
-          <p className="uppercase tracking-[0.28em] font-semibold mb-2"
-            style={{ fontFamily: PP, fontSize: '0.82rem', color: '#fda102' }}>
+          <p className="uppercase tracking-[0.28em] font-semibold mb-3"
+            style={{ fontFamily: PP, fontSize: '0.95rem', color: '#fda102' }}>
             {job.category === 'internal' ? 'In-house Opportunity' : 'Client Job Posting'} · {job.department}
           </p>
-          <h1 className="font-bold mb-3 leading-tight"
-            style={{ fontFamily: PP, fontSize: 'clamp(1.4rem, 3vw, 2.6rem)', color: '#fff' }}>
+          <h1 className="font-bold mb-5 leading-tight"
+            style={{ fontFamily: PP, fontSize: 'clamp(2rem, 4vw, 3.2rem)', color: '#fff' }}>
             {job.title}
           </h1>
-          <div className="flex flex-wrap justify-center gap-5 text-sm"
-            style={{ color: 'rgba(255,255,255,0.75)' }}>
-            <span className="flex items-center gap-1.5">
-              <MapPin size={13} style={{ color: '#fda102' }} /> {job.location}
+          <div className="flex flex-wrap justify-center gap-6"
+            style={{ color: 'rgba(255,255,255,0.85)', fontSize: 'clamp(0.95rem, 1.5vw, 1.1rem)' }}>
+            <span className="flex items-center gap-2 font-medium">
+              <MapPin size={16} style={{ color: '#fda102' }} /> {job.location}
             </span>
-            <span className="flex items-center gap-1.5">
-              <Clock size={13} style={{ color: '#fda102' }} /> {job.type}
+            <span className="flex items-center gap-2 font-medium">
+              <Clock size={16} style={{ color: '#fda102' }} /> {job.type}
             </span>
-            <span className="flex items-center gap-1.5">
-              <Briefcase size={13} style={{ color: '#fda102' }} /> {job.experience} exp
+            <span className="flex items-center gap-2 font-medium">
+              <Briefcase size={16} style={{ color: '#fda102' }} /> {job.experience} exp
             </span>
-            <span className="flex items-center gap-1.5 font-semibold" style={{ color: '#fda102' }}>
+            <span className="flex items-center gap-2 font-bold" style={{ color: '#fda102' }}>
               {job.ctc}
             </span>
           </div>

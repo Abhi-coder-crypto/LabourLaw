@@ -11,6 +11,7 @@ export type Job = {
   requirements: string[];
   niceToHave: string[];
   ctc: string;
+  postedOn: string;
 };
 
 export const jobs: Job[] = [
@@ -23,6 +24,7 @@ export const jobs: Job[] = [
     experience: '5–8 years',
     category: 'internal',
     ctc: '₹12–18 LPA',
+    postedOn: 'July 05, 2025',
     about:
       'We are looking for a seasoned Senior Labour Law Consultant to lead end-to-end compliance mandates for our corporate clients across manufacturing, IT, and services sectors. You will be the primary legal advisor on all labour law matters, drafting opinions, representing clients, and proactively keeping them ahead of regulatory changes — especially the evolving New Labour Codes.',
     responsibilities: [
@@ -57,6 +59,7 @@ export const jobs: Job[] = [
     experience: '4–6 years',
     category: 'internal',
     ctc: '₹8–14 LPA',
+    postedOn: 'July 03, 2025',
     about:
       'We need a meticulous Payroll Compliance Manager to oversee end-to-end payroll processing and statutory compliance for our growing client portfolio. You will ensure every salary structure is Code-on-Wages compliant, every PF/ESIC filing is on time, and every F&F settlement is legally sound.',
     responsibilities: [
@@ -91,6 +94,7 @@ export const jobs: Job[] = [
     experience: '3–5 years',
     category: 'internal',
     ctc: '₹7–11 LPA',
+    postedOn: 'June 28, 2025',
     about:
       "As a Statutory Audit Specialist, you will conduct thorough compliance audits across our clients' establishments — examining payroll records, statutory registers, contractor compliance, and factory documentation. Your findings directly protect clients from regulatory action and employee disputes.",
     responsibilities: [
@@ -124,8 +128,9 @@ export const jobs: Job[] = [
     experience: '4–7 years',
     category: 'internal',
     ctc: '₹9–15 LPA',
+    postedOn: 'June 25, 2025',
     about:
-      'We are building our internal HR function and need an experienced HR Business Partner to work closely with our leadership team. You will manage the full employee lifecycle — from talent acquisition to engagement, performance, and compliance — ensuring our internal practices are as exemplary as the compliance standards we hold our clients to.',
+      "We are building our internal HR function and need an experienced HR Business Partner to work closely with our leadership team. You will manage the full employee lifecycle — from talent acquisition to engagement, performance, and compliance — ensuring our internal practices are as exemplary as the compliance standards we hold our clients to.",
     responsibilities: [
       'Partner with business heads to drive HR strategy, workforce planning, and talent acquisition',
       'Manage end-to-end recruitment for legal, payroll, audit, and operations roles',
@@ -157,6 +162,7 @@ export const jobs: Job[] = [
     experience: '8–12 years',
     category: 'client',
     ctc: '₹18–26 LPA',
+    postedOn: 'July 07, 2025',
     about:
       'Our client, a leading Tier-1 automotive components manufacturer in Ahmedabad, is looking for a Plant HR Head to manage all HR and IR operations for a manufacturing unit of 800+ employees. This is a critical leadership role requiring strong industrial relations expertise and hands-on experience in union management.',
     responsibilities: [
@@ -190,6 +196,7 @@ export const jobs: Job[] = [
     experience: '2–4 years',
     category: 'client',
     ctc: '₹4–7 LPA',
+    postedOn: 'July 06, 2025',
     about:
       'A leading IT services company in Chennai is hiring a Compliance Executive to manage their day-to-day statutory filings and labour law compliance. This is a contract role (12 months, renewable) ideal for a detail-oriented compliance professional who thrives in a fast-paced technology environment.',
     responsibilities: [
@@ -221,6 +228,7 @@ export const jobs: Job[] = [
     experience: '6–10 years',
     category: 'client',
     ctc: '₹14–20 LPA',
+    postedOn: 'July 01, 2025',
     about:
       'A top-tier automotive OEM in Gurgaon is looking for a seasoned IR Manager to manage industrial relations for their NCR manufacturing operations. The ideal candidate will have deep experience in union management, collective bargaining, and dispute resolution in a large-scale manufacturing setup.',
     responsibilities: [
@@ -252,6 +260,7 @@ export const jobs: Job[] = [
     experience: '3–5 years',
     category: 'client',
     ctc: '₹5–8 LPA',
+    postedOn: 'June 30, 2025',
     about:
       'A large textile manufacturing company in Hyderabad is seeking a certified Welfare Officer under the Factories Act. You will be responsible for the health, safety, and welfare of factory workers, implementing welfare schemes, and ensuring full compliance with Factories Act welfare provisions.',
     responsibilities: [
@@ -282,8 +291,9 @@ export const jobs: Job[] = [
     experience: '2–4 years',
     category: 'client',
     ctc: '₹4–6 LPA',
+    postedOn: 'June 27, 2025',
     about:
-      'A fast-growing organized retail chain is hiring a Recruitment Specialist to manage high-volume hiring for their store operations across Mumbai. This is a contract role (6 months, potential for extension) focused on sourcing, screening, and onboarding front-line retail staff at scale.',
+      "A fast-growing organized retail chain is hiring a Recruitment Specialist to manage high-volume hiring for their store operations across Mumbai. This is a contract role (6 months, potential for extension) focused on sourcing, screening, and onboarding front-line retail staff at scale.",
     responsibilities: [
       'Manage end-to-end recruitment for front-line retail roles (store associates, supervisors, cashiers)',
       'Source candidates through job portals, walk-ins, referrals, and campus drives',

@@ -1,28 +1,10 @@
 import { useState } from 'react';
-import { MapPin, Briefcase, Clock, ArrowRight, Users, TrendingUp, Award, ChevronRight } from 'lucide-react';
+import { MapPin, Briefcase, Clock, ArrowRight, ChevronRight, Calendar } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { jobs } from '../data/careersData';
 
 const PP = 'Poppins, sans-serif';
-
-const perks = [
-  {
-    icon: TrendingUp,
-    title: 'Career Growth',
-    desc: 'Clear progression paths with structured learning and mentorship from India\'s top labour law practitioners.',
-  },
-  {
-    icon: Award,
-    title: 'Expert Recognition',
-    desc: 'Work on landmark compliance cases. Your expertise becomes our collective strength.',
-  },
-  {
-    icon: Users,
-    title: 'Collaborative Culture',
-    desc: 'A tight-knit team of legal minds, payroll specialists, and HR professionals who learn from each other.',
-  },
-];
 
 const Careers = () => {
   const [activeTab, setActiveTab] = useState<'internal' | 'client'>('internal');
@@ -34,73 +16,42 @@ const Careers = () => {
   return (
     <div className="w-full" style={{ fontFamily: PP }}>
 
-      {/* ── Hero ── */}
-      <section
-        className="relative flex items-center justify-center overflow-hidden"
-        style={{ backgroundColor: '#a83a00', minHeight: '280px' }}>
+      {/* ── Hero — Video Background ── */}
+      <section className="relative flex items-center justify-center overflow-hidden" style={{ minHeight: '420px', height: '56vh', maxHeight: '580px' }}>
 
-        <div className="absolute top-[-60px] right-[-60px] w-[320px] h-[320px] rounded-full opacity-10"
-          style={{ backgroundColor: '#fda102' }} />
-        <div className="absolute bottom-[-50px] left-[-30px] w-[200px] h-[200px] rounded-full opacity-[0.07]"
-          style={{ backgroundColor: '#fff' }} />
+        {/* Video */}
+        <video
+          autoPlay muted loop playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ zIndex: 0 }}>
+          <source src="/assets/careers-hero.mp4" type="video/mp4" />
+        </video>
 
+        {/* Dark overlay for readability */}
+        <div className="absolute inset-0" style={{ backgroundColor: 'rgba(0,0,0,0.52)', zIndex: 1 }} />
+
+        {/* Text */}
         <motion.div
           initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="relative z-10 text-center px-8 w-full max-w-4xl mx-auto py-16">
+          transition={{ duration: 0.7 }}
+          className="relative text-center px-8 w-full max-w-4xl mx-auto"
+          style={{ zIndex: 2 }}>
 
           <p className="uppercase tracking-[0.3em] font-semibold mb-3"
             style={{ fontFamily: PP, fontSize: '0.85rem', color: '#fda102' }}>
             Join Our Team
           </p>
           <h1 className="font-bold mb-4 leading-tight"
-            style={{ fontFamily: PP, fontSize: 'clamp(2rem, 4vw, 3.2rem)', color: '#fff' }}>
+            style={{ fontFamily: PP, fontSize: 'clamp(2.2rem, 5vw, 3.8rem)', color: '#fff' }}>
             Build a Career That Matters
           </h1>
           <p style={{
-            fontFamily: PP, fontSize: 'clamp(0.95rem, 1.4vw, 1.1rem)',
-            color: 'rgba(255,255,255,0.80)', maxWidth: '580px', margin: '0 auto', lineHeight: 1.7,
+            fontFamily: PP, fontSize: 'clamp(1rem, 1.6vw, 1.2rem)',
+            color: 'rgba(255,255,255,0.82)', maxWidth: '600px', margin: '0 auto', lineHeight: 1.7,
           }}>
             Channel your passion for labour and industrial law into a meaningful career at India's premier compliance advisory firm.
           </p>
         </motion.div>
-      </section>
-
-      {/* ── Why Work With Us ── */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <div className="text-center mb-14">
-            <p className="font-bold tracking-[0.2em] uppercase text-xs mb-3"
-              style={{ fontFamily: PP, color: '#a83a00' }}>Why Labour Law</p>
-            <h2 className="font-bold mb-4"
-              style={{ fontFamily: PP, fontSize: 'clamp(1.8rem, 3vw, 2.6rem)', color: '#111' }}>
-              Why Work With Us
-            </h2>
-            <p className="text-gray-500 max-w-xl mx-auto leading-relaxed"
-              style={{ fontFamily: PP, fontSize: '1rem' }}>
-              Every role here creates real impact — keeping Indian businesses compliant and workers protected.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-7">
-            {perks.map((perk, i) => (
-              <motion.div key={i}
-                initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.45 }}
-                className="rounded-2xl p-8 border border-gray-100 text-center group hover:shadow-lg transition-shadow"
-                style={{ backgroundColor: '#fdf7f0' }}>
-                <div className="w-14 h-14 mx-auto rounded-2xl flex items-center justify-center mb-5 shadow-sm"
-                  style={{ backgroundColor: 'rgba(168,58,0,0.1)' }}>
-                  <perk.icon size={24} style={{ color: '#a83a00' }} />
-                </div>
-                <h3 className="font-bold mb-3"
-                  style={{ fontFamily: PP, fontSize: '1.1rem', color: '#111' }}>{perk.title}</h3>
-                <p className="text-gray-500 leading-relaxed"
-                  style={{ fontFamily: PP, fontSize: '0.93rem' }}>{perk.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
       </section>
 
       {/* ── Job Listings ── */}
@@ -151,14 +102,16 @@ const Careers = () => {
               <motion.div key={job.slug}
                 initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.07, duration: 0.4 }}
-                className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all p-7 md:p-8">
+                className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all p-7 md:p-9">
 
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-5">
                   <div className="flex-1">
-                    <div className="flex flex-wrap items-center gap-2 mb-2">
+
+                    {/* Category + Department */}
+                    <div className="flex flex-wrap items-center gap-2 mb-3">
                       <span className="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full"
                         style={{
-                          backgroundColor: job.category === 'internal' ? 'rgba(168,58,0,0.1)' : 'rgba(253,161,2,0.12)',
+                          backgroundColor: job.category === 'internal' ? 'rgba(168,58,0,0.10)' : 'rgba(253,161,2,0.12)',
                           color: job.category === 'internal' ? '#a83a00' : '#c07a00',
                           fontFamily: PP,
                         }}>
@@ -169,24 +122,33 @@ const Careers = () => {
                       </span>
                     </div>
 
-                    <h3 className="font-bold mb-3"
-                      style={{ fontFamily: PP, fontSize: '1.15rem', color: '#111' }}>
+                    {/* Title */}
+                    <h3 className="font-bold mb-4"
+                      style={{ fontFamily: PP, fontSize: 'clamp(1.2rem, 2vw, 1.5rem)', color: '#111' }}>
                       {job.title}
                     </h3>
 
-                    <div className="flex flex-wrap gap-4 text-sm text-gray-500">
-                      <span className="flex items-center gap-1.5">
-                        <MapPin size={13} style={{ color: '#a83a00' }} /> {job.location}
+                    {/* Meta */}
+                    <div className="flex flex-wrap gap-5" style={{ fontSize: '0.97rem', color: '#555' }}>
+                      <span className="flex items-center gap-1.5 font-medium">
+                        <MapPin size={15} style={{ color: '#a83a00' }} /> {job.location}
                       </span>
-                      <span className="flex items-center gap-1.5">
-                        <Clock size={13} style={{ color: '#a83a00' }} /> {job.type}
+                      <span className="flex items-center gap-1.5 font-medium">
+                        <Clock size={15} style={{ color: '#a83a00' }} /> {job.type}
                       </span>
-                      <span className="flex items-center gap-1.5">
-                        <Briefcase size={13} style={{ color: '#a83a00' }} /> {job.experience} exp
+                      <span className="flex items-center gap-1.5 font-medium">
+                        <Briefcase size={15} style={{ color: '#a83a00' }} /> {job.experience} exp
+                      </span>
+                      <span className="flex items-center gap-1.5 font-semibold" style={{ color: '#a83a00' }}>
+                        {job.ctc}
+                      </span>
+                      <span className="flex items-center gap-1.5 text-gray-400 font-normal" style={{ fontSize: '0.88rem' }}>
+                        <Calendar size={13} style={{ color: '#aaa' }} /> Posted {job.postedOn}
                       </span>
                     </div>
                   </div>
 
+                  {/* Buttons */}
                   <div className="flex flex-col sm:flex-row gap-3 shrink-0">
                     <Link to={`/careers/${job.slug}`}
                       className="px-6 py-3 rounded-xl font-semibold text-sm border-2 flex items-center justify-center gap-2 transition-all hover:opacity-80"
