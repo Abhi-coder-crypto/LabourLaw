@@ -59,19 +59,20 @@ const Contact = () => {
         <video
           autoPlay muted loop playsInline
           className="absolute inset-0 w-full h-full object-cover"
+          style={{ objectPosition: 'center 65%' }}
           src={heroVideo}
         />
         <div className="absolute inset-0" style={{ backgroundColor: 'rgba(30,10,0,0.62)' }} />
         <motion.div
           initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-center px-8 w-full max-w-5xl mx-auto relative z-10">
+          className="text-center px-8 w-full max-w-6xl mx-auto relative z-10">
           <p className="uppercase tracking-[0.3em] font-light mb-3"
-            style={{ fontFamily: PP, fontSize: '1.05rem', color: '#fda102' }}>
+            style={{ fontFamily: PP, fontSize: '1.4rem', color: '#fda102' }}>
             Get In Touch
           </p>
-          <h1 className="font-semibold mb-4"
-            style={{ fontFamily: PP, fontSize: 'clamp(2.2rem, 5vw, 4.2rem)', color: '#fff', letterSpacing: '-0.01em', lineHeight: 1.1 }}>
+          <h1 className="font-medium mb-4 whitespace-nowrap"
+            style={{ fontFamily: PP, fontSize: 'clamp(1.8rem, 4.2vw, 3.6rem)', fontWeight: 500, color: '#fff', letterSpacing: '-0.01em', lineHeight: 1.15 }}>
             Ready to Put Your Worries to Rest?
           </h1>
           <p style={{
