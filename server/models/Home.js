@@ -53,6 +53,20 @@ const HomeSchema = new mongoose.Schema({
   testimonials: [Testimonial],
 
   stats: [StatItem],
+
+  // Which services appear on the homepage, in what order (array of slugs)
+  featuredServiceSlugs: [String],
+
+  // Latest Insights cards shown on the homepage
+  latestInsights: [{
+    category: String,
+    title: String,
+    desc: String,
+    img: String,
+    date: String,
+    articleUrl: String,
+    _id: false,
+  }],
 }, { timestamps: true });
 
 export default mongoose.models.Home || mongoose.model('Home', HomeSchema);

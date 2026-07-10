@@ -113,8 +113,21 @@ const Home = () => {
   const [previewServices, setPreviewServices] = useState<ServiceContent[]>([]);
 
   useEffect(() => {
-    api.get<HomeContent>('/home').then(setContent).catch(() => {});
-    api.get<ServiceContent[]>('/services').then((list) => setPreviewServices(list.slice(0, 8))).catch(() => {});
+    Promise.all([
+      api.get<HomeContent>('/home'),
+      api.get<ServiceContent[]>('/services'),
+    ]).then(([home, services]) => {
+      setContent(home);
+      if (home.featuredServiceSlugs?.length) {
+        const map = new Map(services.map(s => [s.slug, s]));
+        const ordered = home.featuredServiceSlugs
+          .map(slug => map.get(slug))
+          .filter(Boolean) as ServiceContent[];
+        setPreviewServices(ordered.slice(0, 8));
+      } else {
+        setPreviewServices(services.slice(0, 8));
+      }
+    }).catch(() => {});
   }, []);
 
   const phrases = content?.heroPhrases?.length ? content.heroPhrases : defaultPhrases;
@@ -642,11 +655,11 @@ const Home = () => {
             </Link>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-7">
-            {[
-              { category: 'New Labour Codes', title: 'Understanding the New Wage Code', desc: 'A comprehensive guide to how the new definitions of wages impact your salary structure and PF contributions.', img: '/assets/service-payroll.png', date: 'Oct 15, 2024' },
-              { category: 'Compliance', title: 'Navigating State-Specific Leave Policies', desc: 'Analyzing the variations in sick, casual, and earned leaves across different Indian states.', img: '/assets/service-hr.png', date: 'Oct 02, 2024' },
-              { category: 'Labour Audit', title: 'Preparing for Labour Inspections', desc: 'Key documents and statutory registers you must have updated before an unexpected factory inspection.', img: '/assets/service-audits.png', date: 'Sep 28, 2024' },
-            ].map((post, i) => (
+            {(content?.latestInsights?.length ? content.latestInsights : [
+              { category: 'New Labour Codes', title: 'Understanding the New Wage Code', desc: 'A comprehensive guide to how the new definitions of wages impact your salary structure and PF contributions.', img: '/assets/service-payroll.png', date: 'Oct 15, 2024', articleUrl: '/resources' },
+              { category: 'Compliance', title: 'Navigating State-Specific Leave Policies', desc: 'Analyzing the variations in sick, casual, and earned leaves across different Indian states.', img: '/assets/service-hr.png', date: 'Oct 02, 2024', articleUrl: '/resources' },
+              { category: 'Labour Audit', title: 'Preparing for Labour Inspections', desc: 'Key documents and statutory registers you must have updated before an unexpected factory inspection.', img: '/assets/service-audits.png', date: 'Sep 28, 2024', articleUrl: '/resources' },
+            ]).map((post, i) => (
               <motion.div key={i}
                 initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }} transition={{ duration: 0.45, delay: i * 0.1 }}
@@ -662,7 +675,7 @@ const Home = () => {
                   <p className="text-[11px] text-teal-500 font-semibold mb-2 uppercase tracking-wider">{post.date}</p>
                   <h3 className="text-base font-display font-bold text-navy-900 mb-3 line-clamp-2">{post.title}</h3>
                   <p className="text-gray-500 text-sm mb-5 flex-grow leading-relaxed">{post.desc}</p>
-                  <Link to="/resources"
+                  <Link to={post.articleUrl || '/resources'}
                     className="text-teal-600 font-bold text-sm flex items-center gap-1.5 hover:text-navy-900 transition-colors mt-auto">
                     Read Article <ChevronRight size={14} />
                   </Link>

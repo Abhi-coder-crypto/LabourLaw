@@ -3,6 +3,15 @@ export type Testimonial = { text: string; author: string; role: string };
 export type StatItem = { target: number; decimals: number; suffix: string; label: string };
 export type OneStopCard = { title: string; desc: string };
 
+export type InsightCard = {
+  category: string;
+  title: string;
+  desc: string;
+  img: string;
+  date: string;
+  articleUrl: string;
+};
+
 export type HomeContent = {
   _id?: string;
   heroLine1: string;
@@ -27,6 +36,8 @@ export type HomeContent = {
   testimonialsHeading: string;
   testimonials: Testimonial[];
   stats: StatItem[];
+  featuredServiceSlugs: string[];
+  latestInsights: InsightCard[];
 };
 
 export type Deliverable = { title: string; desc: string };

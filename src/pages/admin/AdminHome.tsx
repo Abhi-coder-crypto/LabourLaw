@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
-import { Plus, Trash2, Save, Loader2, CheckCircle2 } from 'lucide-react';
+import { Plus, Trash2, Save, Loader2, CheckCircle2, ChevronUp, ChevronDown } from 'lucide-react';
 import { api } from '../../lib/api';
-import type { HomeContent } from '../../types/content';
+import type { HomeContent, ServiceContent, InsightCard } from '../../types/content';
 import { Section, Field, TextInput, TextArea, PrimaryButton, SecondaryButton, DangerButton } from '../../components/admin/FormBits';
 import ImageUploader from '../../components/admin/ImageUploader';
 
 const PP = 'Poppins, sans-serif';
+
+const EMPTY_INSIGHT: InsightCard = { category: '', title: '', desc: '', img: '', date: '', articleUrl: '' };
 
 const EMPTY: HomeContent = {
   heroLine1: '', heroPhrases: [], heroLine2: '', heroDescription: '',
@@ -16,18 +18,27 @@ const EMPTY: HomeContent = {
   servicesPreviewLabel: '', servicesPreviewTitle: '', servicesPreviewDescription: '',
   testimonialsHeading: '', testimonials: [],
   stats: [],
+  featuredServiceSlugs: [],
+  latestInsights: [],
 };
 
 export default function AdminHome() {
   const [data, setData] = useState<HomeContent>(EMPTY);
+  const [allServices, setAllServices] = useState<ServiceContent[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState('');
 
   useEffect(() => {
-    api.get<HomeContent>('/home')
-      .then(setData)
+    Promise.all([
+      api.get<HomeContent>('/home'),
+      api.get<ServiceContent[]>('/services'),
+    ])
+      .then(([home, services]) => {
+        setData({ featuredServiceSlugs: [], latestInsights: [], ...home });
+        setAllServices(services);
+      })
       .catch((err) => setError(err instanceof Error ? err.message : 'Failed to load'))
       .finally(() => setLoading(false));
   }, []);
@@ -160,6 +171,150 @@ export default function AdminHome() {
         <Field label="Label"><TextInput value={data.servicesPreviewLabel} onChange={(e) => update('servicesPreviewLabel', e.target.value)} /></Field>
         <Field label="Title"><TextInput value={data.servicesPreviewTitle} onChange={(e) => update('servicesPreviewTitle', e.target.value)} /></Field>
         <Field label="Description"><TextArea rows={2} value={data.servicesPreviewDescription} onChange={(e) => update('servicesPreviewDescription', e.target.value)} /></Field>
+      </Section>
+
+      <Section title="Featured Services on Homepage" description="Choose up to 8 services and set their display order. If none are selected all services appear in their default order.">
+        {(() => {
+          const slugs = data.featuredServiceSlugs ?? [];
+          // Services currently featured (in order)
+          const featured = slugs
+            .map(slug => allServices.find(s => s.slug === slug))
+            .filter(Boolean) as ServiceContent[];
+          // Services not yet featured
+          const unfeatured = allServices.filter(s => !slugs.includes(s.slug));
+
+          const moveUp = (i: number) => {
+            if (i === 0) return;
+            const next = [...slugs]; [next[i - 1], next[i]] = [next[i], next[i - 1]];
+            update('featuredServiceSlugs', next);
+          };
+          const moveDown = (i: number) => {
+            if (i >= slugs.length - 1) return;
+            const next = [...slugs]; [next[i], next[i + 1]] = [next[i + 1], next[i]];
+            update('featuredServiceSlugs', next);
+          };
+          const add = (slug: string) => {
+            if (slugs.length >= 8) return;
+            update('featuredServiceSlugs', [...slugs, slug]);
+          };
+          const remove = (slug: string) => update('featuredServiceSlugs', slugs.filter(s => s !== slug));
+
+          return (
+            <div className="space-y-4">
+              {/* Featured list */}
+              {featured.length > 0 && (
+                <div className="space-y-2">
+                  <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider" style={{ fontFamily: PP }}>
+                    Showing on homepage ({featured.length}/8)
+                  </p>
+                  {featured.map((svc, i) => (
+                    <div key={svc.slug}
+                      className="flex items-center gap-3 p-3 rounded-xl border bg-white"
+                      style={{ borderColor: 'rgba(168,58,0,0.15)' }}>
+                      {svc.img && <img src={svc.img} alt="" className="w-10 h-10 rounded-lg object-cover shrink-0" />}
+                      <span className="flex-1 text-sm font-medium truncate" style={{ fontFamily: PP, color: '#111' }}>{svc.title}</span>
+                      <div className="flex items-center gap-1 shrink-0">
+                        <button onClick={() => moveUp(i)} disabled={i === 0}
+                          className="p-1 rounded hover:bg-gray-100 disabled:opacity-30 transition-colors" title="Move up">
+                          <ChevronUp size={14} />
+                        </button>
+                        <button onClick={() => moveDown(i)} disabled={i === featured.length - 1}
+                          className="p-1 rounded hover:bg-gray-100 disabled:opacity-30 transition-colors" title="Move down">
+                          <ChevronDown size={14} />
+                        </button>
+                        <DangerButton type="button" onClick={() => remove(svc.slug)}>
+                          <Trash2 size={13} />
+                        </DangerButton>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Add from remaining */}
+              {unfeatured.length > 0 && slugs.length < 8 && (
+                <div className="space-y-2">
+                  <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider" style={{ fontFamily: PP }}>
+                    Add to homepage
+                  </p>
+                  {unfeatured.map((svc) => (
+                    <div key={svc.slug}
+                      className="flex items-center gap-3 p-3 rounded-xl border border-gray-100 bg-gray-50 hover:bg-white transition-colors">
+                      {svc.img && <img src={svc.img} alt="" className="w-10 h-10 rounded-lg object-cover shrink-0 opacity-60" />}
+                      <span className="flex-1 text-sm text-gray-500 truncate" style={{ fontFamily: PP }}>{svc.title}</span>
+                      <SecondaryButton type="button" onClick={() => add(svc.slug)}>
+                        <Plus size={13} /> Add
+                      </SecondaryButton>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {slugs.length >= 8 && (
+                <p className="text-xs text-amber-600 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2" style={{ fontFamily: PP }}>
+                  Maximum 8 services reached. Remove one to add another.
+                </p>
+              )}
+            </div>
+          );
+        })()}
+      </Section>
+
+      <Section title="Latest Insights" description="Up to 3 article cards shown on the homepage. Leave empty to use the built-in defaults.">
+        <div className="space-y-4">
+          {(data.latestInsights ?? []).map((insight, i) => (
+            <div key={i} className="p-4 rounded-xl border border-gray-100 bg-gray-50 space-y-3">
+              <div className="flex justify-between items-center">
+                <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider" style={{ fontFamily: PP }}>
+                  Article {i + 1}
+                </span>
+                <DangerButton type="button" onClick={() => update('latestInsights', (data.latestInsights ?? []).filter((_, j) => j !== i))}>
+                  <Trash2 size={13} />
+                </DangerButton>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <Field label="Category tag">
+                  <TextInput placeholder="e.g. Compliance" value={insight.category} onChange={(e) => {
+                    const next = [...(data.latestInsights ?? [])]; next[i] = { ...insight, category: e.target.value }; update('latestInsights', next);
+                  }} />
+                </Field>
+                <Field label="Date">
+                  <TextInput placeholder="e.g. Oct 15, 2024" value={insight.date} onChange={(e) => {
+                    const next = [...(data.latestInsights ?? [])]; next[i] = { ...insight, date: e.target.value }; update('latestInsights', next);
+                  }} />
+                </Field>
+              </div>
+              <Field label="Title">
+                <TextInput value={insight.title} onChange={(e) => {
+                  const next = [...(data.latestInsights ?? [])]; next[i] = { ...insight, title: e.target.value }; update('latestInsights', next);
+                }} />
+              </Field>
+              <Field label="Short description">
+                <TextArea rows={2} value={insight.desc} onChange={(e) => {
+                  const next = [...(data.latestInsights ?? [])]; next[i] = { ...insight, desc: e.target.value }; update('latestInsights', next);
+                }} />
+              </Field>
+              <Field label="Article URL (link for 'Read Article')">
+                <TextInput placeholder="/resources/my-article" value={insight.articleUrl} onChange={(e) => {
+                  const next = [...(data.latestInsights ?? [])]; next[i] = { ...insight, articleUrl: e.target.value }; update('latestInsights', next);
+                }} />
+              </Field>
+              <ImageUploader label="Cover image" value={insight.img} onChange={(v) => {
+                const next = [...(data.latestInsights ?? [])]; next[i] = { ...insight, img: v }; update('latestInsights', next);
+              }} />
+            </div>
+          ))}
+          {(data.latestInsights ?? []).length < 3 && (
+            <SecondaryButton type="button" onClick={() => update('latestInsights', [...(data.latestInsights ?? []), { ...EMPTY_INSIGHT }])}>
+              <Plus size={13} /> Add article card
+            </SecondaryButton>
+          )}
+          {(data.latestInsights ?? []).length === 0 && (
+            <p className="text-xs text-gray-400 mt-1" style={{ fontFamily: PP }}>
+              Currently showing built-in default articles. Add cards above to override them.
+            </p>
+          )}
+        </div>
       </Section>
 
       <Section title="Testimonials">
