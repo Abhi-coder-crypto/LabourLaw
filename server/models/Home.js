@@ -55,7 +55,7 @@ const HomeSchema = new mongoose.Schema({
   stats: [StatItem],
 
   // Which services appear on the homepage, in what order (array of slugs)
-  featuredServiceSlugs: [String],
+  featuredServiceSlugs: { type: [String], default: [] },
 
   // Latest Insights cards shown on the homepage
   latestInsights: [{
