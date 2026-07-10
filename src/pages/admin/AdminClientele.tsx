@@ -66,13 +66,13 @@ export default function AdminClientele() {
           heroEyebrow:  res.heroEyebrow  ?? EMPTY.heroEyebrow,
           heroHeadline: res.heroHeadline ?? EMPTY.heroHeadline,
           heroSubtext:  res.heroSubtext  ?? EMPTY.heroSubtext,
-          portfolio:    (res.portfolio ?? EMPTY.portfolio).map(sector => ({
+          portfolio:    (res.portfolio?.length ? res.portfolio : EMPTY.portfolio).map(sector => ({
             ...sector,
             clients: Array.isArray(sector.clients) ? sector.clients : [],
           })),
-          stats:        res.stats        ?? EMPTY.stats,
-          industries:   res.industries   ?? EMPTY.industries,
-          testimonials: res.testimonials ?? EMPTY.testimonials,
+          stats:        res.stats?.length        ? res.stats        : EMPTY.stats,
+          industries:   res.industries?.length   ? res.industries   : EMPTY.industries,
+          testimonials: res.testimonials?.length ? res.testimonials : EMPTY.testimonials,
         });
       })
       .catch(err => setError(err instanceof Error ? err.message : 'Failed to load'))

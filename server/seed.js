@@ -5,12 +5,16 @@ import bcrypt from 'bcryptjs';
 import { connectDB } from './db.js';
 import Admin from './models/Admin.js';
 import Home from './models/Home.js';
+import About from './models/About.js';
+import Clientele from './models/Clientele.js';
 import Service from './models/Service.js';
 import Job from './models/Job.js';
 import Resource from './models/Resource.js';
 import { servicesSeed } from './seedData/services.js';
 import { jobsSeed } from './seedData/jobs.js';
 import { homeSeed } from './seedData/home.js';
+import { aboutSeed } from './seedData/about.js';
+import { clienteleSeed } from './seedData/clientele.js';
 import { resourcesSeed } from './seedData/resources.js';
 
 async function run() {
@@ -35,6 +39,24 @@ async function run() {
     console.log('[seed] Created Home content');
   } else {
     console.log('[seed] Home content already exists — skipped');
+  }
+
+  // About content
+  const existingAbout = await About.findOne({ singleton: 'about' });
+  if (!existingAbout) {
+    await About.create({ singleton: 'about', ...aboutSeed });
+    console.log('[seed] Created About content');
+  } else {
+    console.log('[seed] About content already exists — skipped');
+  }
+
+  // Clientele content
+  const existingClientele = await Clientele.findOne({ singleton: 'clientele' });
+  if (!existingClientele) {
+    await Clientele.create({ singleton: 'clientele', ...clienteleSeed });
+    console.log('[seed] Created Clientele content');
+  } else {
+    console.log('[seed] Clientele content already exists — skipped');
   }
 
   // Services
