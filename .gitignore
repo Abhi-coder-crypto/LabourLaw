@@ -12,6 +12,17 @@ dist
 dist-ssr
 *.local
 
+# Replit environment/agent-specific files (not relevant outside Replit)
+.replit
+replit.md
+.cache/
+.agents/
+.local/
+.canvas/
+.upm/
+.breakpoints
+.config/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

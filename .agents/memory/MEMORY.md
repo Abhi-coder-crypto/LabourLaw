@@ -1,1 +1,0 @@
-- [Admin panel architecture (Labour Codes)](labour-codes-admin.md) — Express+Mongo backend alongside Vite frontend, JWT cookie auth; key gotchas for future edits.

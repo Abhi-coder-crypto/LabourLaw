@@ -1,12 +1,12 @@
-// PM2 process file for deploying the labourcodes site on a VPS.
+// PM2 process file for previewing the labourcodes production frontend build on a VPS.
 //
 // Usage on the VPS:
 //   npm install
 //   npm run build
 //   pm2 start ecosystem.config.cjs
 //
-// This app is a static React/Vite site with no backend, database, or
-// secrets — `vite preview` simply serves the production build in `dist/`.
+// Note: this only serves the built static frontend (`dist/`) via `vite preview`.
+// The Express API (server/index.js) must be run/managed separately — see README.md.
 // The port is fixed to 3014 (see also `preview.port` in vite.config.ts).
 
 module.exports = {
