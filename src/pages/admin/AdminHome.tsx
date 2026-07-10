@@ -28,6 +28,7 @@ export default function AdminHome() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [dirty, setDirty] = useState(false);
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -55,9 +56,15 @@ export default function AdminHome() {
     setSaved(false);
     try {
       const updated = await api.put<HomeContent>('/home', data);
-      setData(updated);
+      // Keep featured slugs from local state if server returns empty
+      // (can happen if the field is new and DB hasn't been written yet)
+      const savedSlugs = updated.featuredServiceSlugs?.length
+        ? updated.featuredServiceSlugs
+        : data.featuredServiceSlugs;
+      setData({ ...updated, featuredServiceSlugs: savedSlugs, latestInsights: updated.latestInsights ?? [] });
+      setDirty(false);
       setSaved(true);
-      setTimeout(() => setSaved(false), 2500);
+      setTimeout(() => setSaved(false), 3000);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to save');
     } finally {
@@ -69,8 +76,10 @@ export default function AdminHome() {
     return <p className="text-gray-400 text-sm">Loading…</p>;
   }
 
-  const update = <K extends keyof HomeContent>(key: K, value: HomeContent[K]) =>
+  const update = <K extends keyof HomeContent>(key: K, value: HomeContent[K]) => {
+    setDirty(true);
     setData((d) => ({ ...d, [key]: value }));
+  };
 
   const updatePhrase = (i: number, value: string) => {
     const next = [...data.heroPhrases];
@@ -91,6 +100,18 @@ export default function AdminHome() {
         </PrimaryButton>
       </div>
 
+      {/* Sticky unsaved-changes bar */}
+      {dirty && !saving && (
+        <div className="sticky top-0 z-20 mb-5 flex items-center justify-between gap-3 rounded-xl px-4 py-3 shadow-md"
+          style={{ backgroundColor: '#7c2d00', fontFamily: PP }}>
+          <span className="text-sm font-semibold text-white">You have unsaved changes.</span>
+          <button onClick={save}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-opacity hover:opacity-90"
+            style={{ backgroundColor: '#fda102', color: '#111' }}>
+            <Save size={14} /> Save Now
+          </button>
+        </div>
+      )}
       {saved && (
         <div className="mb-5 flex items-center gap-2 text-sm text-green-700 bg-green-50 border border-green-200 rounded-xl px-4 py-2.5">
           <CheckCircle2 size={15} /> Saved — changes are live on the site.

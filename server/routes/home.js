@@ -17,6 +17,7 @@ router.get('/', async (req, res) => {
 
 router.put('/', requireAuth, async (req, res) => {
   try {
+    console.log('[home/put] featuredServiceSlugs received:', JSON.stringify(req.body?.featuredServiceSlugs));
     const update = { ...req.body };
     delete update._id;
     delete update.singleton;
