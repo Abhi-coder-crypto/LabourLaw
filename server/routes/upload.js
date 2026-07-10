@@ -6,15 +6,46 @@ import { requireAuth } from '../middleware/auth.js';
 const router = express.Router();
 const LIMIT = 1 * 1024 * 1024; // 1 MB
 
+// Only file types the admin UI actually needs — blocks HTML/SVG/executables
+// from being uploaded and served back as publicly linkable Cloudinary URLs.
+// SVG is deliberately excluded even though it matches "image/*": it's XML that
+// can embed <script>, making it an XSS vector when served back as a public URL.
+const BLOCKED_IMAGE_MIME = new Set(['image/svg+xml']);
+const ALLOWED_MIME_PREFIXES = ['image/', 'video/'];
+const ALLOWED_MIME_EXACT = new Set([
+  'application/pdf',
+  'application/msword',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'application/vnd.ms-excel',
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+]);
+
+function isAllowedMime(rawMime) {
+  // Normalize: lowercase and strip any "; charset=..." style parameters so
+  // variants like "IMAGE/SVG+XML; charset=utf-8" can't slip past the block.
+  const mime = String(rawMime || '').toLowerCase().split(';')[0].trim();
+  if (BLOCKED_IMAGE_MIME.has(mime)) return false;
+  return ALLOWED_MIME_PREFIXES.some((p) => mime.startsWith(p)) || ALLOWED_MIME_EXACT.has(mime);
+}
+
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: LIMIT },
+  fileFilter: (req, file, cb) => {
+    if (!isAllowedMime(file.mimetype)) {
+      return cb(new Error('UNSUPPORTED_FILE_TYPE'));
+    }
+    cb(null, true);
+  },
 });
 
 // Multer sends a specific error code when the file is too large
 function handleMulterError(err, res) {
   if (err?.code === 'LIMIT_FILE_SIZE') {
     return res.status(413).json({ error: 'File exceeds the 1 MB limit. Please upload a smaller file.' });
+  }
+  if (err?.message === 'UNSUPPORTED_FILE_TYPE') {
+    return res.status(415).json({ error: 'Unsupported file type. Please upload an image, video, PDF, DOC/DOCX, or XLS/XLSX file.' });
   }
   console.error('[upload]', err);
   return res.status(500).json({ error: 'Upload failed' });

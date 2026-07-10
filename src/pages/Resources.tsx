@@ -10,6 +10,26 @@ const PP = 'Poppins, sans-serif';
 
 const CATEGORIES = ['All', 'New Labour Codes', 'Compliance', 'Labour Audit', 'POSH', 'ESI & PF', 'Payroll'];
 
+// Cloudinary serves files inline by default (e.g. PDFs open in a viewer tab).
+// Inserting the `fl_attachment` transformation flag makes Cloudinary send
+// Content-Disposition: attachment, so the browser actually downloads the file
+// instead of just opening it.
+function forceDownloadUrl(url: string) {
+  try {
+    const parsed = new URL(url);
+    if (parsed.hostname !== 'res.cloudinary.com') return url;
+    if (parsed.pathname.includes('/fl_attachment')) return url;
+    const uploadMarker = '/upload/';
+    const idx = parsed.pathname.indexOf(uploadMarker);
+    if (idx === -1) return url;
+    const insertAt = idx + uploadMarker.length;
+    parsed.pathname = `${parsed.pathname.slice(0, insertAt)}fl_attachment/${parsed.pathname.slice(insertAt)}`;
+    return parsed.toString();
+  } catch {
+    return url;
+  }
+}
+
 const Resources = () => {
   const [activeTab, setActiveTab] = useState<'blogs' | 'downloads'>('blogs');
   const [catFilter, setCatFilter] = useState('All');
@@ -234,11 +254,11 @@ const Resources = () => {
                     </div>
                     <span className="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full"
                       style={{
-                        backgroundColor: item.type === 'Resource' ? 'rgba(253,161,2,0.12)' : 'rgba(168,58,0,0.08)',
-                        color: item.type === 'Resource' ? '#b07000' : '#a83a00',
+                        backgroundColor: item.downloadType === 'Resource' ? 'rgba(253,161,2,0.12)' : 'rgba(168,58,0,0.08)',
+                        color: item.downloadType === 'Resource' ? '#b07000' : '#a83a00',
                         fontFamily: PP,
                       }}>
-                      {item.type}
+                      {item.downloadType || 'Download'}
                     </span>
                   </div>
 
@@ -255,11 +275,24 @@ const Resources = () => {
                     <span className="text-xs text-gray-400 font-medium" style={{ fontFamily: PP }}>
                       {item.format} · {item.size}
                     </span>
-                    <button
-                      className="flex items-center gap-1.5 text-sm font-bold px-4 py-2 rounded-full transition-all hover:opacity-80"
-                      style={{ fontFamily: PP, backgroundColor: 'rgba(168,58,0,0.09)', color: '#a83a00' }}>
-                      <Download size={13} /> Download
-                    </button>
+                    {item.fileUrl ? (
+                      <a
+                        href={forceDownloadUrl(item.fileUrl)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        download
+                        className="flex items-center gap-1.5 text-sm font-bold px-4 py-2 rounded-full transition-all hover:opacity-80"
+                        style={{ fontFamily: PP, backgroundColor: 'rgba(168,58,0,0.09)', color: '#a83a00' }}>
+                        <Download size={13} /> Download
+                      </a>
+                    ) : (
+                      <span
+                        title="File not uploaded yet"
+                        className="flex items-center gap-1.5 text-sm font-bold px-4 py-2 rounded-full cursor-not-allowed"
+                        style={{ fontFamily: PP, backgroundColor: 'rgba(0,0,0,0.05)', color: '#9ca3af' }}>
+                        <Download size={13} /> Unavailable
+                      </span>
+                    )}
                   </div>
                 </motion.div>
               ))}
