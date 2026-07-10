@@ -160,21 +160,43 @@ export default function AdminCareers() {
       )}
       {error && <div className="mb-5 text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-2.5">{error}</div>}
 
-      <div className="space-y-3">
-        {jobs.map((j) => (
-          <div key={j._id} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex items-center gap-4">
-            <div className="flex-1 min-w-0">
-              <p className="font-semibold text-sm truncate" style={{ fontFamily: PP, color: '#111' }}>{j.title}</p>
-              <p className="text-gray-400 text-xs truncate">
-                {j.location} · {j.type} · {j.category === 'internal' ? 'In-house' : 'Client'}
-              </p>
+      {jobs.length === 0 && <p className="text-gray-400 text-sm">No job postings yet.</p>}
+
+      {(['internal', 'client'] as const).map((cat) => {
+        const group = jobs.filter(j => j.category === cat);
+        if (group.length === 0) return null;
+        const label = cat === 'internal' ? 'At Maru Consultancy' : 'Client Postings';
+        const accent = cat === 'internal' ? '#a83a00' : '#c07a00';
+        const bg = cat === 'internal' ? 'rgba(168,58,0,0.08)' : 'rgba(253,161,2,0.10)';
+        return (
+          <div key={cat} className="mb-6">
+            <div className="flex items-center gap-3 mb-3">
+              <span
+                className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider"
+                style={{ backgroundColor: bg, color: accent, fontFamily: PP }}>
+                {label}
+              </span>
+              <span className="text-xs text-gray-400 font-medium" style={{ fontFamily: PP }}>
+                {group.length} posting{group.length !== 1 ? 's' : ''}
+              </span>
+              <div className="flex-1 border-t border-gray-100" />
             </div>
-            <SecondaryButton onClick={() => startEdit(j)}><Pencil size={13} /> Edit</SecondaryButton>
-            <DangerButton onClick={() => remove(j._id)}><Trash2 size={13} /></DangerButton>
+            <div className="space-y-3">
+              {group.map((j) => (
+                <div key={j._id} className="bg-white rounded-2xl border shadow-sm p-4 flex items-center gap-4"
+                  style={{ borderColor: cat === 'internal' ? 'rgba(168,58,0,0.12)' : 'rgba(253,161,2,0.18)' }}>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-semibold text-sm truncate" style={{ fontFamily: PP, color: '#111' }}>{j.title}</p>
+                    <p className="text-gray-400 text-xs truncate">{j.location} · {j.type}</p>
+                  </div>
+                  <SecondaryButton onClick={() => startEdit(j)}><Pencil size={13} /> Edit</SecondaryButton>
+                  <DangerButton onClick={() => remove(j._id)}><Trash2 size={13} /></DangerButton>
+                </div>
+              ))}
+            </div>
           </div>
-        ))}
-        {jobs.length === 0 && <p className="text-gray-400 text-sm">No job postings yet.</p>}
-      </div>
+        );
+      })}
     </div>
   );
 }
