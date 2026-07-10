@@ -1,4 +1,4 @@
-export const jobsSeed = [
+export const careersSeed = [
   {
     slug: 'senior-labour-law-consultant',
     title: 'Senior Labour Law Consultant',

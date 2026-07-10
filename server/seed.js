@@ -8,10 +8,10 @@ import Home from './models/Home.js';
 import About from './models/About.js';
 import Clientele from './models/Clientele.js';
 import Service from './models/Service.js';
-import Job from './models/Job.js';
+import Career from './models/Career.js';
 import Resource from './models/Resource.js';
 import { servicesSeed } from './seedData/services.js';
-import { jobsSeed } from './seedData/jobs.js';
+import { careersSeed } from './seedData/careers.js';
 import { homeSeed } from './seedData/home.js';
 import { aboutSeed } from './seedData/about.js';
 import { clienteleSeed } from './seedData/clientele.js';
@@ -68,13 +68,13 @@ async function run() {
     console.log('[seed] Services already exist — skipped');
   }
 
-  // Jobs
-  const jobCount = await Job.countDocuments();
-  if (jobCount === 0) {
-    await Job.insertMany(jobsSeed);
-    console.log(`[seed] Inserted ${jobsSeed.length} jobs`);
+  // Careers
+  const careerCount = await Career.countDocuments();
+  if (careerCount === 0) {
+    await Career.insertMany(careersSeed);
+    console.log(`[seed] Inserted ${careersSeed.length} careers`);
   } else {
-    console.log('[seed] Jobs already exist — skipped');
+    console.log('[seed] Careers already exist — skipped');
   }
 
   // Resources

@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const JobSchema = new mongoose.Schema({
+const CareerSchema = new mongoose.Schema({
   slug: { type: String, required: true, unique: true, trim: true },
   title: { type: String, required: true },
   location: String,
@@ -16,4 +16,4 @@ const JobSchema = new mongoose.Schema({
   postedOn: String,
 }, { timestamps: true });
 
-export default mongoose.models.Job || mongoose.model('Job', JobSchema);
+export default mongoose.models.Career || mongoose.model('Career', CareerSchema, 'careers');
