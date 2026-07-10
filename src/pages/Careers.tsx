@@ -1,13 +1,22 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { MapPin, Briefcase, Clock, ArrowRight, ChevronRight, Calendar } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { jobs } from '../data/careersData';
+import { api } from '../lib/api';
+import type { JobContent } from '../types/content';
 
 const PP = 'Poppins, sans-serif';
 
 const Careers = () => {
   const [activeTab, setActiveTab] = useState<'internal' | 'client'>('internal');
+  const [jobs, setJobs] = useState<JobContent[]>([]);
+  const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');
+
+  useEffect(() => {
+    api.get<JobContent[]>('/careers')
+      .then((data) => { setJobs(data); setStatus('ready'); })
+      .catch(() => setStatus('error'));
+  }, []);
 
   const internalJobs = jobs.filter(j => j.category === 'internal');
   const clientJobs = jobs.filter(j => j.category === 'client');
@@ -105,9 +114,20 @@ const Careers = () => {
             </div>
           )}
 
+          {status === 'loading' && (
+            <p className="text-center text-gray-400 py-12" style={{ fontFamily: PP }}>Loading openings…</p>
+          )}
+          {status === 'error' && (
+            <p className="text-center text-gray-400 py-12" style={{ fontFamily: PP }}>
+              Unable to load openings right now. Please try again shortly.
+            </p>
+          )}
+          {status === 'ready' && displayed.length === 0 && (
+            <p className="text-center text-gray-400 py-12" style={{ fontFamily: PP }}>No openings in this category right now.</p>
+          )}
           <div className="space-y-5">
             {displayed.map((job, i) => (
-              <motion.div key={job.slug}
+              <motion.div key={job._id}
                 initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.07, duration: 0.4 }}
                 className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all p-7 md:p-9">

@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
-import heroVideo from '@assets/7552418-hd_1080_1920_25fps_1783420764090.mp4';
-import heroImage from '@assets/pexels-vlada-karpovich-7433855_1783420874088.jpg';
+import heroVideoDefault from '@assets/7552418-hd_1080_1920_25fps_1783420764090.mp4';
+import heroImageDefault from '@assets/pexels-vlada-karpovich-7433855_1783420874088.jpg';
 import customerReviewIcon from '@assets/customer-review_1783487769231.png';
-import maruLogo from '@assets/image_1783488818937.png';
+import maruLogoDefault from '@assets/image_1783488818937.png';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { ArrowRight, ChevronRight, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -14,6 +14,8 @@ import animEstablishment from '../assets/animations/anim-establishment.json';
 import animPayrollPlanning from '../assets/animations/anim-payroll-planning.json';
 import animPayrollRecords from '../assets/animations/anim-payroll-records.json';
 import animHr from '../assets/animations/anim-hr.json';
+import { api } from '../lib/api';
+import type { HomeContent, ServiceContent } from '../types/content';
 
 /* ── Lottie player wrapper (uses lottie-web directly, no duplicate-React risk) ── */
 function LottieAnim({ animationData, className }: { animationData: unknown; className?: string }) {
@@ -63,7 +65,7 @@ const fadeUp = {
   show: (i = 0) => ({ opacity: 1, y: 0, transition: { duration: 0.55, delay: i * 0.1 } }),
 };
 
-const slidingPhrases = [
+const defaultPhrases = [
   'Labour Compliance',
   'Payroll Solutions',
   'HR Outsourcing',
@@ -71,32 +73,70 @@ const slidingPhrases = [
   'Legal Expertise',
 ];
 
+const defaultTestimonials = [
+  { text: "Labour Law transformed our chaotic compliance process into a streamlined, risk-free system. Their expertise in the New Wage Code is unmatched.", author: "Rajesh Sharma", role: "HR Director, TechNova" },
+  { text: "Their proactive approach to statutory audits saved us from significant penalties. They don't just consult — they partner with you for the long haul.", author: "Meera Reddy", role: "CEO, Manufacturing Corp" },
+  { text: "The contract staffing solutions provided by LC allowed us to scale rapidly during peak season without any compliance headaches.", author: "Vikram Singh", role: "VP Operations, Retail Giant" },
+  { text: "Maru Consultancy's compliance framework saved us lakhs in potential penalties. Their team anticipates regulatory changes before they even happen.", author: "Priya Kapoor", role: "CFO, Apex Industries" },
+  { text: "We have expanded to 6 states and Maru handled every state-specific compliance requirement seamlessly. Truly a pan-India expert partner.", author: "Arun Nair", role: "MD, Sunrise Textiles" },
+  { text: "The statutory filing support is impeccable — PF, ESIC, PT all managed without a single deadline miss in over three years.", author: "Sneha Joshi", role: "Head HR, BuildRight Infra" },
+  { text: "Outstanding legal representation before the labour tribunal. The case was resolved in our favour and the whole process was stress-free.", author: "Deepak Mehta", role: "Director, Meridian Logistics" },
+  { text: "Their HR policy advisory helped us modernise our standing orders in line with the new codes. Employees and management are both happy.", author: "Kavitha Rao", role: "CHRO, NovaMed Healthcare" },
+];
+
+const defaultWhyUs = [
+  { title: "Pan-India Presence", desc: "Deep expertise across state-specific regulations and all central labour legislations from Kashmir to Kanyakumari." },
+  { title: "Proactive Risk Mitigation", desc: "We identify vulnerabilities before they become liabilities — our audits are proactive, not reactive." },
+  { title: "Technology-Driven Approach", desc: "Proprietary compliance tracking tools give you real-time dashboards and automated deadline reminders." },
+];
+
+const defaultOneStopCards = [
+  { anim: animStatutory, title: 'Statutory Registrations', desc: 'ESI, EPF, Professional Tax' },
+  { anim: animLabourActs, title: 'Core Labour Law Acts', desc: 'Contract Labour, Gratuity, Bonus' },
+  { anim: animEstablishment, title: 'Establishment & Factory', desc: 'MLWF, Shops & Factories Act' },
+  { anim: animPayrollPlanning, title: 'Payroll Processing', desc: 'Planning, salary structuring' },
+  { anim: animPayrollRecords, title: 'Payroll Reports & Records', desc: 'MIS, salary register, FNF' },
+  { anim: animHr, title: 'HR Related Matters', desc: 'Advisory day-to-day support' },
+];
+const oneStopAnims = [animStatutory, animLabourActs, animEstablishment, animPayrollPlanning, animPayrollRecords, animHr];
+
+const defaultStats = [
+  { target: 500, decimals: 0, suffix: '+', label: 'Clients Served' },
+  { target: 4.9, decimals: 1, suffix: '★', label: 'Average Rating' },
+  { target: 15, decimals: 0, suffix: '+', label: 'Years of Expertise' },
+  { target: 98, decimals: 0, suffix: '%', label: 'Retention Rate' },
+];
+
 const Home = () => {
   const [phraseIndex, setPhraseIndex] = useState(0);
+  const [content, setContent] = useState<HomeContent | null>(null);
+  const [previewServices, setPreviewServices] = useState<ServiceContent[]>([]);
+
+  useEffect(() => {
+    api.get<HomeContent>('/home').then(setContent).catch(() => {});
+    api.get<ServiceContent[]>('/services').then((list) => setPreviewServices(list.slice(0, 8))).catch(() => {});
+  }, []);
+
+  const phrases = content?.heroPhrases?.length ? content.heroPhrases : defaultPhrases;
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setPhraseIndex((prev) => (prev + 1) % slidingPhrases.length);
+      setPhraseIndex((prev) => (prev + 1) % phrases.length);
     }, 2800);
     return () => clearInterval(interval);
-  }, []);
+  }, [phrases.length]);
 
-  const testimonials = [
-    { text: "Labour Law transformed our chaotic compliance process into a streamlined, risk-free system. Their expertise in the New Wage Code is unmatched.", author: "Rajesh Sharma", role: "HR Director, TechNova" },
-    { text: "Their proactive approach to statutory audits saved us from significant penalties. They don't just consult — they partner with you for the long haul.", author: "Meera Reddy", role: "CEO, Manufacturing Corp" },
-    { text: "The contract staffing solutions provided by LC allowed us to scale rapidly during peak season without any compliance headaches.", author: "Vikram Singh", role: "VP Operations, Retail Giant" },
-    { text: "Maru Consultancy's compliance framework saved us lakhs in potential penalties. Their team anticipates regulatory changes before they even happen.", author: "Priya Kapoor", role: "CFO, Apex Industries" },
-    { text: "We have expanded to 6 states and Maru handled every state-specific compliance requirement seamlessly. Truly a pan-India expert partner.", author: "Arun Nair", role: "MD, Sunrise Textiles" },
-    { text: "The statutory filing support is impeccable — PF, ESIC, PT all managed without a single deadline miss in over three years.", author: "Sneha Joshi", role: "Head HR, BuildRight Infra" },
-    { text: "Outstanding legal representation before the labour tribunal. The case was resolved in our favour and the whole process was stress-free.", author: "Deepak Mehta", role: "Director, Meridian Logistics" },
-    { text: "Their HR policy advisory helped us modernise our standing orders in line with the new codes. Employees and management are both happy.", author: "Kavitha Rao", role: "CHRO, NovaMed Healthcare" },
-  ];
-
-  const whyUs = [
-    { title: "Pan-India Presence", desc: "Deep expertise across state-specific regulations and all central labour legislations from Kashmir to Kanyakumari." },
-    { title: "Proactive Risk Mitigation", desc: "We identify vulnerabilities before they become liabilities — our audits are proactive, not reactive." },
-    { title: "Technology-Driven Approach", desc: "Proprietary compliance tracking tools give you real-time dashboards and automated deadline reminders." },
-  ];
+  const testimonials = content?.testimonials?.length ? content.testimonials : defaultTestimonials;
+  const whyUs = content?.whyUsItems?.length ? content.whyUsItems : defaultWhyUs;
+  const oneStopCards = (content?.oneStopCards?.length ? content.oneStopCards : defaultOneStopCards).map((c, i) => ({
+    ...c,
+    anim: oneStopAnims[i % oneStopAnims.length],
+  }));
+  const stats = content?.stats?.length ? content.stats : defaultStats;
+  const heroVideo = content?.heroVideoUrl || heroVideoDefault;
+  const heroImage1 = content?.heroImage1Url || heroImageDefault;
+  const heroImage2 = content?.heroImage2Url || heroImageDefault;
+  const maruLogo = content?.whyUsLogoUrl || maruLogoDefault;
 
   return (
     <div className="w-full">
@@ -124,7 +164,7 @@ const Home = () => {
               <motion.h1 variants={fadeUp}
                 className="font-semibold mb-6"
                 style={{ fontFamily: 'Poppins, sans-serif', fontSize: 'clamp(2.4rem, 4.2vw, 3.6rem)', lineHeight: 1.1 }}>
-                <span className="text-navy-900 block" style={{ marginBottom: '0.2em' }}>We bring</span>
+                <span className="text-navy-900 block" style={{ marginBottom: '0.2em' }}>{content?.heroLine1 || 'We bring'}</span>
 
                 {/* Sliding amber phrase — absolutely positioned so its width never
                     affects the grid column or button row layout.
@@ -141,18 +181,18 @@ const Home = () => {
                       transition={{ duration: 0.45, ease: [0.4, 0, 0.2, 1] }}
                       className="font-semibold"
                       style={{ position: 'absolute', left: 0, top: 0, color: '#fda102', whiteSpace: 'nowrap', fontSize: 'inherit', lineHeight: 1.1 }}>
-                      {slidingPhrases[phraseIndex]}
+                      {phrases[phraseIndex]}
                     </motion.span>
                   </AnimatePresence>
                 </span>
 
-                <span className="text-navy-900 block">to your growth</span>
+                <span className="text-navy-900 block">{content?.heroLine2 || 'to your growth'}</span>
               </motion.h1>
 
               <motion.p variants={fadeUp}
                 className="text-base leading-relaxed mb-8 max-w-md"
                 style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400, color: '#444444', textAlign: 'justify' }}>
-                Unlock the potential of your business with our comprehensive HR and compliance solutions. From recruitment to payroll management to compliance, we provide tailored services that ensure your business runs smoothly, efficiently, and in full compliance with all regulations.
+                {content?.heroDescription || 'Unlock the potential of your business with our comprehensive HR and compliance solutions. From recruitment to payroll management to compliance, we provide tailored services that ensure your business runs smoothly, efficiently, and in full compliance with all regulations.'}
               </motion.p>
 
               <motion.div variants={fadeUp} className="flex flex-nowrap gap-4 items-center">
@@ -162,7 +202,7 @@ const Home = () => {
                   style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600, fontSize: '1rem', letterSpacing: '0.02em', padding: '0.85rem 1.75rem', backgroundColor: '#a83a00', border: '2px solid #fda102' }}
                   onMouseEnter={e => { (e.currentTarget as HTMLElement).style.backgroundColor = '#fda102'; (e.currentTarget as HTMLElement).style.color = '#111111'; }}
                   onMouseLeave={e => { (e.currentTarget as HTMLElement).style.backgroundColor = '#a83a00'; (e.currentTarget as HTMLElement).style.color = '#ffffff'; }}>
-                  Book a Consultation <ArrowRight size={16} />
+                  {content?.ctaPrimaryText || 'Book a Consultation'} <ArrowRight size={16} />
                 </Link>
 
                 {/* Button 2: Compliance Solutions → /services */}
@@ -171,7 +211,7 @@ const Home = () => {
                   style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600, fontSize: '1rem', letterSpacing: '0.02em', padding: '0.85rem 1.75rem', backgroundColor: '#ffffff', color: '#111111', border: '2px solid #fda102' }}
                   onMouseEnter={e => { (e.currentTarget as HTMLElement).style.backgroundColor = '#fda102'; }}
                   onMouseLeave={e => { (e.currentTarget as HTMLElement).style.backgroundColor = '#ffffff'; }}>
-                  Compliance Solutions
+                  {content?.ctaSecondaryText || 'Compliance Solutions'}
                 </Link>
               </motion.div>
             </motion.div>
@@ -224,7 +264,7 @@ const Home = () => {
                     transition={{ duration: 0.55, delay: 0.4 }}
                     className="rounded-2xl overflow-hidden shadow-sm"
                     style={{ flex: '0 0 42%' }}>
-                    <img src={heroImage} alt="" aria-hidden="true" className="w-full h-full object-cover" />
+                    <img src={heroImage1} alt="" aria-hidden="true" className="w-full h-full object-cover" />
                   </motion.div>
 
                   {/* Card C — big card on bottom — IMAGE */}
@@ -233,7 +273,7 @@ const Home = () => {
                     transition={{ duration: 0.55, delay: 0.5 }}
                     className="rounded-2xl overflow-hidden shadow-sm"
                     style={{ flex: 1 }}>
-                    <img src={heroImage} alt="" aria-hidden="true" className="w-full h-full object-cover" />
+                    <img src={heroImage2} alt="" aria-hidden="true" className="w-full h-full object-cover" />
                   </motion.div>
 
                 </div>
@@ -254,24 +294,17 @@ const Home = () => {
             viewport={{ once: true }} transition={{ duration: 0.5 }}>
             <p className="font-bold text-sm uppercase tracking-widest mb-3"
               style={{ fontFamily: 'Poppins, sans-serif', color: 'rgba(255,255,255,0.7)' }}>
-              Your Complete HR &amp; Compliance Partner
+              {content?.oneStopLabel || 'Your Complete HR & Compliance Partner'}
             </p>
             <h2 className="font-bold text-white leading-[1.15]"
               style={{ fontFamily: 'Poppins, sans-serif', fontSize: 'clamp(1.6rem, 2.8vw, 2.4rem)' }}>
-              One Stop Consultancy Partner
+              {content?.oneStopTitle || 'One Stop Consultancy Partner'}
             </h2>
           </motion.div>
 
           {/* 6-card horizontal grid — always single row */}
           <div className="grid grid-cols-6 gap-4">
-            {[
-              { anim: animStatutory,       title: 'Statutory Registrations',       desc: 'ESI, EPF, Professional Tax' },
-              { anim: animLabourActs,      title: 'Core Labour Law Acts',           desc: 'Contract Labour, Gratuity, Bonus' },
-              { anim: animEstablishment,   title: 'Establishment & Factory',        desc: 'MLWF, Shops & Factories Act' },
-              { anim: animPayrollPlanning, title: 'Payroll Processing',  desc: 'Planning, salary structuring' },
-              { anim: animPayrollRecords,  title: 'Payroll Reports & Records',      desc: 'MIS, salary register, FNF' },
-              { anim: animHr,              title: 'HR Related Matters',             desc: 'Advisory day-to-day support' },
-            ].map((item, i) => (
+            {oneStopCards.map((item, i) => (
               <motion.div key={i}
                 initial={{ opacity: 0, y: 28 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -334,10 +367,10 @@ const Home = () => {
                 {/* Right column: two stacked images */}
                 <div className="flex flex-col gap-3" style={{ width: '42%' }}>
                   <div className="rounded-2xl overflow-hidden shadow-md" style={{ flex: '0 0 42%' }}>
-                    <img src={heroImage} alt="" aria-hidden="true" className="w-full h-full object-cover" />
+                    <img src={heroImage1} alt="" aria-hidden="true" className="w-full h-full object-cover" />
                   </div>
                   <div className="rounded-2xl overflow-hidden shadow-md" style={{ flex: 1 }}>
-                    <img src={heroImage} alt="" aria-hidden="true" className="w-full h-full object-cover" />
+                    <img src={heroImage2} alt="" aria-hidden="true" className="w-full h-full object-cover" />
                   </div>
                 </div>
 
@@ -356,12 +389,11 @@ const Home = () => {
                 <img src={maruLogo} alt="Maru Consultancy Services" className="h-20 w-auto object-contain mb-5 mx-auto block" />
                 <h2 className="font-bold leading-[1.2] mb-5"
                   style={{ fontFamily: 'Poppins, sans-serif', fontSize: 'clamp(1.4rem, 2.4vw, 2rem)', color: '#111111' }}>
-                  Expertise that protects your business &amp; empowers your
-                  <span style={{ color: '#a83a00' }}> workforce.</span>
+                  {content?.whyUsHeading || "Expertise that protects your business & empowers your workforce."}
                 </h2>
                 <p className="leading-relaxed text-sm mb-8"
                   style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400, color: '#555555' }}>
-                  We don't just file paperwork — we architect robust compliance frameworks. With India's labour law landscape shifting under the New Codes, you need a partner who anticipates regulatory changes before they impact your bottom line.
+                  {content?.whyUsBody || "We don't just file paperwork — we architect robust compliance frameworks. With India's labour law landscape shifting under the New Codes, you need a partner who anticipates regulatory changes before they impact your bottom line."}
                 </p>
 
                 {/* Numbered rows */}
@@ -399,30 +431,21 @@ const Home = () => {
           {/* Header */}
           <div className="text-center mb-12 mx-auto">
             <p className="font-bold text-base uppercase tracking-wider mb-3"
-              style={{ fontFamily: 'Poppins, sans-serif', color: '#a83a00' }}>Our Expertise</p>
+              style={{ fontFamily: 'Poppins, sans-serif', color: '#a83a00' }}>{content?.servicesPreviewLabel || 'Our Expertise'}</p>
             <h2 className="font-bold text-navy-900 mb-3 whitespace-nowrap"
               style={{ fontFamily: 'Poppins, sans-serif', fontSize: 'clamp(1.6rem, 2.8vw, 2.2rem)' }}>
-              Comprehensive Compliance Solutions
+              {content?.servicesPreviewTitle || 'Comprehensive Compliance Solutions'}
             </h2>
             <p className="text-gray-500 text-sm leading-relaxed"
               style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400 }}>
-              Strategic guidance across the entire spectrum of Indian labour laws and human resource management.
+              {content?.servicesPreviewDescription || 'Strategic guidance across the entire spectrum of Indian labour laws and human resource management.'}
             </p>
           </div>
 
           {/* 8-card grid — 4 columns × 2 rows */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { title: 'Labour Law Compliance',       img: '/assets/service-labour.png',    slug: 'labour-law-compliance',    desc: 'End-to-end compliance with central and state labour legislation, shielding your business from penal consequences.' },
-              { title: 'Payroll & Salary Structuring', img: '/assets/service-payroll.png',   slug: 'payroll-structuring',       desc: 'Payroll processing and salary structure auditing optimised for the New Labour Code definitions of wages.' },
-              { title: 'Statutory Filings',            img: '/assets/service-statutory.png', slug: 'statutory-filings',         desc: 'PF, ESIC, PT, LWF and TDS management with regular returns and on-time statutory filings.' },
-              { title: 'People Outsourcing & Staffing',img: '/assets/service-staffing.png',  slug: 'contract-staffing',         desc: 'Flexible contract staffing, third-party payroll and managed workforce solutions across industries.' },
-              { title: 'Audits & Governance',          img: '/assets/service-audits.png',    slug: 'audits-governance',         desc: 'Comprehensive compliance audits identifying gaps and recommending corrective governance measures.' },
-              { title: 'Registrations & Licensing',    img: '/assets/service-licensing.png', slug: 'registrations-licensing',   desc: 'Factory, shop, labour contractor and trade licence registrations handled end-to-end.' },
-              { title: 'HR Policy & Advisory',         img: '/assets/service-hr.png',        slug: 'hr-policy-advisory',        desc: 'Custom HR policy design, standing orders and advisory aligned with current labour law mandates.' },
-              { title: 'Legal Representation',         img: '/assets/service-legal.png',     slug: 'litigation-support',        desc: 'Skilled representation before labour authorities, tribunals and conciliation boards across states.' },
-            ].map((service, i) => (
-              <motion.div key={i}
+            {previewServices.map((service, i) => (
+              <motion.div key={service._id}
                 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }} transition={{ duration: 0.4, delay: (i % 4) * 0.08 }}
                 className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 group overflow-hidden flex flex-col">
@@ -488,7 +511,7 @@ const Home = () => {
               style={{ width: '56px', height: '56px', filter: 'brightness(0) saturate(100%) invert(68%) sepia(86%) saturate(607%) hue-rotate(1deg) brightness(101%) contrast(106%)' }} />
             <h2 className="font-bold text-white mb-0"
               style={{ fontFamily: 'Poppins, sans-serif', fontSize: 'clamp(1.9rem, 3.2vw, 2.8rem)' }}>
-              Trusted by Industry Leaders
+              {content?.testimonialsHeading || 'Trusted by Industry Leaders'}
             </h2>
           </motion.div>
 
@@ -497,12 +520,7 @@ const Home = () => {
             initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.1 }}
             className="flex justify-center gap-8 md:gap-16 mb-8 px-6 flex-wrap">
-            {[
-              { target: 500, decimals: 0, suffix: '+',  label: 'Clients Served' },
-              { target: 4.9, decimals: 1, suffix: '★', label: 'Average Rating' },
-              { target: 15,  decimals: 0, suffix: '+',  label: 'Years of Expertise' },
-              { target: 98,  decimals: 0, suffix: '%',  label: 'Retention Rate' },
-            ].map(({ target, decimals, suffix, label }) => (
+            {stats.map(({ target, decimals, suffix, label }) => (
               <div key={label} className="text-center">
                 <p className="font-bold text-3xl mb-1"
                   style={{ fontFamily: 'Poppins, sans-serif', color: '#fda102', WebkitTextFillColor: '#fda102', background: 'none' }}>

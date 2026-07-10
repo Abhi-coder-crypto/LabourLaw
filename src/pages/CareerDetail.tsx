@@ -1,14 +1,17 @@
 import { useParams, Link } from 'react-router-dom';
 import { MapPin, Briefcase, Clock, ArrowLeft, CheckCircle, ChevronRight, Upload, Send } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useState, useRef } from 'react';
-import { jobs } from '../data/careersData';
+import { useState, useRef, useEffect } from 'react';
+import { api } from '../lib/api';
+import type { JobContent } from '../types/content';
 
 const PP = 'Poppins, sans-serif';
 
 const CareerDetail = () => {
   const { slug } = useParams();
-  const job = jobs.find(j => j.slug === slug);
+  const [job, setJob] = useState<JobContent | null>(null);
+  const [notFound, setNotFound] = useState(false);
+  const [relatedJobs, setRelatedJobs] = useState<JobContent[]>([]);
 
   const [form, setForm] = useState({ name: '', phone: '', email: '', coverNote: '' });
   const [resumeFile, setResumeFile] = useState<File | null>(null);
@@ -16,7 +19,22 @@ const CareerDetail = () => {
   const [dragOver, setDragOver] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
-  if (!job) {
+  useEffect(() => {
+    setJob(null);
+    setNotFound(false);
+    api.get<JobContent>(`/careers/${slug}`)
+      .then(setJob)
+      .catch(() => setNotFound(true));
+  }, [slug]);
+
+  useEffect(() => {
+    if (!job) return;
+    api.get<JobContent[]>('/careers')
+      .then((all) => setRelatedJobs(all.filter((j) => j.slug !== slug && j.category === job.category).slice(0, 3)))
+      .catch(() => {});
+  }, [job, slug]);
+
+  if (notFound) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center" style={{ fontFamily: PP }}>
         <p className="text-gray-500 mb-4">Position not found.</p>
@@ -25,6 +43,10 @@ const CareerDetail = () => {
         </Link>
       </div>
     );
+  }
+
+  if (!job) {
+    return <div className="min-h-screen" style={{ fontFamily: PP }} />;
   }
 
   const handleFile = (file: File | null) => {
@@ -39,8 +61,6 @@ const CareerDetail = () => {
     if (!form.name || !form.phone || !form.email || !resumeFile) return;
     setSubmitted(true);
   };
-
-  const relatedJobs = jobs.filter(j => j.slug !== slug && j.category === job.category).slice(0, 3);
 
   return (
     <div className="w-full" style={{ fontFamily: PP }}>
@@ -410,8 +430,8 @@ const CareerDetail = () => {
                       More Openings
                     </h4>
                     <ul className="space-y-0.5">
-                      {relatedJobs.map((j, i) => (
-                        <li key={i}>
+                      {relatedJobs.map((j) => (
+                        <li key={j._id}>
                           <Link to={`/careers/${j.slug}`}
                             className="flex items-center gap-3 py-2.5 border-b border-gray-50 last:border-0 group transition-colors hover:text-[#a83a00]"
                             style={{ fontFamily: PP, color: '#333', fontSize: '0.88rem', fontWeight: 500 }}>

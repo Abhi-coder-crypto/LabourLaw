@@ -10,6 +10,14 @@ import Clientele from './pages/Clientele';
 import Careers from './pages/Careers';
 import CareerDetail from './pages/CareerDetail';
 import Contact from './pages/Contact';
+import { AdminAuthProvider } from './context/AdminAuthContext';
+import ProtectedRoute from './components/admin/ProtectedRoute';
+import AdminLayout from './components/admin/AdminLayout';
+import AdminLogin from './pages/admin/AdminLogin';
+import AdminHome from './pages/admin/AdminHome';
+import AdminServices from './pages/admin/AdminServices';
+import AdminCareers from './pages/admin/AdminCareers';
+import { Navigate } from 'react-router-dom';
 
 function App() {
   return (
@@ -26,6 +34,29 @@ function App() {
         <Route path="careers/:slug" element={<CareerDetail />} />
         <Route path="contact" element={<Contact />} />
       </Route>
+
+      <Route
+        path="/admin/*"
+        element={
+          <AdminAuthProvider>
+            <Routes>
+              <Route path="login" element={<AdminLogin />} />
+              <Route
+                element={
+                  <ProtectedRoute>
+                    <AdminLayout />
+                  </ProtectedRoute>
+                }
+              >
+                <Route index element={<Navigate to="home" replace />} />
+                <Route path="home" element={<AdminHome />} />
+                <Route path="services" element={<AdminServices />} />
+                <Route path="careers" element={<AdminCareers />} />
+              </Route>
+            </Routes>
+          </AdminAuthProvider>
+        }
+      />
     </Routes>
   );
 }

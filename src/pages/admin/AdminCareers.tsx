@@ -1,0 +1,180 @@
+import { useEffect, useState } from 'react';
+import { Plus, Trash2, Save, Loader2, Pencil, X, CheckCircle2 } from 'lucide-react';
+import { api } from '../../lib/api';
+import type { JobContent } from '../../types/content';
+import { Section, Field, TextInput, TextArea, PrimaryButton, SecondaryButton, DangerButton } from '../../components/admin/FormBits';
+
+const PP = 'Poppins, sans-serif';
+
+const EMPTY: Omit<JobContent, '_id'> = {
+  slug: '', title: '', location: '', type: 'Full-time', department: '', experience: '',
+  category: 'internal', about: '', responsibilities: [], requirements: [], niceToHave: [],
+  ctc: '', postedOn: '',
+};
+
+function ListEditor({ label, items, onChange }: { label: string; items: string[]; onChange: (items: string[]) => void }) {
+  return (
+    <Field label={label}>
+      <div className="space-y-2">
+        {items.map((item, i) => (
+          <div key={i} className="flex gap-2">
+            <TextInput value={item} onChange={(e) => {
+              const next = [...items]; next[i] = e.target.value; onChange(next);
+            }} />
+            <DangerButton type="button" onClick={() => onChange(items.filter((_, j) => j !== i))}><Trash2 size={13} /></DangerButton>
+          </div>
+        ))}
+        <SecondaryButton type="button" onClick={() => onChange([...items, ''])}><Plus size={13} /> Add item</SecondaryButton>
+      </div>
+    </Field>
+  );
+}
+
+export default function AdminCareers() {
+  const [jobs, setJobs] = useState<JobContent[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [editing, setEditing] = useState<JobContent | (Omit<JobContent, '_id'> & { _id?: string }) | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
+  const [notice, setNotice] = useState('');
+
+  const load = () => api.get<JobContent[]>('/careers').then(setJobs);
+
+  useEffect(() => {
+    load().catch((err) => setError(err instanceof Error ? err.message : 'Failed to load')).finally(() => setLoading(false));
+  }, []);
+
+  const startCreate = () => { setError(''); setEditing({ ...EMPTY }); };
+  const startEdit = (j: JobContent) => { setError(''); setEditing({ ...j }); };
+  const cancel = () => setEditing(null);
+
+  const save = async () => {
+    if (!editing) return;
+    setSaving(true);
+    setError('');
+    try {
+      if ('_id' in editing && editing._id) {
+        await api.put(`/careers/${editing._id}`, editing);
+      } else {
+        await api.post('/careers', editing);
+      }
+      await load();
+      setEditing(null);
+      setNotice('Saved — changes are live on the site.');
+      setTimeout(() => setNotice(''), 2500);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to save');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const remove = async (id: string) => {
+    if (!confirm('Delete this job posting? This cannot be undone.')) return;
+    try {
+      await api.del(`/careers/${id}`);
+      await load();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to delete');
+    }
+  };
+
+  if (loading) return <p className="text-gray-400 text-sm">Loading…</p>;
+
+  if (editing) {
+    const set = <K extends keyof typeof editing>(key: K, value: (typeof editing)[K]) =>
+      setEditing((e) => (e ? { ...e, [key]: value } : e));
+
+    return (
+      <div>
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="font-bold" style={{ fontFamily: PP, fontSize: '1.5rem', color: '#111' }}>
+            {'_id' in editing && editing._id ? 'Edit Job Posting' : 'New Job Posting'}
+          </h1>
+          <SecondaryButton onClick={cancel}><X size={13} /> Cancel</SecondaryButton>
+        </div>
+        {error && <div className="mb-5 text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-2.5">{error}</div>}
+
+        <Section title="Basics">
+          <div className="grid grid-cols-2 gap-4">
+            <Field label="Job title"><TextInput value={editing.title} onChange={(e) => set('title', e.target.value)} /></Field>
+            <Field label="Slug (URL)"><TextInput value={editing.slug} onChange={(e) => set('slug', e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '-'))} /></Field>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <Field label="Location"><TextInput value={editing.location} onChange={(e) => set('location', e.target.value)} /></Field>
+            <Field label="Employment type"><TextInput value={editing.type} onChange={(e) => set('type', e.target.value)} placeholder="Full-time / Contract" /></Field>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <Field label="Department"><TextInput value={editing.department} onChange={(e) => set('department', e.target.value)} /></Field>
+            <Field label="Experience"><TextInput value={editing.experience} onChange={(e) => set('experience', e.target.value)} placeholder="e.g. 5–8 years" /></Field>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <Field label="CTC range"><TextInput value={editing.ctc} onChange={(e) => set('ctc', e.target.value)} placeholder="₹12–18 LPA" /></Field>
+            <Field label="Posted on"><TextInput value={editing.postedOn} onChange={(e) => set('postedOn', e.target.value)} placeholder="July 05, 2025" /></Field>
+          </div>
+          <Field label="Category">
+            <select
+              value={editing.category}
+              onChange={(e) => set('category', e.target.value as 'internal' | 'client')}
+              className="w-full px-4 py-2.5 rounded-xl border text-sm outline-none"
+              style={{ fontFamily: PP, borderColor: '#e5e7eb' }}
+            >
+              <option value="internal">In-house (Maru Consultancy)</option>
+              <option value="client">Client Posting</option>
+            </select>
+          </Field>
+        </Section>
+
+        <Section title="Job Description">
+          <Field label="About the role"><TextArea rows={4} value={editing.about} onChange={(e) => set('about', e.target.value)} /></Field>
+          <ListEditor label="Responsibilities" items={editing.responsibilities} onChange={(v) => set('responsibilities', v)} />
+          <ListEditor label="Requirements" items={editing.requirements} onChange={(v) => set('requirements', v)} />
+          <ListEditor label="Nice to have" items={editing.niceToHave} onChange={(v) => set('niceToHave', v)} />
+        </Section>
+
+        <div className="flex justify-end gap-3">
+          <SecondaryButton onClick={cancel}>Cancel</SecondaryButton>
+          <PrimaryButton onClick={save} disabled={saving || !editing.title || !editing.slug}>
+            {saving ? <Loader2 size={15} className="animate-spin" /> : <Save size={15} />}
+            {saving ? 'Saving…' : 'Save Job Posting'}
+          </PrimaryButton>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="font-bold" style={{ fontFamily: PP, fontSize: '1.5rem', color: '#111' }}>Careers</h1>
+          <p className="text-gray-400 text-sm mt-1">Add, edit, or remove job postings.</p>
+        </div>
+        <PrimaryButton onClick={startCreate}><Plus size={15} /> New Job Posting</PrimaryButton>
+      </div>
+
+      {notice && (
+        <div className="mb-5 flex items-center gap-2 text-sm text-green-700 bg-green-50 border border-green-200 rounded-xl px-4 py-2.5">
+          <CheckCircle2 size={15} /> {notice}
+        </div>
+      )}
+      {error && <div className="mb-5 text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-2.5">{error}</div>}
+
+      <div className="space-y-3">
+        {jobs.map((j) => (
+          <div key={j._id} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex items-center gap-4">
+            <div className="flex-1 min-w-0">
+              <p className="font-semibold text-sm truncate" style={{ fontFamily: PP, color: '#111' }}>{j.title}</p>
+              <p className="text-gray-400 text-xs truncate">
+                {j.location} · {j.type} · {j.category === 'internal' ? 'In-house' : 'Client'}
+              </p>
+            </div>
+            <SecondaryButton onClick={() => startEdit(j)}><Pencil size={13} /> Edit</SecondaryButton>
+            <DangerButton onClick={() => remove(j._id)}><Trash2 size={13} /></DangerButton>
+          </div>
+        ))}
+        {jobs.length === 0 && <p className="text-gray-400 text-sm">No job postings yet.</p>}
+      </div>
+    </div>
+  );
+}

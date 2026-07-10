@@ -1,25 +1,23 @@
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { api } from '../lib/api';
+import type { ServiceContent } from '../types/content';
 
 const PP = 'Poppins, sans-serif';
 
-const services = [
-  { slug: 'labour-law-compliance', title: 'Labour Law Compliance', img: '/assets/service-labour.png', desc: 'End-to-end compliance with all applicable central and state labour legislation, shielding your business from penal consequences.' },
-  { slug: 'payroll-structuring', title: 'Payroll & Salary Structuring', img: '/assets/service-payroll.png', desc: 'Precise payroll processing and salary structure auditing optimized for the New Labour Code definitions of wages.' },
-  { slug: 'statutory-filings', title: 'Statutory Compliance & Filings', img: '/assets/service-statutory.png', desc: 'Flawless management of PF, ESIC, PT, LWF, TDS, alongside regular returns and meticulous statutory filings.' },
-  { slug: 'contract-staffing', title: 'People Outsourcing & Staffing', img: '/assets/service-staffing.png', desc: 'Flexible, compliant workforce solutions via outsourcing, managing everything from onboarding to full & final exit.' },
-  { slug: 'audits-governance', title: 'Audits & Governance', img: '/assets/service-audits.png', desc: 'Rigorous labour audits, factory audits, and establishment compliance reviews to identify and seal regulatory gaps.' },
-  { slug: 'registrations-licensing', title: 'Registrations & Licensing', img: '/assets/service-licensing.png', desc: 'Procurement of Shop & Establishment, Factory License, Contract Labour License with timely renewals.' },
-  { slug: 'hr-policy-advisory', title: 'HR Policy & Advisory', img: '/assets/service-hr.png', desc: 'Drafting robust HR handbooks, standing orders, POSH policies, and legally airtight employment contracts.' },
-  { slug: 'litigation-support', title: 'Legal Representation', img: '/assets/service-legal.png', desc: 'Expert labour court representation, conciliation proceedings, and robust litigation support across India.' },
-  { slug: 'training-workshops', title: 'Training & Workshops', img: '/assets/service-training.png', desc: 'In-depth labour law training sessions designed to upskill internal HR teams and senior management.' },
-];
-
 const Services = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [services, setServices] = useState<ServiceContent[]>([]);
+  const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');
+
+  useEffect(() => {
+    api.get<ServiceContent[]>('/services')
+      .then((data) => { setServices(data); setStatus('ready'); })
+      .catch(() => setStatus('error'));
+  }, []);
 
   useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -75,9 +73,20 @@ const Services = () => {
       {/* ── Services Grid ─────────────────────────────────── */}
       <section className="pt-10 pb-16 bg-[#f8fafb]">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
+          {status === 'loading' && (
+            <p className="text-center text-gray-400 py-12" style={{ fontFamily: PP }}>Loading services…</p>
+          )}
+          {status === 'error' && (
+            <p className="text-center text-gray-400 py-12" style={{ fontFamily: PP }}>
+              Unable to load services right now. Please try again shortly.
+            </p>
+          )}
+          {status === 'ready' && services.length === 0 && (
+            <p className="text-center text-gray-400 py-12" style={{ fontFamily: PP }}>No services available yet.</p>
+          )}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
             {services.map((service, i) => (
-              <motion.div key={service.slug}
+              <motion.div key={service._id}
                 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: i * 0.05 }}
                 className="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col border border-gray-100 group">
