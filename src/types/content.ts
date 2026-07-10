@@ -81,6 +81,39 @@ export type ServiceContent = {
   order?: number;
 };
 
+export type AboutHeroStat     = { value: string; label: string };
+export type AboutStorySlide   = { heading: string; headingHighlight: string; body: string };
+export type AboutCoreValue    = { title: string; img: string };
+export type AboutMilestone    = { year: string; event: string; img: string; description: string };
+export type AboutWhyItem      = { point: string; sub: string };
+export type AboutTeamMember   = { name: string; qualification: string; role: string; img: string };
+
+export type AboutContent = {
+  _id?: string;
+  heroStats:            AboutHeroStat[];
+  marqueeServices:      string[];
+  storySlides:          AboutStorySlide[];
+  pullQuoteLine1:       string;
+  pullQuoteLine2:       string;
+  pullQuoteLine3:       string;
+  pullQuoteAttribution: string;
+  coreValues:           AboutCoreValue[];
+  journeyMilestones:    AboutMilestone[];
+  whyChooseItems:       AboutWhyItem[];
+  teamMembers:          AboutTeamMember[];
+};
+
+export type ClienteleStat        = { target: number; decimals: number; suffix: string; label: string };
+export type ClienteleIndustry    = { name: string; count: string; image: string };
+export type ClienteleTestimonial = { text: string; author: string; role: string };
+
+export type ClienteleContent = {
+  _id?: string;
+  stats:        ClienteleStat[];
+  industries:   ClienteleIndustry[];
+  testimonials: ClienteleTestimonial[];
+};
+
 export type JobContent = {
   _id: string;
   slug: string;

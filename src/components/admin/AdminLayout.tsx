@@ -1,15 +1,17 @@
 import { useState } from 'react';
 import { Link, NavLink, Outlet } from 'react-router-dom';
-import { LayoutDashboard, Briefcase, FileText, LogOut, ExternalLink, ChevronLeft, ChevronRight, BookOpen } from 'lucide-react';
+import { LayoutDashboard, Briefcase, FileText, LogOut, ExternalLink, ChevronLeft, ChevronRight, BookOpen, Info, Users } from 'lucide-react';
 import { useAdminAuth } from '../../context/AdminAuthContext';
 import { useNavigate } from 'react-router-dom';
 
 const PP = 'Poppins, sans-serif';
 
 const navItems = [
-  { to: '/admin/home', label: 'Home', icon: LayoutDashboard },
-  { to: '/admin/services', label: 'Services', icon: Briefcase },
-  { to: '/admin/careers', label: 'Careers', icon: FileText },
+  { to: '/admin/home',      label: 'Home',      icon: LayoutDashboard },
+  { to: '/admin/about',     label: 'About',     icon: Info },
+  { to: '/admin/clientele', label: 'Clientele', icon: Users },
+  { to: '/admin/services',  label: 'Services',  icon: Briefcase },
+  { to: '/admin/careers',   label: 'Careers',   icon: FileText },
   { to: '/admin/resources', label: 'Resources', icon: BookOpen },
 ];
 

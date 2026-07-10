@@ -15,6 +15,8 @@ import ProtectedRoute from './components/admin/ProtectedRoute';
 import AdminLayout from './components/admin/AdminLayout';
 import AdminLogin from './pages/admin/AdminLogin';
 import AdminHome from './pages/admin/AdminHome';
+import AdminAbout from './pages/admin/AdminAbout';
+import AdminClientele from './pages/admin/AdminClientele';
 import AdminServices from './pages/admin/AdminServices';
 import AdminCareers from './pages/admin/AdminCareers';
 import AdminResources from './pages/admin/AdminResources';
@@ -51,6 +53,8 @@ function App() {
               >
                 <Route index element={<Navigate to="home" replace />} />
                 <Route path="home" element={<AdminHome />} />
+                <Route path="about" element={<AdminAbout />} />
+                <Route path="clientele" element={<AdminClientele />} />
                 <Route path="services" element={<AdminServices />} />
                 <Route path="careers" element={<AdminCareers />} />
                 <Route path="resources" element={<AdminResources />} />

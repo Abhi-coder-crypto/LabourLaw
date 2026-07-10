@@ -11,6 +11,8 @@ import servicesRoutes from './routes/services.js';
 import careersRoutes from './routes/careers.js';
 import resourcesRoutes from './routes/resources.js';
 import uploadRoutes from './routes/upload.js';
+import aboutRoutes from './routes/about.js';
+import clienteleRoutes from './routes/clientele.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PORT = process.env.API_PORT || 8787;
@@ -26,6 +28,8 @@ app.use('/api/services', servicesRoutes);
 app.use('/api/careers', careersRoutes);
 app.use('/api/resources', resourcesRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/about', aboutRoutes);
+app.use('/api/clientele', clienteleRoutes);
 
 app.get('/api/health', (req, res) => res.json({ ok: true }));
 

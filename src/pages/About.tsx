@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, CheckCircle, Play } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { api } from '../lib/api';
+import type { AboutContent } from '../types/content';
 import heroVideo from '@assets/7552418-hd_1080_1920_25fps_1783420764090.mp4';
 import ctaVideo from '@assets/7691594-hd_1920_1080_25fps_1783493752065.mp4';
 import heroImage from '@assets/pexels-vlada-karpovich-7433855_1783420874088.jpg';
@@ -21,7 +23,7 @@ const STYLES = `
 }
 `;
 
-const MARQUEE_SERVICES = [
+const DEFAULT_MARQUEE_SERVICES = [
   'Labour Law Compliance',
   'Payroll & Salary Structuring',
   'Statutory Compliance & Filings',
@@ -33,22 +35,45 @@ const MARQUEE_SERVICES = [
   'Training & Workshops',
 ];
 
-const MARQUEE_ITEMS = MARQUEE_SERVICES.flatMap((s) => [s, '|']);
-MARQUEE_ITEMS.pop();
+const DEFAULT_STORY_SLIDES = [
+  { heading: 'Founded on a vision of', headingHighlight: 'simplified compliance.', body: "What started as a boutique advisory in Mumbai has grown into a pan-India powerhouse trusted by some of India's most respected corporations. We manage compliance for 500+ organisations — from dynamic startups to Fortune 500 conglomerates." },
+  { heading: 'Built on deep expertise,', headingHighlight: 'not guesswork.', body: "Every engagement is led by consultants who live and breathe labour law — tracking every amendment across 15+ states so our clients never have to. That rigor is what turned a single Mumbai office into a nationwide practice." },
+  { heading: 'Powered by technology,', headingHighlight: 'guided by people.', body: "Our proprietary compliance dashboards give clients real-time visibility into every filing and audit — backed by a dedicated consultant who's always a call away. It's how we keep 98% of our clients year after year." },
+];
 
-const STORY_SLIDES = [
-  {
-    heading: <>Founded on a vision of<br /><span style={{ color: '#a83a00' }}>simplified compliance.</span></>,
-    text: "What started as a boutique advisory in Mumbai has grown into a pan-India powerhouse trusted by some of India's most respected corporations. We manage compliance for 500+ organisations — from dynamic startups to Fortune 500 conglomerates.",
-  },
-  {
-    heading: <>Built on deep expertise,<br /><span style={{ color: '#a83a00' }}>not guesswork.</span></>,
-    text: "Every engagement is led by consultants who live and breathe labour law — tracking every amendment across 15+ states so our clients never have to. That rigor is what turned a single Mumbai office into a nationwide practice.",
-  },
-  {
-    heading: <>Powered by technology,<br /><span style={{ color: '#a83a00' }}>guided by people.</span></>,
-    text: "Our proprietary compliance dashboards give clients real-time visibility into every filing and audit — backed by a dedicated consultant who's always a call away. It's how we keep 98% of our clients year after year.",
-  },
+const DEFAULT_HERO_STATS = [
+  { value: '500+', label: 'Corporate Clients' },
+  { value: '21+',  label: 'Years' },
+  { value: '15+',  label: 'States' },
+];
+
+const DEFAULT_CORE_VALUES = [
+  { title: 'Absolute Integrity',    img: '/assets/service-legal.png' },
+  { title: 'Unmatched Excellence',  img: '/assets/service-labour.png' },
+  { title: 'Client Partnership',    img: '/assets/service-staffing.png' },
+  { title: 'Continuous Innovation', img: '/assets/service-audits.png' },
+];
+
+const DEFAULT_JOURNEY = [
+  { year: '2003', event: 'Founded',             img: '/assets/service-statutory.png', description: 'Established as a boutique advisory firm in Mumbai, focused on compliance.' },
+  { year: '2009', event: 'Pan-India',           img: '/assets/service-payroll.png',   description: 'Expanded to Delhi NCR and Bangalore, becoming a true pan-India compliance firm.' },
+  { year: '2016', event: 'Tech-Enabled',        img: '/assets/service-training.png',  description: 'Launched proprietary compliance software with real-time dashboards.' },
+  { year: '2023', event: 'New Codes Authority', img: '/assets/service-hr.png',        description: "Became India's go-to authority on the New Labour Codes nationwide." },
+];
+
+const DEFAULT_WHY_CHOOSE = [
+  { point: 'Pan-India presence across 15+ states',  sub: 'State-specific expertise from Kashmir to Kanyakumari, covering all major industrial hubs.' },
+  { point: 'Experts in New Labour Codes',           sub: "One of India's earliest and most trusted authorities on the consolidated labour code framework." },
+  { point: 'Proactive risk identification',         sub: 'We audit for vulnerabilities before they become penalties — not after. Reactive compliance is a liability.' },
+  { point: 'Dedicated consultant per client',       sub: 'Every client gets a named consultant who knows their business, their sector, and their risk profile.' },
+  { point: 'Tech-enabled tracking & reporting',     sub: 'Real-time dashboards and automated reminders so nothing ever slips through the cracks.' },
+];
+
+const DEFAULT_TEAM = [
+  { name: 'Deepak Maru',  qualification: 'B.Com (Hons), LL.B',  role: 'Advocate\nFounder & Managing Partner', img: '/assets/service-legal.png' },
+  { name: 'Sanjeev Maru', qualification: 'B.Com, LL.B',         role: 'Co-founder & Managing Partner',        img: '/assets/service-staffing.png' },
+  { name: 'Pankhil Maru', qualification: 'B.E (I.T), MBA (HR)', role: 'Managing Partner',                     img: '/assets/service-hr.png' },
+  { name: 'Nishit Maru',  qualification: 'BLS, LL.B, CS',       role: 'Managing Partner',                     img: '/assets/service-audits.png' },
 ];
 
 const CountUpStat = ({ value, label }: { value: string; label: string }) => {
@@ -111,17 +136,21 @@ const OfficeImageCarousel = () => {
   );
 };
 
-const StoryCarousel = () => {
+type SlideData = { heading: string; headingHighlight: string; body: string };
+
+const StoryCarousel = ({ slides }: { slides: SlideData[] }) => {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
+    if (!slides.length) return;
     const id = setInterval(() => {
-      setIndex((i) => (i + 1) % STORY_SLIDES.length);
+      setIndex((i) => (i + 1) % slides.length);
     }, 4500);
     return () => clearInterval(id);
-  }, []);
+  }, [slides.length]);
 
-  const slide = STORY_SLIDES[index];
+  const slide = slides[index] ?? slides[0];
+  if (!slide) return null;
 
   return (
     <div className="relative h-full flex flex-col justify-between overflow-hidden">
@@ -133,10 +162,11 @@ const StoryCarousel = () => {
           transition={{ duration: 0.5, ease: 'easeInOut' }}>
           <h2 className="font-bold leading-[1.2] mb-4"
             style={{ fontFamily: PP, fontSize: 'clamp(1.3rem, 2.2vw, 1.8rem)', color: '#111' }}>
-            {slide.heading}
+            {slide.heading}<br />
+            <span style={{ color: '#a83a00' }}>{slide.headingHighlight}</span>
           </h2>
           <p className="text-sm leading-relaxed mb-4" style={{ fontFamily: PP, color: '#666', lineHeight: 1.8 }}>
-            {slide.text}
+            {slide.body}
           </p>
         </motion.div>
       </AnimatePresence>
@@ -154,7 +184,7 @@ const StoryCarousel = () => {
 
         {/* Progress dots */}
         <div className="flex items-center gap-2">
-          {STORY_SLIDES.map((_, i) => (
+          {slides.map((_, i) => (
             <button key={i} type="button" aria-label={`Go to slide ${i + 1}`}
               onClick={() => setIndex(i)}
               className="relative h-1.5 rounded-full overflow-hidden transition-all duration-300"
@@ -175,6 +205,24 @@ const StoryCarousel = () => {
 };
 
 const About = () => {
+  const [apiData, setApiData] = useState<AboutContent | null>(null);
+  useEffect(() => {
+    api.get<AboutContent>('/about').then(setApiData).catch(() => {/* use hardcoded defaults */});
+  }, []);
+
+  const heroStats      = apiData?.heroStats?.length       ? apiData.heroStats       : DEFAULT_HERO_STATS;
+  const marqueeServices= apiData?.marqueeServices?.length ? apiData.marqueeServices : DEFAULT_MARQUEE_SERVICES;
+  const marqueeItems   = (() => { const m = marqueeServices.flatMap(s => [s, '|']); m.pop(); return m; })();
+  const storySlides    = apiData?.storySlides?.length     ? apiData.storySlides     : DEFAULT_STORY_SLIDES;
+  const pullQuoteLine1 = apiData?.pullQuoteLine1       || 'Compliance is not a checkbox';
+  const pullQuoteLine2 = apiData?.pullQuoteLine2       || "It's the foundation on which";
+  const pullQuoteLine3 = apiData?.pullQuoteLine3       || 'every great business is built';
+  const pullQuoteAttribution = apiData?.pullQuoteAttribution || 'Deepak Maru, Founder & Managing Partner';
+  const coreValues     = apiData?.coreValues?.length      ? apiData.coreValues      : DEFAULT_CORE_VALUES;
+  const journeyMilestones = apiData?.journeyMilestones?.length ? apiData.journeyMilestones : DEFAULT_JOURNEY;
+  const whyChooseItems = apiData?.whyChooseItems?.length  ? apiData.whyChooseItems  : DEFAULT_WHY_CHOOSE;
+  const teamMembers    = apiData?.teamMembers?.length     ? apiData.teamMembers     : DEFAULT_TEAM;
+
   const styleInjected = useRef(false);
   useEffect(() => {
     if (styleInjected.current) return;
@@ -236,10 +284,10 @@ const About = () => {
             style={{ backgroundColor: 'rgba(255,255,255,0.12)' }}
             initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.44 }}>
-            {[['500+','Corporate Clients'], ['21+','Years'], ['15+','States']].map(([n, l], i) => (
+            {heroStats.map(({value, label}, i) => (
               <div key={i} className="flex flex-col items-center justify-center py-5 px-2"
                 style={{ backgroundColor: i === 1 ? 'rgba(253,161,2,0.20)' : 'rgba(0,0,0,0.15)' }}>
-                <CountUpStat value={n} label={l} />
+                <CountUpStat value={value} label={label} />
               </div>
             ))}
           </motion.div>
@@ -264,7 +312,7 @@ const About = () => {
          ══════════════════════════════════════════════════════ */}
       <div className="overflow-hidden py-3" style={{ backgroundColor: '#a83a00' }}>
         <div className="marquee-track">
-          {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, i) => (
+          {[...marqueeItems, ...marqueeItems].map((item, i) => (
             <span key={i} className="font-light text-xl mx-6 whitespace-nowrap"
               style={{ fontFamily: PP, color: '#ffffff' }}>
               {item}
@@ -303,10 +351,10 @@ const About = () => {
                 style={{ backgroundColor: '#a83a00' }}>
                 <p className="font-bold text-xs uppercase tracking-[0.2em] mb-3" style={{ fontFamily: PP, color: '#fda102' }}>By the Numbers</p>
                 <div className="grid grid-cols-3 gap-4">
-                  {[['500+','Clients'],['21+','Years'],['15+','States']].map(([n,l]) => (
-                    <div key={l}>
-                      <p className="font-bold text-2xl text-white" style={{ fontFamily: PP }}>{n}</p>
-                      <p className="text-xs text-white/60 uppercase tracking-wide" style={{ fontFamily: PP }}>{l}</p>
+                  {heroStats.map(({value, label}) => (
+                    <div key={label}>
+                      <p className="font-bold text-2xl text-white" style={{ fontFamily: PP }}>{value}</p>
+                      <p className="text-xs text-white/60 uppercase tracking-wide" style={{ fontFamily: PP }}>{label}</p>
                     </div>
                   ))}
                 </div>
@@ -331,7 +379,7 @@ const About = () => {
               style={{ backgroundColor: '#f9f5f2' }}
               initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }} transition={{ duration: 0.55, delay: 0.2 }}>
-              <StoryCarousel />
+              <StoryCarousel slides={storySlides} />
             </motion.div>
 
           </div>
@@ -353,15 +401,15 @@ const About = () => {
             style={{ fontFamily: PP, fontSize: 'clamp(2rem, 5vw, 4.2rem)' }}
             initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }} transition={{ duration: 0.6 }}>
-            <span style={{ lineHeight: 1.2 }}>Compliance is not a checkbox</span>
-            <span style={{ lineHeight: 1.2 }}>It's the foundation on which</span>
-            <span style={{ lineHeight: 1.2, color: '#fda102' }}>every great business is built</span>
+            <span style={{ lineHeight: 1.2 }}>{pullQuoteLine1}</span>
+            <span style={{ lineHeight: 1.2 }}>{pullQuoteLine2}</span>
+            <span style={{ lineHeight: 1.2, color: '#fda102' }}>{pullQuoteLine3}</span>
           </motion.div>
           <motion.p className="font-semibold uppercase tracking-widest"
             style={{ fontFamily: PP, color: 'rgba(255,255,255,0.85)', fontSize: '1.05rem' }}
             initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}
             viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.2 }}>
-            Deepak Maru, Founder & Managing Partner
+            {pullQuoteAttribution}
           </motion.p>
         </div>
       </section>
@@ -388,12 +436,7 @@ const About = () => {
 
           {/* 4 image-backed poster cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {[
-              { num: '01', title: 'Absolute Integrity', img: '/assets/service-legal.png' },
-              { num: '02', title: 'Unmatched Excellence', img: '/assets/service-labour.png' },
-              { num: '03', title: 'Client Partnership', img: '/assets/service-staffing.png' },
-              { num: '04', title: 'Continuous Innovation', img: '/assets/service-audits.png' },
-            ].map((v, i) => (
+            {coreValues.map((v, i) => (
               <motion.div key={i}
                 className="relative rounded-2xl overflow-hidden group cursor-default"
                 style={{ height: '380px' }}
@@ -409,7 +452,7 @@ const About = () => {
                   style={{ backgroundColor: '#a83a00' }} />
                 {/* Content */}
                 <div className="absolute inset-0 p-7 flex flex-col justify-between">
-                  <p className="font-bold text-5xl opacity-30 text-white" style={{ fontFamily: PP }}>{v.num}</p>
+                  <p className="font-bold text-5xl opacity-30 text-white" style={{ fontFamily: PP }}>{String(i + 1).padStart(2, '0')}</p>
                   <h4 className="font-bold text-white leading-tight whitespace-nowrap text-center" style={{ fontFamily: PP, fontSize: 'clamp(0.85rem, 1.4vw, 1.125rem)' }}>{v.title}</h4>
                 </div>
               </motion.div>
@@ -458,12 +501,7 @@ const About = () => {
                   viewport={{ once: true }} transition={{ duration: 1.6, ease: 'easeInOut' }} />
 
                 <div className="grid grid-cols-1 sm:grid-cols-4 gap-14 sm:gap-10">
-                  {[
-                    { year: '2003', event: 'Founded', img: '/assets/service-statutory.png', lines: ['Established as a boutique', 'advisory firm in Mumbai,', 'focused on compliance.'] },
-                    { year: '2009', event: 'Pan-India', img: '/assets/service-payroll.png', lines: ['Expanded to Delhi NCR and', 'Bangalore, becoming a true', 'pan-India compliance firm.'] },
-                    { year: '2016', event: 'Tech-Enabled', img: '/assets/service-training.png', lines: ['Launched proprietary', 'compliance software with', 'real-time dashboards.'] },
-                    { year: '2023', event: 'New Codes Authority', img: '/assets/service-hr.png', lines: ["Became India's go-to", 'authority on the New', 'Labour Codes nationwide.'] },
-                  ].map((m, i) => {
+                  {journeyMilestones.map((m, i) => {
                     const down = i % 2 === 0; // even index: image above the circle, text below. odd: reversed.
                     const Image = (
                       <div className="w-full rounded-xl overflow-hidden shadow-lg" style={{ height: `${zoneH}px` }}>
@@ -476,9 +514,7 @@ const About = () => {
                           style={{ fontFamily: PP, color: '#fda102', fontSize: '0.95rem' }}>{m.event}</p>
                         <p className="max-w-[280px] mx-auto"
                           style={{ fontFamily: PP, color: 'rgba(255,255,255,0.85)', lineHeight: 1.8, textAlign: 'justify', textAlignLast: 'center', fontSize: '0.95rem' }}>
-                          {m.lines.map((line, li) => (
-                            <span key={li}>{line}{li < m.lines.length - 1 && <br />}</span>
-                          ))}
+                          {m.description}
                         </p>
                       </div>
                     );
@@ -578,13 +614,7 @@ const About = () => {
               </h2>
 
               <div className="space-y-6">
-                {[
-                  { point: 'Pan-India presence across 15+ states', sub: 'State-specific expertise from Kashmir to Kanyakumari, covering all major industrial hubs.' },
-                  { point: 'Experts in New Labour Codes', sub: "One of India's earliest and most trusted authorities on the consolidated labour code framework." },
-                  { point: 'Proactive risk identification', sub: 'We audit for vulnerabilities before they become penalties — not after. Reactive compliance is a liability.' },
-                  { point: 'Dedicated consultant per client', sub: 'Every client gets a named consultant who knows their business, their sector, and their risk profile.' },
-                  { point: 'Tech-enabled tracking & reporting', sub: 'Real-time dashboards and automated reminders so nothing ever slips through the cracks.' },
-                ].map((item, i) => (
+                {whyChooseItems.map((item, i) => (
                   <motion.div key={i} className="flex gap-4 items-start"
                     initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }} transition={{ duration: 0.4, delay: i * 0.07 }}>
@@ -626,12 +656,7 @@ const About = () => {
 
           {/* 4-card grid — single row */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {[
-              { name: 'Deepak Maru',  qualification: 'B.Com (Hons), LL.B', role: 'Advocate\nFounder & Managing Partner', img: '/assets/service-legal.png' },
-              { name: 'Sanjeev Maru', qualification: 'B.Com, LL.B',        role: 'Co-founder & Managing Partner',       img: '/assets/service-staffing.png' },
-              { name: 'Pankhil Maru', qualification: 'B.E (I.T), MBA (HR)', role: 'Managing Partner',                    img: '/assets/service-hr.png' },
-              { name: 'Nishit Maru',  qualification: 'BLS, LL.B, CS',       role: 'Managing Partner',                    img: '/assets/service-audits.png' },
-            ].map((m, i) => (
+            {teamMembers.map((m, i) => (
               <motion.div key={i}
                 initial={{ opacity: 0, y: 28 }}
                 whileInView={{ opacity: 1, y: 0 }}

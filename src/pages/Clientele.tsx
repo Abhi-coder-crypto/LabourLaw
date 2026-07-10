@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Star } from 'lucide-react';
+import { api } from '../lib/api';
+import type { ClienteleContent } from '../types/content';
 import { ALL_CLIENTS, HdfcLogo, TataLogo, RelianceLogo, InfosysLogo, WiproLogo, MahindraLogo, LandTLogo, ItcLogo, GodrejLogo, BajajLogo } from '../components/ClientLogos';
 import { useInView } from 'framer-motion';
 import customerReviewIcon from '@assets/customer-review_1783487769231.png';
@@ -21,30 +23,56 @@ function StatCounter({ target, decimals = 0, suffix = '' }: { target: number; de
   const ref = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-60px' });
   const [display, setDisplay] = useState('0');
+  // Clamp decimals to 0–3 to prevent toFixed() from throwing on malformed CMS values
+  const safeDecimals = Math.max(0, Math.min(3, Number.isFinite(decimals) ? decimals : 0));
+  const safeTarget = Number.isFinite(target) ? target : 0;
   useEffect(() => {
     if (!isInView) return;
     const duration = 1800;
     const start = performance.now();
     const tick = (now: number) => {
       const eased = 1 - Math.pow(1 - Math.min((now - start) / duration, 1), 3);
-      setDisplay((eased * target).toFixed(decimals));
+      setDisplay((eased * safeTarget).toFixed(safeDecimals));
       if (eased < 1) requestAnimationFrame(tick);
     };
     requestAnimationFrame(tick);
-  }, [isInView, target, decimals]);
+  }, [isInView, safeTarget, safeDecimals]);
   return <span ref={ref}>{display}{suffix}</span>;
 }
 
-/* ── Industries data ── */
-const INDUSTRIES = [
-  { image: manufacturingImg, name: 'Manufacturing', count: '120+' },
-  { image: bankingImg, name: 'Banking & Finance', count: '85+' },
-  { image: itImg, name: 'Information Technology', count: '95+' },
-  { image: retailImg, name: 'Retail & FMCG', count: '70+' },
-  { image: healthcareImg, name: 'Healthcare & Pharma', count: '55+' },
-  { image: hospitalityImg, name: 'Hospitality', count: '45+' },
-  { image: logisticsImg, name: 'Logistics & Infrastructure', count: '60+' },
-  { image: othersImg, name: 'Others', count: '70+' },
+/* ── Fallback industry images (bundled) — used when DB has no override ── */
+const FALLBACK_IMAGES = [
+  manufacturingImg, bankingImg, itImg, retailImg,
+  healthcareImg, hospitalityImg, logisticsImg, othersImg,
+];
+
+const DEFAULT_STATS = [
+  { target: 500, suffix: '+', decimals: 0, label: 'Clients Served' },
+  { target: 15,  suffix: '+', decimals: 0, label: 'Years of Expertise' },
+  { target: 8,   suffix: '+', decimals: 0, label: 'Industries' },
+  { target: 98,  suffix: '%', decimals: 0, label: 'Retention Rate' },
+];
+
+const DEFAULT_INDUSTRIES = [
+  { name: 'Manufacturing',              count: '120+', image: '' },
+  { name: 'Banking & Finance',          count: '85+',  image: '' },
+  { name: 'Information Technology',     count: '95+',  image: '' },
+  { name: 'Retail & FMCG',             count: '70+',  image: '' },
+  { name: 'Healthcare & Pharma',        count: '55+',  image: '' },
+  { name: 'Hospitality',               count: '45+',  image: '' },
+  { name: 'Logistics & Infrastructure', count: '60+',  image: '' },
+  { name: 'Others',                    count: '70+',  image: '' },
+];
+
+const DEFAULT_TESTIMONIALS = [
+  { text: "Maru Consultancy transformed our chaotic compliance process into a streamlined, risk-free system. Their expertise in the New Wage Code is unmatched in the industry.", author: "Rajesh Sharma", role: "HR Director, TechNova" },
+  { text: "Their proactive approach to statutory audits saved us from significant penalties. They don't just consult — they become an extension of your team.", author: "Meera Reddy", role: "CEO, Manufacturing Corp" },
+  { text: "The contract staffing solutions allowed us to scale rapidly during our peak season without any compliance headaches whatsoever.", author: "Vikram Singh", role: "VP Operations, Retail Giant" },
+  { text: "Maru Consultancy's compliance framework saved us lakhs in potential penalties. Their team anticipates regulatory changes before they even happen.", author: "Priya Kapoor", role: "CFO, Apex Industries" },
+  { text: "We have expanded to 6 states and Maru handled every state-specific compliance requirement seamlessly. Truly a pan-India expert partner.", author: "Arun Nair", role: "MD, Sunrise Textiles" },
+  { text: "The statutory filing support is impeccable — PF, ESIC, PT all managed without a single deadline miss in over three years.", author: "Sneha Joshi", role: "Head HR, BuildRight Infra" },
+  { text: "Outstanding legal representation before the labour tribunal. The case was resolved in our favour and the whole process was stress-free.", author: "Deepak Mehta", role: "Director, Meridian Logistics" },
+  { text: "Their HR policy advisory helped us modernise our standing orders in line with the new codes. Employees and management are both happy.", author: "Kavitha Rao", role: "CHRO, NovaMed Healthcare" },
 ];
 
 /* ── Sector-wise clients ── */
@@ -67,19 +95,16 @@ const SECTOR_CLIENTS: Record<string, { name: string; Logo: () => React.JSX.Eleme
   ],
 };
 
-/* ── Testimonials ── */
-const TESTIMONIALS = [
-  { text: "Maru Consultancy transformed our chaotic compliance process into a streamlined, risk-free system. Their expertise in the New Wage Code is unmatched in the industry.", author: "Rajesh Sharma", role: "HR Director, TechNova" },
-  { text: "Their proactive approach to statutory audits saved us from significant penalties. They don't just consult — they become an extension of your team.", author: "Meera Reddy", role: "CEO, Manufacturing Corp" },
-  { text: "The contract staffing solutions allowed us to scale rapidly during our peak season without any compliance headaches whatsoever.", author: "Vikram Singh", role: "VP Operations, Retail Giant" },
-  { text: "Maru Consultancy's compliance framework saved us lakhs in potential penalties. Their team anticipates regulatory changes before they even happen.", author: "Priya Kapoor", role: "CFO, Apex Industries" },
-  { text: "We have expanded to 6 states and Maru handled every state-specific compliance requirement seamlessly. Truly a pan-India expert partner.", author: "Arun Nair", role: "MD, Sunrise Textiles" },
-  { text: "The statutory filing support is impeccable — PF, ESIC, PT all managed without a single deadline miss in over three years.", author: "Sneha Joshi", role: "Head HR, BuildRight Infra" },
-  { text: "Outstanding legal representation before the labour tribunal. The case was resolved in our favour and the whole process was stress-free.", author: "Deepak Mehta", role: "Director, Meridian Logistics" },
-  { text: "Their HR policy advisory helped us modernise our standing orders in line with the new codes. Employees and management are both happy.", author: "Kavitha Rao", role: "CHRO, NovaMed Healthcare" },
-];
-
 const Clientele = () => {
+  const [apiData, setApiData] = useState<ClienteleContent | null>(null);
+  useEffect(() => {
+    api.get<ClienteleContent>('/clientele').then(setApiData).catch(() => {/* use hardcoded defaults */});
+  }, []);
+
+  const stats        = apiData?.stats?.length        ? apiData.stats        : DEFAULT_STATS;
+  const industries   = apiData?.industries?.length   ? apiData.industries   : DEFAULT_INDUSTRIES;
+  const testimonials = apiData?.testimonials?.length ? apiData.testimonials : DEFAULT_TESTIMONIALS;
+
   const [activeSector, setActiveSector] = useState('Manufacturing & Conglomerates');
   const sectors = Object.keys(SECTOR_CLIENTS);
 
@@ -117,16 +142,11 @@ const Clientele = () => {
       {/* ── Stats bar ── */}
       <section className="bg-white border-b border-gray-100 py-8">
         <div className="max-w-5xl mx-auto px-6 flex flex-wrap justify-center gap-10 md:gap-20">
-          {[
-            { target: 500, suffix: '+', label: 'Clients Served' },
-            { target: 15,  suffix: '+', label: 'Years of Expertise' },
-            { target: 8,   suffix: '+', label: 'Industries' },
-            { target: 98,  suffix: '%', label: 'Retention Rate' },
-          ].map(({ target, suffix, label }) => (
+          {stats.map(({ target, suffix, decimals, label }) => (
             <div key={label} className="text-center">
               <p className="font-bold text-3xl mb-1"
                 style={{ fontFamily: PP, color: '#a83a00' }}>
-                <StatCounter target={target} suffix={suffix} />
+                <StatCounter target={target} suffix={suffix} decimals={decimals} />
               </p>
               <p className="text-xs uppercase tracking-widest text-gray-400 font-semibold"
                 style={{ fontFamily: PP }}>{label}</p>
@@ -152,13 +172,13 @@ const Clientele = () => {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {INDUSTRIES.map((ind, i) => (
+            {industries.map((ind, i) => (
               <motion.div key={i}
                 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }} transition={{ delay: i * 0.07, duration: 0.45 }}
                 className="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-lg hover:border-[rgba(168,58,0,0.2)] transition-all group">
                 <div className="relative w-full aspect-[4/3] overflow-hidden">
-                  <img src={ind.image} alt={ind.name}
+                  <img src={ind.image || FALLBACK_IMAGES[i] || ''} alt={ind.name}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                   <span className="absolute top-3 right-3 font-medium text-sm px-3 py-1 rounded-full"
                     style={{ fontFamily: PP, backgroundColor: 'rgba(255,255,255,0.92)', color: '#a83a00' }}>
@@ -298,7 +318,7 @@ const Clientele = () => {
 
           <div className="overflow-hidden relative">
             <div className="animate-marquee-testimonials pb-2">
-              {[...TESTIMONIALS, ...TESTIMONIALS].map((test, i) => (
+              {[...testimonials, ...testimonials].map((test, i) => (
                 <div key={i}
                   className="shrink-0 mx-4 rounded-2xl flex flex-col relative overflow-hidden bg-white"
                   style={{ width: '360px', boxShadow: '0 8px 32px rgba(0,0,0,0.18)' }}>
