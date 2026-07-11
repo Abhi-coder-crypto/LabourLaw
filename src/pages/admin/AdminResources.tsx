@@ -99,13 +99,14 @@ export default function AdminResources() {
     if (!editing) return;
     setSaving(true); setError('');
     try {
+      let saved: ResourceItem;
       if ('_id' in editing && editing._id) {
-        await api.put(`/resources/${editing._id}`, editing);
+        saved = await api.put<ResourceItem>(`/resources/${editing._id}`, editing);
       } else {
-        await api.post('/resources', editing);
+        saved = await api.post<ResourceItem>('/resources', editing);
       }
       await load();
-      setEditing(null);
+      setEditing(saved);
       setDirty(false);
       setNotice('Saved — changes are live on the site.');
       setTimeout(() => setNotice(''), 2500);
@@ -161,6 +162,11 @@ export default function AdminResources() {
           </div>
         )}
 
+        {notice && !dirty && (
+          <div className="mb-5 flex items-center gap-2 text-sm text-green-700 bg-green-50 border border-green-200 rounded-xl px-4 py-2.5">
+            <CheckCircle2 size={15} /> {notice}
+          </div>
+        )}
         {error && <div className="mb-5 text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-2.5">{error}</div>}
 
         {isArticle ? (
