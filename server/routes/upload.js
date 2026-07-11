@@ -5,7 +5,13 @@ import cloudinary from '../cloudinary.js';
 import { requireAuth } from '../middleware/auth.js';
 
 const router = express.Router();
-const LIMIT = 1 * 1024 * 1024; // 1 MB
+// Per-type size limits
+const LIMITS = {
+  image:    5  * 1024 * 1024, // 5 MB
+  video:    50 * 1024 * 1024, // 50 MB
+  document: 10 * 1024 * 1024, // 10 MB
+};
+const MAX_LIMIT = LIMITS.video; // multer hard cap — per-type check happens after
 
 // Only file types the admin UI actually needs — blocks HTML/SVG/executables
 // from being uploaded and served back as publicly linkable Cloudinary URLs.
@@ -31,7 +37,7 @@ function isAllowedMime(rawMime) {
 
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: LIMIT },
+  limits: { fileSize: MAX_LIMIT },
   fileFilter: (req, file, cb) => {
     if (!isAllowedMime(file.mimetype)) {
       return cb(new Error('UNSUPPORTED_FILE_TYPE'));
@@ -40,10 +46,10 @@ const upload = multer({
   },
 });
 
-// Multer sends a specific error code when the file is too large
+// Multer sends a specific error code when the file is too large (exceeds MAX_LIMIT)
 function handleMulterError(err, res) {
   if (err?.code === 'LIMIT_FILE_SIZE') {
-    return res.status(413).json({ error: 'File exceeds the 1 MB limit. Please upload a smaller file.' });
+    return res.status(413).json({ error: 'File exceeds the 50 MB limit. Please upload a smaller file.' });
   }
   if (err?.message === 'UNSUPPORTED_FILE_TYPE') {
     return res.status(415).json({ error: 'Unsupported file type. Please upload an image, video, PDF, DOC/DOCX, or XLS/XLSX file.' });
@@ -91,6 +97,16 @@ router.post('/', requireAuth, (req, res) => {
       const mime = req.file.mimetype;
       const isVideo = mime.startsWith('video/');
       const isImage = mime.startsWith('image/');
+
+      // Per-type size enforcement
+      const typeKey = isVideo ? 'video' : isImage ? 'image' : 'document';
+      const typeLimit = LIMITS[typeKey];
+      if (req.file.size > typeLimit) {
+        const limitMB = typeLimit / (1024 * 1024);
+        return res.status(413).json({
+          error: `${typeKey.charAt(0).toUpperCase() + typeKey.slice(1)} exceeds the ${limitMB} MB limit. Please upload a smaller file.`,
+        });
+      }
       // PDFs, XLSX, DOCX, etc. are uploaded as raw
       const resourceType = isVideo ? 'video' : isImage ? 'image' : 'raw';
       const section = sanitizeSection(req.body?.section);
