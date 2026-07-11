@@ -35,6 +35,7 @@ export default function AdminCareers() {
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState<JobContent | (Omit<JobContent, '_id'> & { _id?: string }) | null>(null);
   const [saving, setSaving] = useState(false);
+  const [dirty, setDirty] = useState(false);
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
 
@@ -44,22 +45,24 @@ export default function AdminCareers() {
     load().catch((err) => setError(err instanceof Error ? err.message : 'Failed to load')).finally(() => setLoading(false));
   }, []);
 
-  const startCreate = () => { setError(''); setEditing({ ...EMPTY }); };
-  const startEdit = (j: JobContent) => { setError(''); setEditing({ ...j }); };
-  const cancel = () => setEditing(null);
+  const startCreate = () => { setError(''); setDirty(false); setEditing({ ...EMPTY }); };
+  const startEdit = (j: JobContent) => { setError(''); setDirty(false); setEditing({ ...j }); };
+  const cancel = () => { setEditing(null); setDirty(false); };
 
   const save = async () => {
     if (!editing) return;
     setSaving(true);
     setError('');
     try {
+      let saved: JobContent;
       if ('_id' in editing && editing._id) {
-        await api.put(`/careers/${editing._id}`, editing);
+        saved = await api.put<JobContent>(`/careers/${editing._id}`, editing);
       } else {
-        await api.post('/careers', editing);
+        saved = await api.post<JobContent>('/careers', editing);
       }
       await load();
-      setEditing(null);
+      setEditing(saved);
+      setDirty(false);
       setNotice('Saved — changes are live on the site.');
       setTimeout(() => setNotice(''), 2500);
     } catch (err) {
@@ -105,8 +108,10 @@ export default function AdminCareers() {
   if (loading) return <p className="text-gray-400 text-sm">Loading…</p>;
 
   if (editing) {
-    const set = <K extends keyof typeof editing>(key: K, value: (typeof editing)[K]) =>
+    const set = <K extends keyof typeof editing>(key: K, value: (typeof editing)[K]) => {
+      setDirty(true);
       setEditing((e) => (e ? { ...e, [key]: value } : e));
+    };
 
     return (
       <div>
@@ -114,8 +119,32 @@ export default function AdminCareers() {
           <h1 className="font-bold" style={{ fontFamily: PP, fontSize: '1.5rem', color: '#111' }}>
             {'_id' in editing && editing._id ? 'Edit Job Posting' : 'New Job Posting'}
           </h1>
-          <SecondaryButton onClick={cancel}><X size={13} /> Cancel</SecondaryButton>
+          <div className="flex items-center gap-3">
+            <SecondaryButton onClick={cancel}><X size={13} /> Cancel</SecondaryButton>
+            <PrimaryButton onClick={save} disabled={saving || !editing.title || !editing.slug}>
+              {saving ? <Loader2 size={15} className="animate-spin" /> : <Save size={15} />}
+              {saving ? 'Saving…' : 'Save'}
+            </PrimaryButton>
+          </div>
         </div>
+
+        {dirty && !saving && (
+          <div className="sticky top-0 z-20 mb-5 flex items-center justify-between gap-3 rounded-xl px-4 py-3 shadow-md"
+            style={{ backgroundColor: '#7c2d00', fontFamily: PP }}>
+            <span className="text-sm font-semibold text-white">You have unsaved changes.</span>
+            <button onClick={save} disabled={!editing.title || !editing.slug}
+              className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-opacity hover:opacity-90 disabled:opacity-50"
+              style={{ backgroundColor: '#fda102', color: '#111' }}>
+              <Save size={13} /> Save now
+            </button>
+          </div>
+        )}
+
+        {notice && !dirty && (
+          <div className="mb-5 flex items-center gap-2 text-sm text-green-700 bg-green-50 border border-green-200 rounded-xl px-4 py-2.5">
+            <CheckCircle2 size={15} /> {notice}
+          </div>
+        )}
         {error && <div className="mb-5 text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-2.5">{error}</div>}
 
         <Section title="Basics">
