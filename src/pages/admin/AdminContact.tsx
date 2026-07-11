@@ -41,6 +41,7 @@ export default function AdminContact() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving]   = useState(false);
   const [saved, setSaved]     = useState(false);
+  const [dirty, setDirty]     = useState(false);
   const [error, setError]     = useState('');
 
   useEffect(() => {
@@ -67,13 +68,16 @@ export default function AdminContact() {
       .finally(() => setLoading(false));
   }, []);
 
-  const set = <K extends keyof ContactContent>(key: K, val: ContactContent[K]) =>
+  const set = <K extends keyof ContactContent>(key: K, val: ContactContent[K]) => {
+    setDirty(true);
     setData(d => ({ ...d, [key]: val }));
+  };
 
   const save = async () => {
     setSaving(true); setSaved(false); setError('');
     try {
       await api.put('/contact', data);
+      setDirty(false);
       setSaved(true);
       setTimeout(() => setSaved(false), 3000);
     } catch (err) {
@@ -98,6 +102,18 @@ export default function AdminContact() {
           {saving ? 'Saving…' : saved ? 'Saved!' : 'Save'}
         </PrimaryButton>
       </div>
+
+      {dirty && !saving && (
+        <div className="sticky top-0 z-20 mb-5 flex items-center justify-between gap-3 rounded-xl px-4 py-3 shadow-md"
+          style={{ backgroundColor: '#7c2d00', fontFamily: PP }}>
+          <span className="text-sm font-semibold text-white">You have unsaved changes.</span>
+          <button onClick={save}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-opacity hover:opacity-90"
+            style={{ backgroundColor: '#fda102', color: '#111' }}>
+            <Save size={13} /> Save now
+          </button>
+        </div>
+      )}
 
       {error && (
         <div className="mb-5 text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-2.5">
