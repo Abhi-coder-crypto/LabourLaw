@@ -44,7 +44,7 @@ const Resources = () => {
   const [catFilter, setCatFilter] = useState('All');
   const [blogPosts, setBlogPosts] = useState<ResourceItem[]>([]);
   const [downloads, setDownloads] = useState<ResourceItem[]>([]);
-  const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');
+  const [, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');
   const [hero, setHero] = useState<ResourcesPageContent>(HERO_DEFAULTS);
 
   const fetchResources = () => {

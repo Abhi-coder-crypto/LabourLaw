@@ -39,7 +39,7 @@ export default function AdminHome() {
       .then(([home, services, articles]) => {
         setAllServices(services);
         setAllArticles(articles);
-        const merged = { featuredServiceSlugs: [], latestInsights: [], ...home };
+        const merged = { ...home, featuredServiceSlugs: home.featuredServiceSlugs ?? [], latestInsights: home.latestInsights ?? [] };
         if (!merged.featuredServiceSlugs.length && services.length > 0) {
           merged.featuredServiceSlugs = services.slice(0, 8).map(s => s.slug);
         }

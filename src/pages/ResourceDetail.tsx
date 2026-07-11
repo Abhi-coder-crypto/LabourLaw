@@ -142,7 +142,7 @@ const ResourceDetail = () => {
 
               {/* Article Sections */}
               <div className="bg-white rounded-2xl p-8 md:p-12 border border-gray-100 shadow-sm space-y-10">
-                {post.sections.map((section, i) => (
+                {(post.sections ?? []).map((section, i) => (
                   <motion.div key={i}
                     initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }} transition={{ delay: i * 0.07 }}>
@@ -167,7 +167,7 @@ const ResourceDetail = () => {
                   Key Takeaways
                 </h2>
                 <ul className="space-y-4">
-                  {post.keyTakeaways.map((item, i) => (
+                  {(post.keyTakeaways ?? []).map((item, i) => (
                     <motion.li key={i}
                       initial={{ opacity: 0, x: -12 }} whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }} transition={{ delay: i * 0.07 }}
