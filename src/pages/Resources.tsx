@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { api } from '../lib/api';
 import { useLiveContent } from '../hooks/useLiveContent';
-import type { ResourceItem } from '../types/content';
+import type { ResourceItem, ResourcesPageContent } from '../types/content';
 
 const PP = 'Poppins, sans-serif';
 
@@ -30,12 +30,22 @@ function forceDownloadUrl(url: string) {
   }
 }
 
+const HERO_DEFAULTS: ResourcesPageContent = {
+  heroEyebrow: 'Knowledge Hub',
+  heroHeading: 'Insights, Blogs & Downloads',
+  heroSubtext: 'Expert insights, regulatory updates, and practical compliance resources to keep your business protected.',
+  heroBgType: 'color',
+  heroImageUrl: '',
+  heroVideoUrl: '',
+};
+
 const Resources = () => {
   const [activeTab, setActiveTab] = useState<'blogs' | 'downloads'>('blogs');
   const [catFilter, setCatFilter] = useState('All');
   const [blogPosts, setBlogPosts] = useState<ResourceItem[]>([]);
   const [downloads, setDownloads] = useState<ResourceItem[]>([]);
   const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');
+  const [hero, setHero] = useState<ResourcesPageContent>(HERO_DEFAULTS);
 
   const fetchResources = () => {
     api.get<ResourceItem[]>('/resources')
@@ -49,6 +59,12 @@ const Resources = () => {
   useEffect(fetchResources, []);
   useLiveContent(fetchResources);
 
+  const fetchHero = () => {
+    api.get<ResourcesPageContent>('/resources-page').then(setHero).catch(() => {});
+  };
+  useEffect(fetchHero, []);
+  useLiveContent(fetchHero);
+
   const filteredBlogs = catFilter === 'All'
     ? blogPosts
     : blogPosts.filter(p => p.category === catFilter);
@@ -58,30 +74,44 @@ const Resources = () => {
 
       {/* ── Hero ── */}
       <section
-        className="flex items-center justify-center overflow-hidden"
+        className="relative flex items-center justify-center overflow-hidden"
         style={{ backgroundColor: '#a83a00', minHeight: '200px', maxHeight: '300px', height: '38vh' }}>
 
+        {hero.heroBgType === 'image' && hero.heroImageUrl && (
+          <img src={hero.heroImageUrl} alt="" className="absolute inset-0 w-full h-full object-cover" style={{ zIndex: 0 }} />
+        )}
+        {hero.heroBgType === 'video' && hero.heroVideoUrl && (
+          <video key={hero.heroVideoUrl} autoPlay muted loop playsInline
+            className="absolute inset-0 w-full h-full object-cover" style={{ zIndex: 0 }}>
+            <source src={hero.heroVideoUrl} type="video/mp4" />
+          </video>
+        )}
+        {hero.heroBgType !== 'color' && (hero.heroImageUrl || hero.heroVideoUrl) && (
+          <div className="absolute inset-0" style={{ backgroundColor: 'rgba(0,0,0,0.45)', zIndex: 1 }} />
+        )}
+
         <div className="absolute top-[-60px] right-[-60px] w-[300px] h-[300px] rounded-full opacity-10 pointer-events-none"
-          style={{ backgroundColor: '#fda102' }} />
+          style={{ backgroundColor: '#fda102', zIndex: 1 }} />
 
         <motion.div
           initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-center px-8 w-full max-w-4xl mx-auto">
+          className="relative text-center px-8 w-full max-w-4xl mx-auto"
+          style={{ zIndex: 2 }}>
 
           <p className="uppercase tracking-[0.3em] font-semibold mb-2"
             style={{ fontFamily: PP, fontSize: '0.9rem', color: '#fda102' }}>
-            Knowledge Hub
+            {hero.heroEyebrow}
           </p>
           <h1 className="font-bold mb-3"
             style={{ fontFamily: PP, fontSize: 'max(1.1rem, 2vw)', fontWeight: 700, letterSpacing: '0.03em', color: '#fff' }}>
-            Insights, Blogs & Downloads
+            {hero.heroHeading}
           </h1>
           <p style={{
             fontFamily: PP, fontSize: 'clamp(0.88rem, 1.3vw, 1rem)', fontWeight: 300,
             color: 'rgba(255,255,255,0.82)', maxWidth: '580px', margin: '0 auto', lineHeight: 1.6,
           }}>
-            Expert insights, regulatory updates, and practical compliance resources to keep your business protected.
+            {hero.heroSubtext}
           </p>
         </motion.div>
       </section>

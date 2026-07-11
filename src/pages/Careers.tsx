@@ -4,14 +4,24 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { api } from '../lib/api';
 import { useLiveContent } from '../hooks/useLiveContent';
-import type { JobContent } from '../types/content';
+import type { JobContent, CareersPageContent } from '../types/content';
 
 const PP = 'Poppins, sans-serif';
+
+const HERO_DEFAULTS: CareersPageContent = {
+  heroEyebrow: 'Join Our Team',
+  heroHeading: 'Build a Career That Matters',
+  heroSubtext: "Channel your passion for labour and industrial law into a meaningful career at India's premier compliance advisory firm.",
+  heroBgType: 'video',
+  heroVideoUrl: '',
+  heroImageUrl: '',
+};
 
 const Careers = () => {
   const [activeTab, setActiveTab] = useState<'internal' | 'client'>('internal');
   const [jobs, setJobs] = useState<JobContent[]>([]);
   const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');
+  const [hero, setHero] = useState<CareersPageContent>(HERO_DEFAULTS);
 
   const fetchJobs = () => {
     api.get<JobContent[]>('/careers')
@@ -21,6 +31,12 @@ const Careers = () => {
   useEffect(fetchJobs, []);
   useLiveContent(fetchJobs);
 
+  const fetchHero = () => {
+    api.get<CareersPageContent>('/careers-page').then(setHero).catch(() => {});
+  };
+  useEffect(fetchHero, []);
+  useLiveContent(fetchHero);
+
   const internalJobs = jobs.filter(j => j.category === 'internal');
   const clientJobs = jobs.filter(j => j.category === 'client');
   const displayed = activeTab === 'internal' ? internalJobs : clientJobs;
@@ -28,16 +44,26 @@ const Careers = () => {
   return (
     <div className="w-full" style={{ fontFamily: PP }}>
 
-      {/* ── Hero — Video Background ── */}
+      {/* ── Hero — Video/Image Background ── */}
       <section className="relative flex items-center justify-center overflow-hidden" style={{ minHeight: '420px', height: '56vh', maxHeight: '580px' }}>
 
-        {/* Video */}
-        <video
-          autoPlay muted loop playsInline
-          className="absolute inset-0 w-full h-full object-cover"
-          style={{ zIndex: 0 }}>
-          <source src="/assets/careers-hero.mp4" type="video/mp4" />
-        </video>
+        {/* Background */}
+        {hero.heroBgType === 'image' && hero.heroImageUrl ? (
+          <img
+            src={hero.heroImageUrl}
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{ zIndex: 0 }}
+          />
+        ) : (
+          <video
+            key={hero.heroVideoUrl || 'default'}
+            autoPlay muted loop playsInline
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{ zIndex: 0 }}>
+            <source src={hero.heroVideoUrl || '/assets/careers-hero.mp4'} type="video/mp4" />
+          </video>
+        )}
 
         {/* Dark overlay for readability */}
         <div className="absolute inset-0" style={{ backgroundColor: 'rgba(0,0,0,0.52)', zIndex: 1 }} />
@@ -51,11 +77,11 @@ const Careers = () => {
 
           <p className="uppercase tracking-[0.3em] font-semibold mb-3"
             style={{ fontFamily: PP, fontSize: '1.05rem', color: '#fda102' }}>
-            Join Our Team
+            {hero.heroEyebrow}
           </p>
           <h1 className="font-bold mb-5 leading-none whitespace-nowrap"
             style={{ fontFamily: PP, fontSize: 'clamp(1.8rem, 4.2vw, 3.8rem)', color: '#fff' }}>
-            Build a Career That Matters
+            {hero.heroHeading}
           </h1>
           <p style={{
             fontFamily: PP,
@@ -69,7 +95,7 @@ const Careers = () => {
             WebkitBoxOrient: 'vertical',
             overflow: 'hidden',
           }}>
-            Channel your passion for labour and industrial law into a meaningful career at India's premier compliance advisory firm.
+            {hero.heroSubtext}
           </p>
         </motion.div>
       </section>

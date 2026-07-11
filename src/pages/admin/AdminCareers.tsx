@@ -1,8 +1,18 @@
 import { useEffect, useState } from 'react';
 import { Plus, Trash2, Save, Loader2, Pencil, X, CheckCircle2, ChevronUp, ChevronDown } from 'lucide-react';
 import { api } from '../../lib/api';
-import type { JobContent } from '../../types/content';
+import type { JobContent, CareersPageContent } from '../../types/content';
 import { Section, Field, TextInput, TextArea, PrimaryButton, SecondaryButton, DangerButton } from '../../components/admin/FormBits';
+import ImageUploader from '../../components/admin/ImageUploader';
+
+const HERO_EMPTY: CareersPageContent = {
+  heroEyebrow: 'Join Our Team',
+  heroHeading: 'Build a Career That Matters',
+  heroSubtext: "Channel your passion for labour and industrial law into a meaningful career at India's premier compliance advisory firm.",
+  heroBgType: 'video',
+  heroVideoUrl: '',
+  heroImageUrl: '',
+};
 
 const PP = 'Poppins, sans-serif';
 
@@ -39,11 +49,45 @@ export default function AdminCareers() {
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
 
+  const [hero, setHero] = useState<CareersPageContent>(HERO_EMPTY);
+  const [heroLoading, setHeroLoading] = useState(true);
+  const [heroSaving, setHeroSaving] = useState(false);
+  const [heroDirty, setHeroDirty] = useState(false);
+  const [heroNotice, setHeroNotice] = useState('');
+  const [heroError, setHeroError] = useState('');
+
   const load = () => api.get<JobContent[]>('/careers').then(setJobs);
 
   useEffect(() => {
     load().catch((err) => setError(err instanceof Error ? err.message : 'Failed to load')).finally(() => setLoading(false));
   }, []);
+
+  useEffect(() => {
+    api.get<CareersPageContent>('/careers-page')
+      .then(setHero)
+      .catch((err) => setHeroError(err instanceof Error ? err.message : 'Failed to load hero content'))
+      .finally(() => setHeroLoading(false));
+  }, []);
+
+  const updateHero = <K extends keyof CareersPageContent>(key: K, value: CareersPageContent[K]) => {
+    setHeroDirty(true);
+    setHero((h) => ({ ...h, [key]: value }));
+  };
+
+  const saveHero = async () => {
+    setHeroSaving(true); setHeroError('');
+    try {
+      const saved = await api.put<CareersPageContent>('/careers-page', hero);
+      setHero(saved);
+      setHeroDirty(false);
+      setHeroNotice('Saved — hero is live on the site.');
+      setTimeout(() => setHeroNotice(''), 2500);
+    } catch (err) {
+      setHeroError(err instanceof Error ? err.message : 'Failed to save hero content');
+    } finally {
+      setHeroSaving(false);
+    }
+  };
 
   const startCreate = () => { setError(''); setDirty(false); setEditing({ ...EMPTY }); };
   const startEdit = (j: JobContent) => { setError(''); setDirty(false); setEditing({ ...j }); };
@@ -204,6 +248,61 @@ export default function AdminCareers() {
         </div>
         <PrimaryButton onClick={startCreate}><Plus size={15} /> New Job Posting</PrimaryButton>
       </div>
+
+      {!heroLoading && (
+        <Section title="Hero Section" description="The banner shown at the top of the public Careers page.">
+          {heroDirty && !heroSaving && (
+            <div className="flex items-center justify-between gap-3 rounded-xl px-4 py-3 shadow-sm -mt-2 mb-2"
+              style={{ backgroundColor: '#7c2d00', fontFamily: PP }}>
+              <span className="text-sm font-semibold text-white">You have unsaved changes.</span>
+              <button onClick={saveHero}
+                className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-opacity hover:opacity-90"
+                style={{ backgroundColor: '#fda102', color: '#111' }}>
+                <Save size={13} /> Save now
+              </button>
+            </div>
+          )}
+          {heroNotice && !heroDirty && (
+            <div className="flex items-center gap-2 text-sm text-green-700 bg-green-50 border border-green-200 rounded-xl px-4 py-2.5">
+              <CheckCircle2 size={15} /> {heroNotice}
+            </div>
+          )}
+          {heroError && <div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-2.5">{heroError}</div>}
+
+          <div className="grid grid-cols-2 gap-4">
+            <Field label="Eyebrow text"><TextInput value={hero.heroEyebrow} onChange={(e) => updateHero('heroEyebrow', e.target.value)} /></Field>
+            <Field label="Heading"><TextInput value={hero.heroHeading} onChange={(e) => updateHero('heroHeading', e.target.value)} /></Field>
+          </div>
+          <Field label="Subtext"><TextArea rows={2} value={hero.heroSubtext} onChange={(e) => updateHero('heroSubtext', e.target.value)} /></Field>
+
+          <Field label="Background type">
+            <select
+              value={hero.heroBgType}
+              onChange={(e) => updateHero('heroBgType', e.target.value as CareersPageContent['heroBgType'])}
+              className="w-full px-4 py-2.5 rounded-xl border text-sm outline-none"
+              style={{ fontFamily: PP, borderColor: '#e5e7eb' }}
+            >
+              <option value="video">Video</option>
+              <option value="image">Image</option>
+            </select>
+          </Field>
+
+          {hero.heroBgType === 'video' ? (
+            <ImageUploader label="Hero video" value={hero.heroVideoUrl} onChange={(v) => updateHero('heroVideoUrl', v)}
+              accept="video/*" section="careers" hint="Leave blank to keep the default background video." />
+          ) : (
+            <ImageUploader label="Hero image" value={hero.heroImageUrl} onChange={(v) => updateHero('heroImageUrl', v)}
+              section="careers" hint="Landscape, min 1600 × 900 px — shown full-width behind the hero text." />
+          )}
+
+          <div className="flex justify-end">
+            <PrimaryButton onClick={saveHero} disabled={heroSaving}>
+              {heroSaving ? <Loader2 size={15} className="animate-spin" /> : <Save size={15} />}
+              {heroSaving ? 'Saving…' : 'Save Hero'}
+            </PrimaryButton>
+          </div>
+        </Section>
+      )}
 
       {notice && (
         <div className="mb-5 flex items-center gap-2 text-sm text-green-700 bg-green-50 border border-green-200 rounded-xl px-4 py-2.5">

@@ -154,6 +154,26 @@ export type ContactContent = {
   mapEmbedUrl:   string;
 };
 
+export type CareersPageContent = {
+  _id?: string;
+  heroEyebrow:  string;
+  heroHeading:  string;
+  heroSubtext:  string;
+  heroBgType:   'video' | 'image';
+  heroVideoUrl: string;
+  heroImageUrl: string;
+};
+
+export type ResourcesPageContent = {
+  _id?: string;
+  heroEyebrow:  string;
+  heroHeading:  string;
+  heroSubtext:  string;
+  heroBgType:   'color' | 'image' | 'video';
+  heroImageUrl: string;
+  heroVideoUrl: string;
+};
+
 export type JobContent = {
   _id: string;
   slug: string;
