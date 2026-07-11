@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Plus, Trash2, Save, Loader2, Pencil, X, CheckCircle2 } from 'lucide-react';
+import { Plus, Trash2, Save, Loader2, Pencil, X, CheckCircle2, ChevronUp, ChevronDown } from 'lucide-react';
 import { api, deleteCloudinaryAsset } from '../../lib/api';
 import type { ServiceContent } from '../../types/content';
 import { Section, Field, TextInput, TextArea, PrimaryButton, SecondaryButton, DangerButton } from '../../components/admin/FormBits';
@@ -62,6 +62,27 @@ export default function AdminServices() {
       await load();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to delete');
+    }
+  };
+
+  const move = async (index: number, direction: -1 | 1) => {
+    const target = index + direction;
+    if (target < 0 || target >= services.length) return;
+    const a = services[index];
+    const b = services[target];
+    // Optimistically reorder locally so the UI responds immediately
+    const next = [...services];
+    [next[index], next[target]] = [next[target], next[index]];
+    setServices(next);
+    try {
+      await Promise.all([
+        api.put(`/services/${a._id}`, { ...a, order: target }),
+        api.put(`/services/${b._id}`, { ...b, order: index }),
+      ]);
+      await load();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to reorder');
+      await load();
     }
   };
 
@@ -166,8 +187,18 @@ export default function AdminServices() {
       {error && <div className="mb-5 text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-2.5">{error}</div>}
 
       <div className="space-y-3">
-        {services.map((s) => (
+        {services.map((s, i) => (
           <div key={s._id} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex items-center gap-4">
+            <div className="flex flex-col items-center gap-0.5 shrink-0">
+              <button onClick={() => move(i, -1)} disabled={i === 0}
+                className="p-1 rounded hover:bg-gray-100 disabled:opacity-30 transition-colors" title="Move up">
+                <ChevronUp size={16} />
+              </button>
+              <button onClick={() => move(i, 1)} disabled={i === services.length - 1}
+                className="p-1 rounded hover:bg-gray-100 disabled:opacity-30 transition-colors" title="Move down">
+                <ChevronDown size={16} />
+              </button>
+            </div>
             <div className="w-16 h-12 rounded-lg overflow-hidden bg-gray-50 shrink-0">
               {s.img && <img src={s.img} className="w-full h-full object-cover" alt="" />}
             </div>

@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
   try {
-    const careers = await Career.find().sort({ createdAt: -1 });
+    const careers = await Career.find().sort({ order: 1, createdAt: 1 });
     res.json(careers);
   } catch (err) {
     console.error('[careers/list]', err);

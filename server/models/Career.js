@@ -14,6 +14,7 @@ const CareerSchema = new mongoose.Schema({
   niceToHave: [String],
   ctc: String,
   postedOn: String,
+  order: { type: Number, default: 0 },
 }, { timestamps: true });
 
 export default mongoose.models.Career || mongoose.model('Career', CareerSchema, 'careers');

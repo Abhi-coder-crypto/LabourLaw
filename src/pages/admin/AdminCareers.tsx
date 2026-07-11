@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Plus, Trash2, Save, Loader2, Pencil, X, CheckCircle2 } from 'lucide-react';
+import { Plus, Trash2, Save, Loader2, Pencil, X, CheckCircle2, ChevronUp, ChevronDown } from 'lucide-react';
 import { api } from '../../lib/api';
 import type { JobContent } from '../../types/content';
 import { Section, Field, TextInput, TextArea, PrimaryButton, SecondaryButton, DangerButton } from '../../components/admin/FormBits';
@@ -76,6 +76,32 @@ export default function AdminCareers() {
       await load();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to delete');
+    }
+  };
+
+  // Reorder within a category group. `groupIndex` is the position of the job inside its
+  // filtered (internal/client) list, not the raw `jobs` array.
+  const move = async (category: JobContent['category'], groupIndex: number, direction: -1 | 1) => {
+    const group = jobs.filter(j => j.category === category);
+    const target = groupIndex + direction;
+    if (target < 0 || target >= group.length) return;
+    const a = group[groupIndex];
+    const b = group[target];
+    const nextGroup = [...group];
+    [nextGroup[groupIndex], nextGroup[target]] = [nextGroup[target], nextGroup[groupIndex]];
+    setJobs(prev => {
+      const others = prev.filter(j => j.category !== category);
+      return [...others, ...nextGroup];
+    });
+    try {
+      await Promise.all([
+        api.put(`/careers/${a._id}`, { ...a, order: target }),
+        api.put(`/careers/${b._id}`, { ...b, order: groupIndex }),
+      ]);
+      await load();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to reorder');
+      await load();
     }
   };
 
@@ -182,9 +208,19 @@ export default function AdminCareers() {
               <div className="flex-1 border-t border-gray-100" />
             </div>
             <div className="space-y-3">
-              {group.map((j) => (
+              {group.map((j, i) => (
                 <div key={j._id} className="bg-white rounded-2xl border shadow-sm p-4 flex items-center gap-4"
                   style={{ borderColor: cat === 'internal' ? 'rgba(168,58,0,0.12)' : 'rgba(253,161,2,0.18)' }}>
+                  <div className="flex flex-col items-center gap-0.5 shrink-0">
+                    <button onClick={() => move(cat, i, -1)} disabled={i === 0}
+                      className="p-1 rounded hover:bg-gray-100 disabled:opacity-30 transition-colors" title="Move up">
+                      <ChevronUp size={16} />
+                    </button>
+                    <button onClick={() => move(cat, i, 1)} disabled={i === group.length - 1}
+                      className="p-1 rounded hover:bg-gray-100 disabled:opacity-30 transition-colors" title="Move down">
+                      <ChevronDown size={16} />
+                    </button>
+                  </div>
                   <div className="flex-1 min-w-0">
                     <p className="font-semibold text-sm truncate" style={{ fontFamily: PP, color: '#111' }}>{j.title}</p>
                     <p className="text-gray-400 text-xs truncate">{j.location} · {j.type}</p>

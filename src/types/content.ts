@@ -169,4 +169,5 @@ export type JobContent = {
   niceToHave: string[];
   ctc: string;
   postedOn: string;
+  order?: number;
 };
