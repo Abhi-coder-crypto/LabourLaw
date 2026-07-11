@@ -180,7 +180,7 @@ const Home = () => {
               <motion.h1 variants={fadeUp}
                 className="font-semibold mb-6"
                 style={{ fontFamily: 'Poppins, sans-serif', fontSize: 'clamp(2.4rem, 4.2vw, 3.6rem)', lineHeight: 1.1 }}>
-                <span className="text-navy-900 block" style={{ marginBottom: '0.2em' }}>{content?.heroLine1 || 'We bring'}</span>
+                <span className="text-navy-900 block" style={{ marginBottom: '0.2em' }}>{content?.heroLine1 ?? 'We bring'}</span>
 
                 {/* Sliding amber phrase — absolutely positioned so its width never
                     affects the grid column or button row layout.
@@ -202,13 +202,13 @@ const Home = () => {
                   </AnimatePresence>
                 </span>
 
-                <span className="text-navy-900 block">{content?.heroLine2 || 'to your growth'}</span>
+                <span className="text-navy-900 block">{content?.heroLine2 ?? 'to your growth'}</span>
               </motion.h1>
 
               <motion.p variants={fadeUp}
                 className="text-base leading-relaxed mb-8 max-w-md"
                 style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400, color: '#444444', textAlign: 'justify' }}>
-                {content?.heroDescription || 'Unlock the potential of your business with our comprehensive HR and compliance solutions. From recruitment to payroll management to compliance, we provide tailored services that ensure your business runs smoothly, efficiently, and in full compliance with all regulations.'}
+                {content?.heroDescription ?? 'Unlock the potential of your business with our comprehensive HR and compliance solutions. From recruitment to payroll management to compliance, we provide tailored services that ensure your business runs smoothly, efficiently, and in full compliance with all regulations.'}
               </motion.p>
 
               <motion.div variants={fadeUp} className="flex flex-nowrap gap-4 items-center">
@@ -218,7 +218,7 @@ const Home = () => {
                   style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600, fontSize: '1rem', letterSpacing: '0.02em', padding: '0.85rem 1.75rem', backgroundColor: '#a83a00', border: '2px solid #fda102' }}
                   onMouseEnter={e => { (e.currentTarget as HTMLElement).style.backgroundColor = '#fda102'; (e.currentTarget as HTMLElement).style.color = '#111111'; }}
                   onMouseLeave={e => { (e.currentTarget as HTMLElement).style.backgroundColor = '#a83a00'; (e.currentTarget as HTMLElement).style.color = '#ffffff'; }}>
-                  {content?.ctaPrimaryText || 'Book a Consultation'} <ArrowRight size={16} />
+                  {content?.ctaPrimaryText ?? 'Book a Consultation'} <ArrowRight size={16} />
                 </Link>
 
                 {/* Button 2: Compliance Solutions → /services */}
@@ -227,7 +227,7 @@ const Home = () => {
                   style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600, fontSize: '1rem', letterSpacing: '0.02em', padding: '0.85rem 1.75rem', backgroundColor: '#ffffff', color: '#111111', border: '2px solid #fda102' }}
                   onMouseEnter={e => { (e.currentTarget as HTMLElement).style.backgroundColor = '#fda102'; }}
                   onMouseLeave={e => { (e.currentTarget as HTMLElement).style.backgroundColor = '#ffffff'; }}>
-                  {content?.ctaSecondaryText || 'Compliance Solutions'}
+                  {content?.ctaSecondaryText ?? 'Compliance Solutions'}
                 </Link>
               </motion.div>
             </motion.div>
@@ -310,11 +310,11 @@ const Home = () => {
             viewport={{ once: true }} transition={{ duration: 0.5 }}>
             <p className="font-bold text-sm uppercase tracking-widest mb-3"
               style={{ fontFamily: 'Poppins, sans-serif', color: 'rgba(255,255,255,0.7)' }}>
-              {content?.oneStopLabel || 'Your Complete HR & Compliance Partner'}
+              {content?.oneStopLabel ?? 'Your Complete HR & Compliance Partner'}
             </p>
             <h2 className="font-bold text-white leading-[1.15]"
               style={{ fontFamily: 'Poppins, sans-serif', fontSize: 'clamp(1.6rem, 2.8vw, 2.4rem)' }}>
-              {content?.oneStopTitle || 'One Stop Consultancy Partner'}
+              {content?.oneStopTitle ?? 'One Stop Consultancy Partner'}
             </h2>
           </motion.div>
 
@@ -404,11 +404,11 @@ const Home = () => {
                 <img src={maruLogo} alt="Maru Consultancy Services" className="h-20 w-auto object-contain mb-5 mx-auto block" />
                 <h2 className="font-bold leading-[1.2] mb-5"
                   style={{ fontFamily: 'Poppins, sans-serif', fontSize: 'clamp(1.4rem, 2.4vw, 2rem)', color: '#111111' }}>
-                  {content?.whyUsHeading || "Expertise that protects your business & empowers your workforce."}
+                  {content?.whyUsHeading ?? "Expertise that protects your business & empowers your workforce."}
                 </h2>
                 <p className="leading-relaxed text-sm mb-8"
                   style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400, color: '#555555' }}>
-                  {content?.whyUsBody || "We don't just file paperwork — we architect robust compliance frameworks. With India's labour law landscape shifting under the New Codes, you need a partner who anticipates regulatory changes before they impact your bottom line."}
+                  {content?.whyUsBody ?? "We don't just file paperwork — we architect robust compliance frameworks. With India's labour law landscape shifting under the New Codes, you need a partner who anticipates regulatory changes before they impact your bottom line."}
                 </p>
 
                 {/* Numbered rows */}
@@ -446,14 +446,14 @@ const Home = () => {
           {/* Header */}
           <div className="text-center mb-12 mx-auto">
             <p className="font-bold text-base uppercase tracking-wider mb-3"
-              style={{ fontFamily: 'Poppins, sans-serif', color: '#a83a00' }}>{content?.servicesPreviewLabel || 'Our Expertise'}</p>
+              style={{ fontFamily: 'Poppins, sans-serif', color: '#a83a00' }}>{content?.servicesPreviewLabel ?? 'Our Expertise'}</p>
             <h2 className="font-bold text-navy-900 mb-3 whitespace-nowrap"
               style={{ fontFamily: 'Poppins, sans-serif', fontSize: 'clamp(1.6rem, 2.8vw, 2.2rem)' }}>
-              {content?.servicesPreviewTitle || 'Comprehensive Compliance Solutions'}
+              {content?.servicesPreviewTitle ?? 'Comprehensive Compliance Solutions'}
             </h2>
             <p className="text-gray-500 text-sm leading-relaxed"
               style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400 }}>
-              {content?.servicesPreviewDescription || 'Strategic guidance across the entire spectrum of Indian labour laws and human resource management.'}
+              {content?.servicesPreviewDescription ?? 'Strategic guidance across the entire spectrum of Indian labour laws and human resource management.'}
             </p>
           </div>
 
@@ -526,7 +526,7 @@ const Home = () => {
               style={{ width: '56px', height: '56px', filter: 'brightness(0) saturate(100%) invert(68%) sepia(86%) saturate(607%) hue-rotate(1deg) brightness(101%) contrast(106%)' }} />
             <h2 className="font-bold text-white mb-0"
               style={{ fontFamily: 'Poppins, sans-serif', fontSize: 'clamp(1.9rem, 3.2vw, 2.8rem)' }}>
-              {content?.testimonialsHeading || 'Trusted by Industry Leaders'}
+              {content?.testimonialsHeading ?? 'Trusted by Industry Leaders'}
             </h2>
           </motion.div>
 

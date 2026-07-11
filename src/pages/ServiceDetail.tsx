@@ -79,7 +79,7 @@ const ServiceDetail = () => {
           <p
             className="uppercase tracking-[0.3em] font-semibold mb-2 whitespace-nowrap"
             style={{ fontFamily: PP, fontSize: '0.95rem', color: '#fda102' }}>
-            {detail?.subhead || 'Our Services'}
+            {detail?.subhead ?? 'Our Services'}
           </p>
 
           <h1

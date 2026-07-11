@@ -258,7 +258,7 @@ const Resources = () => {
                         color: item.downloadType === 'Resource' ? '#b07000' : '#a83a00',
                         fontFamily: PP,
                       }}>
-                      {item.downloadType || 'Download'}
+                      {item.downloadType ?? 'Download'}
                     </span>
                   </div>
 

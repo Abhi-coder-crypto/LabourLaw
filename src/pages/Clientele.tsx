@@ -111,9 +111,9 @@ const Clientele = () => {
   const testimonials = apiData?.testimonials?.length ? apiData.testimonials : DEFAULT_TESTIMONIALS;
   const portfolio    = apiData?.portfolio?.length    ? apiData.portfolio    : DEFAULT_PORTFOLIO;
 
-  const heroEyebrow  = apiData?.heroEyebrow  || 'Trusted Partners';
-  const heroHeadline = apiData?.heroHeadline || 'Our Esteemed Clientele';
-  const heroSubtext  = apiData?.heroSubtext  || 'Trusted by 500+ corporations across India to navigate complex labour law and stay fully compliant.';
+  const heroEyebrow  = apiData?.heroEyebrow  ?? 'Trusted Partners';
+  const heroHeadline = apiData?.heroHeadline ?? 'Our Esteemed Clientele';
+  const heroSubtext  = apiData?.heroSubtext  ?? 'Trusted by 500+ corporations across India to navigate complex labour law and stay fully compliant.';
 
   const [activeSector, setActiveSector] = useState('');
   const sectors = portfolio.map(p => p.sector);
