@@ -4,7 +4,11 @@ import { uploadFile, deleteCloudinaryAsset } from '../../lib/api';
 
 const PP = 'Poppins, sans-serif';
 
-const MAX_BYTES = 1 * 1024 * 1024; // 1 MB
+const MAX_BYTES: Record<'image' | 'video' | 'document', number> = {
+  image:    5  * 1024 * 1024, // 5 MB
+  video:    50 * 1024 * 1024, // 50 MB
+  document: 10 * 1024 * 1024, // 10 MB
+};
 
 function fileKind(accept: string): 'image' | 'video' | 'document' {
   if (accept.startsWith('image')) return 'image';
@@ -42,8 +46,10 @@ export default function ImageUploader({
   const handleFile = async (file: File | null) => {
     if (!file) return;
     setError('');
-    if (file.size > MAX_BYTES) {
-      setError(`File is ${(file.size / 1024 / 1024).toFixed(1)} MB — maximum is 1 MB.`);
+    const limit = MAX_BYTES[kind];
+    if (file.size > limit) {
+      const limitMB = limit / (1024 * 1024);
+      setError(`File is ${(file.size / 1024 / 1024).toFixed(1)} MB — maximum is ${limitMB} MB.`);
       return;
     }
     setUploading(true);
@@ -97,7 +103,7 @@ export default function ImageUploader({
     <div>
       <label className="block text-sm font-semibold mb-1" style={{ fontFamily: PP, color: '#333' }}>
         {label}
-        <span className="ml-2 text-xs font-normal text-gray-400">max 1 MB</span>
+        <span className="ml-2 text-xs font-normal text-gray-400">max {MAX_BYTES[kind] / (1024 * 1024)} MB</span>
       </label>
       {hint && (
         <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-1.5 mb-2 leading-snug" style={{ fontFamily: PP }}>
