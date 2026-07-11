@@ -95,20 +95,23 @@ router.post('/', requireAuth, (req, res) => {
       const resourceType = isVideo ? 'video' : isImage ? 'image' : 'raw';
       const section = sanitizeSection(req.body?.section);
 
-      // Only raw files (PDF/DOC/XLSX etc.) need a filename-derived id — that's
-      // what gets downloaded by end users and should show the original name.
-      // Images/videos keep Cloudinary's auto-generated id (unaffected).
+      // All file types use the original filename as the Cloudinary public_id so
+      // assets are identifiable in the media library by the name they were
+      // uploaded with.  A short random suffix prevents two different files with
+      // the same name from colliding/overwriting each other.
       let folder = `labourcodes/${section}`;
+      const { safeBase, safeExt } = sanitizeFilename(req.file.originalname);
+      const unique = crypto.randomBytes(4).toString('hex');
       let publicId;
       if (resourceType === 'raw') {
-        const { safeBase, safeExt } = sanitizeFilename(req.file.originalname);
-        // Uniqueness lives in a random subfolder, not the filename itself, so
-        // two uploads named "form.pdf" never collide/overwrite each other,
-        // while the final path segment — the one Cloudinary uses as the
-        // downloaded filename — stays exactly the original name.
-        const unique = crypto.randomBytes(4).toString('hex');
+        // Raw files: uniqueness in a subfolder so the final path segment — the
+        // part Cloudinary uses as the downloaded filename — stays clean.
         folder = `${folder}/${unique}`;
         publicId = `${safeBase}${safeExt}`;
+      } else {
+        // Images/videos: append the unique suffix to the filename itself so the
+        // asset name in the media library matches what was uploaded.
+        publicId = safeBase ? `${safeBase}_${unique}` : unique;
       }
 
       const b64 = req.file.buffer.toString('base64');
