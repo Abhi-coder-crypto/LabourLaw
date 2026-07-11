@@ -17,6 +17,7 @@ export default function AdminServices() {
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState<ServiceContent | (Omit<ServiceContent, '_id'> & { _id?: string }) | null>(null);
   const [saving, setSaving] = useState(false);
+  const [dirty, setDirty] = useState(false);
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
 
@@ -26,9 +27,9 @@ export default function AdminServices() {
     load().catch((err) => setError(err instanceof Error ? err.message : 'Failed to load')).finally(() => setLoading(false));
   }, []);
 
-  const startCreate = () => { setError(''); setEditing({ ...EMPTY }); };
-  const startEdit = (s: ServiceContent) => { setError(''); setEditing({ ...s, deliverables: s.deliverables || [] }); };
-  const cancel = () => setEditing(null);
+  const startCreate = () => { setError(''); setDirty(false); setEditing({ ...EMPTY }); };
+  const startEdit = (s: ServiceContent) => { setError(''); setDirty(false); setEditing({ ...s, deliverables: s.deliverables || [] }); };
+  const cancel = () => { setEditing(null); setDirty(false); };
 
   const save = async () => {
     if (!editing) return;
@@ -42,6 +43,7 @@ export default function AdminServices() {
       }
       await load();
       setEditing(null);
+      setDirty(false);
       setNotice('Saved — changes are live on the site.');
       setTimeout(() => setNotice(''), 2500);
     } catch (err) {
@@ -67,8 +69,10 @@ export default function AdminServices() {
 
   if (editing) {
     const deliverables = editing.deliverables || [];
-    const set = <K extends keyof typeof editing>(key: K, value: (typeof editing)[K]) =>
+    const set = <K extends keyof typeof editing>(key: K, value: (typeof editing)[K]) => {
+      setDirty(true);
       setEditing((e) => (e ? { ...e, [key]: value } : e));
+    };
 
     return (
       <div>
@@ -76,8 +80,27 @@ export default function AdminServices() {
           <h1 className="font-bold" style={{ fontFamily: PP, fontSize: '1.5rem', color: '#111' }}>
             {'_id' in editing && editing._id ? 'Edit Service' : 'New Service'}
           </h1>
-          <SecondaryButton onClick={cancel}><X size={13} /> Cancel</SecondaryButton>
+          <div className="flex items-center gap-3">
+            <SecondaryButton onClick={cancel}><X size={13} /> Cancel</SecondaryButton>
+            <PrimaryButton onClick={save} disabled={saving || !editing.title || !editing.slug}>
+              {saving ? <Loader2 size={15} className="animate-spin" /> : <Save size={15} />}
+              {saving ? 'Saving…' : 'Save Service'}
+            </PrimaryButton>
+          </div>
         </div>
+
+        {dirty && !saving && (
+          <div className="sticky top-0 z-20 mb-5 flex items-center justify-between gap-3 rounded-xl px-4 py-3 shadow-md"
+            style={{ backgroundColor: '#7c2d00', fontFamily: PP }}>
+            <span className="text-sm font-semibold text-white">You have unsaved changes.</span>
+            <button onClick={save} disabled={!editing.title || !editing.slug}
+              className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-opacity hover:opacity-90 disabled:opacity-50"
+              style={{ backgroundColor: '#fda102', color: '#111' }}>
+              <Save size={13} /> Save now
+            </button>
+          </div>
+        )}
+
         {error && <div className="mb-5 text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-2.5">{error}</div>}
 
         <Section title="Listing Details" description="Shown on the Services grid and homepage preview.">
